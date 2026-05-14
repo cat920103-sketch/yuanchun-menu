@@ -469,6 +469,20 @@
     to { opacity: 1; transform: translateY(0); }
   }
 
+  /* FEATURED IMAGE */
+  .featured-img-wrap {
+    margin-bottom: 14px;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px var(--shadow);
+  }
+  .featured-img {
+    width: 100%;
+    display: block;
+    object-fit: cover;
+    max-height: 220px;
+  }
+
   /* staggered item animation */
   .menu-item:nth-child(1) { animation-delay: 0.04s; }
   .menu-item:nth-child(2) { animation-delay: 0.09s; }
@@ -504,6 +518,9 @@
     <!-- PAGE 1: 加熱直接吃 -->
     <div class="page active" id="page-0">
       <div class="section-title">加熱直接吃</div>
+      <div class="featured-img-wrap">
+        <img src="malatoufu.png" alt="經典麻辣臭豆腐" class="featured-img">
+      </div>
       <div class="menu-list">
         <div class="menu-item">
           <div class="item-info"><div class="item-name">麻辣臭豆腐</div></div>
@@ -515,7 +532,7 @@
         </div>
         <div class="menu-item">
           <div class="item-info"><div class="item-name">麻辣嫩鴨血</div></div>
-          <div class="item-price">$180</div>
+          <div class="item-price">$120</div>
         </div>
         <div class="menu-item">
           <div class="item-info"><div class="item-name">肥腸＋嫩鴨血</div></div>
@@ -526,14 +543,14 @@
             <div class="item-name">滷桂竹筍</div>
             <div class="item-tag">全素</div>
           </div>
-          <div class="item-price">$220</div>
+          <div class="item-price">$130</div>
         </div>
         <div class="menu-item">
           <div class="item-info">
             <div class="item-name">滷紅燒豆腐</div>
             <div class="item-tag">全素</div>
           </div>
-          <div class="item-price">$130</div>
+          <div class="item-price">$120</div>
         </div>
       </div>
     </div>
@@ -544,24 +561,24 @@
       <div class="combo-box">
         <div class="combo-row">
           <div>
-            <div class="combo-label">A：生臭豆腐</div>
+            <div class="combo-label">A：生滷臭豆腐</div>
             <div class="combo-desc">6 片</div>
           </div>
-          <div class="combo-price">$80</div>
+          <div class="combo-price">$70</div>
         </div>
         <div class="combo-row">
           <div>
-            <div class="combo-label">B：濃縮麻辣汁</div>
+            <div class="combo-label">B：濃縮麻辣湯底</div>
             <div class="combo-desc">料理包</div>
           </div>
           <div class="combo-price">$50</div>
         </div>
         <div class="combo-deal">
           <div>
-            <div class="combo-deal-label">A ＋ B </div>
-            <div style="font-size:12px;opacity:0.8;margin-top:3px;letter-spacing:1px">一起煮才對味</div>
+            <div class="combo-deal-label">A ＋ B 優惠價</div>
+            <div style="font-size:12px;opacity:0.8;margin-top:3px;letter-spacing:1px">一起買更划算</div>
           </div>
-          <div class="combo-deal-price">$130</div>
+          <div class="combo-deal-price">$110</div>
         </div>
       </div>
     </div>
@@ -595,7 +612,7 @@
         </div>
         <div class="info-row">
           <span class="info-icon">📦</span>
-          <span>滿 <strong>$2,600</strong> 免運費</span>
+          <span>滿 <strong>$2,200</strong> 免運費</span>
         </div>
         <div class="info-row">
           <span class="info-icon">🌡️</span>
