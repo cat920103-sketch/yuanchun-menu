@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>源春 · 深坑老街特產</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700;900&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --red: #c0392b;
+    --orange: #e07b39;
+    --cream: #fdf6ec;
+    --warm-white: #fffbf5;
+    --dark: #2c1a0e;
+    --mid: #7a4f2d;
+    --gold: #c9973a;
+    --light-tan: #f0e0c8;
+    --shadow: rgba(44, 26, 14, 0.12);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--cream);
+    font-family: 'Noto Serif TC', serif;
+    color: var(--dark);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Background texture */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      radial-gradient(ellipse at 10% 20%, rgba(224,123,57,0.07) 0%, transparent 50%),
+      radial-gradient(ellipse at 90% 80%, rgba(192,57,43,0.07) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .site-wrapper {
+    position: relative;
+    z-index: 1;
+    max-width: 480px;
+    margin: 0 auto;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* HEADER */
+  header {
+    text-align: center;
+    padding: 48px 24px 28px;
+    position: relative;
+  }
+
+  .header-deco {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 6px;
+    background: linear-gradient(90deg, var(--red), var(--orange), var(--gold), var(--orange), var(--red));
+  }
+
+  .brand-name {
+    font-family: 'Playfair Display', 'Noto Serif TC', serif;
+    font-size: clamp(56px, 15vw, 80px);
+    font-weight: 700;
+    color: var(--red);
+    letter-spacing: 8px;
+    line-height: 1;
+    text-shadow: 3px 3px 0 rgba(192,57,43,0.15);
+    animation: fadeDown 0.7s ease both;
+  }
+
+  .brand-sub {
+    font-size: 13px;
+    color: var(--mid);
+    letter-spacing: 4px;
+    margin-top: 10px;
+    font-weight: 600;
+    animation: fadeDown 0.7s 0.1s ease both;
+  }
+
+  .divider-orn {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 20px 24px 0;
+    animation: fadeIn 0.7s 0.2s ease both;
+  }
+  .divider-orn::before, .divider-orn::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  }
+  .divider-orn span {
+    color: var(--gold);
+    font-size: 16px;
+  }
+
+  /* PAGINATION DOTS */
+  .page-dots {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    padding: 16px 0 8px;
+    animation: fadeIn 0.5s 0.3s ease both;
+  }
+  .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--light-tan);
+    border: 1.5px solid var(--gold);
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  .dot.active {
+    background: var(--red);
+    border-color: var(--red);
+    transform: scale(1.3);
+  }
+
+  /* PAGES CONTAINER */
+  .pages-container {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .page {
+    position: absolute;
+    inset: 0;
+    padding: 8px 24px 24px;
+    opacity: 0;
+    transform: translateX(40px);
+    pointer-events: none;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .page.active {
+    opacity: 1;
+    transform: translateX(0);
+    pointer-events: all;
+    position: relative;
+  }
+  .page.exit-left {
+    opacity: 0;
+    transform: translateX(-40px);
+  }
+
+  /* SECTION TITLE */
+  .section-title {
+    font-size: 22px;
+    font-weight: 900;
+    color: var(--red);
+    letter-spacing: 3px;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 2px;
+    background: linear-gradient(90deg, var(--orange), transparent);
+    border-radius: 2px;
+  }
+
+  /* MENU ITEMS */
+  .menu-list {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .menu-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 18px;
+    background: var(--warm-white);
+    border-radius: 12px;
+    border: 1px solid rgba(201, 151, 58, 0.2);
+    box-shadow: 0 2px 8px var(--shadow);
+    transition: all 0.25s ease;
+    cursor: default;
+    animation: slideIn 0.4s ease both;
+  }
+
+  .menu-item:hover {
+    transform: translateY(-2px) translateX(3px);
+    box-shadow: 0 6px 20px var(--shadow);
+    border-color: rgba(201, 151, 58, 0.5);
+    background: #fffef9;
+  }
+
+  .item-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .item-name {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--dark);
+    letter-spacing: 1px;
+  }
+
+  .item-tag {
+    display: inline-block;
+    font-size: 10px;
+    color: #4a8c4a;
+    background: rgba(74, 140, 74, 0.1);
+    border: 1px solid rgba(74, 140, 74, 0.3);
+    border-radius: 4px;
+    padding: 1px 6px;
+    letter-spacing: 0.5px;
+    margin-top: 2px;
+    width: fit-content;
+  }
+
+  .item-price {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--orange);
+    letter-spacing: 1px;
+    white-space: nowrap;
+  }
+
+  /* COMBO SECTION */
+  .combo-box {
+    background: linear-gradient(135deg, var(--warm-white), #fff8ee);
+    border: 1.5px solid var(--gold);
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 4px 20px var(--shadow);
+    animation: slideIn 0.4s ease both;
+  }
+
+  .combo-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px dashed rgba(201, 151, 58, 0.35);
+  }
+  .combo-row:last-child { border-bottom: none; padding-bottom: 0; }
+  .combo-row:first-child { padding-top: 0; }
+
+  .combo-label { font-size: 15px; font-weight: 600; color: var(--dark); letter-spacing: 1px; }
+  .combo-desc { font-size: 12px; color: var(--mid); margin-top: 2px; }
+  .combo-price { font-size: 20px; font-weight: 700; color: var(--orange); }
+
+  .combo-deal {
+    background: var(--red);
+    color: white;
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-top: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .combo-deal-label { font-size: 16px; font-weight: 700; letter-spacing: 1px; }
+  .combo-deal-price { font-size: 28px; font-weight: 900; }
+
+  /* FRYING COMBO */
+  .fry-title {
+    font-size: 20px;
+    font-weight: 900;
+    color: var(--red);
+    letter-spacing: 2px;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .fry-title::after {
+    content: '';
+    flex: 1;
+    height: 2px;
+    background: linear-gradient(90deg, var(--orange), transparent);
+  }
+
+  .fry-price-badge {
+    background: var(--red);
+    color: white;
+    font-size: 24px;
+    font-weight: 900;
+    padding: 4px 14px;
+    border-radius: 8px;
+    letter-spacing: 2px;
+    display: inline-block;
+    margin-bottom: 16px;
+    box-shadow: 2px 3px 0 rgba(192,57,43,0.25);
+  }
+
+  .fry-box {
+    background: var(--warm-white);
+    border: 1.5px solid rgba(201,151,58,0.3);
+    border-radius: 16px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 4px 16px var(--shadow);
+    animation: slideIn 0.4s ease both;
+  }
+
+  .fry-items {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .fry-item {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--dark);
+    letter-spacing: 1px;
+  }
+
+  .fry-plus {
+    font-size: 22px;
+    color: var(--gold);
+    font-weight: 900;
+    line-height: 1;
+  }
+
+  /* INFO PAGE */
+  .info-card {
+    background: var(--warm-white);
+    border: 1.5px solid rgba(201,151,58,0.3);
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 4px 16px var(--shadow);
+    margin-bottom: 16px;
+    animation: slideIn 0.4s ease both;
+  }
+
+  .info-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--mid);
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+  }
+
+  .info-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 10px;
+    font-size: 14px;
+    color: var(--dark);
+    line-height: 1.6;
+  }
+  .info-row:last-child { margin-bottom: 0; }
+  .info-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+
+  .qr-card {
+    background: linear-gradient(135deg, var(--red), #a93226);
+    border-radius: 16px;
+    padding: 20px;
+    text-align: center;
+    color: white;
+    box-shadow: 0 6px 24px rgba(192,57,43,0.3);
+    animation: slideIn 0.4s 0.1s ease both;
+  }
+  .qr-card p { font-size: 14px; margin-bottom: 12px; letter-spacing: 2px; opacity: 0.9; }
+  .qr-placeholder {
+    background: white;
+    border-radius: 10px;
+    padding: 16px;
+    display: inline-block;
+    font-size: 12px;
+    color: var(--mid);
+  }
+  .qr-label {
+    margin-top: 12px;
+    font-size: 12px;
+    letter-spacing: 2px;
+    opacity: 0.8;
+  }
+
+  /* NAV BUTTONS */
+  .nav-buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 24px 32px;
+    gap: 12px;
+    animation: fadeIn 0.5s ease both;
+  }
+
+  .nav-btn {
+    flex: 1;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 12px;
+    font-family: 'Noto Serif TC', serif;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .nav-btn.prev {
+    background: var(--warm-white);
+    color: var(--mid);
+    border: 1.5px solid var(--light-tan);
+    box-shadow: 0 2px 8px var(--shadow);
+  }
+  .nav-btn.prev:hover:not(:disabled) {
+    background: var(--light-tan);
+    transform: translateX(-2px);
+  }
+  .nav-btn.prev:disabled {
+    opacity: 0.3;
+    cursor: default;
+  }
+
+  .nav-btn.next {
+    background: var(--red);
+    color: white;
+    box-shadow: 0 4px 16px rgba(192,57,43,0.3);
+  }
+  .nav-btn.next:hover:not(:disabled) {
+    background: #a93226;
+    transform: translateX(2px);
+    box-shadow: 0 6px 20px rgba(192,57,43,0.4);
+  }
+  .nav-btn.next:disabled {
+    opacity: 0.3;
+    cursor: default;
+    background: var(--mid);
+    box-shadow: none;
+  }
+
+  .page-indicator {
+    font-size: 12px;
+    color: var(--mid);
+    font-weight: 600;
+    letter-spacing: 1px;
+    white-space: nowrap;
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* staggered item animation */
+  .menu-item:nth-child(1) { animation-delay: 0.04s; }
+  .menu-item:nth-child(2) { animation-delay: 0.09s; }
+  .menu-item:nth-child(3) { animation-delay: 0.14s; }
+  .menu-item:nth-child(4) { animation-delay: 0.19s; }
+  .menu-item:nth-child(5) { animation-delay: 0.24s; }
+  .menu-item:nth-child(6) { animation-delay: 0.29s; }
+</style>
+</head>
+<body>
+
+<div class="site-wrapper">
+
+  <!-- HEADER -->
+  <header>
+    <div class="header-deco"></div>
+    <div class="brand-name">源 春</div>
+    <div class="brand-sub">深坑老街特產</div>
+    <div class="divider-orn"><span>✦</span></div>
+  </header>
+
+  <!-- PAGE DOTS -->
+  <div class="page-dots" id="dots">
+    <div class="dot active" onclick="goToPage(0)"></div>
+    <div class="dot" onclick="goToPage(1)"></div>
+    <div class="dot" onclick="goToPage(2)"></div>
+    <div class="dot" onclick="goToPage(3)"></div>
+  </div>
+
+  <!-- PAGES -->
+  <div class="pages-container" id="pagesContainer">
+
+    <!-- PAGE 1: 加熱直接吃 -->
+    <div class="page active" id="page-0">
+      <div class="section-title">加熱直接吃</div>
+      <div class="menu-list">
+        <div class="menu-item">
+          <div class="item-info"><div class="item-name">麻辣臭豆腐</div></div>
+          <div class="item-price">$140</div>
+        </div>
+        <div class="menu-item">
+          <div class="item-info"><div class="item-name">清蒸臭豆腐</div></div>
+          <div class="item-price">$140</div>
+        </div>
+        <div class="menu-item">
+          <div class="item-info"><div class="item-name">麻辣嫩鴨血</div></div>
+          <div class="item-price">$120</div>
+        </div>
+        <div class="menu-item">
+          <div class="item-info"><div class="item-name">肥腸＋嫩鴨血</div></div>
+          <div class="item-price">$230</div>
+        </div>
+        <div class="menu-item">
+          <div class="item-info">
+            <div class="item-name">滷桂竹筍</div>
+            <div class="item-tag">全素</div>
+          </div>
+          <div class="item-price">$130</div>
+        </div>
+        <div class="menu-item">
+          <div class="item-info">
+            <div class="item-name">滷紅燒豆腐</div>
+            <div class="item-tag">全素</div>
+          </div>
+          <div class="item-price">$120</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE 2: 在家自己煮 -->
+    <div class="page" id="page-1">
+      <div class="section-title">在家自己煮</div>
+      <div class="combo-box">
+        <div class="combo-row">
+          <div>
+            <div class="combo-label">A：生滷臭豆腐</div>
+            <div class="combo-desc">6 片</div>
+          </div>
+          <div class="combo-price">$70</div>
+        </div>
+        <div class="combo-row">
+          <div>
+            <div class="combo-label">B：濃縮麻辣湯底</div>
+            <div class="combo-desc">料理包</div>
+          </div>
+          <div class="combo-price">$50</div>
+        </div>
+        <div class="combo-deal">
+          <div>
+            <div class="combo-deal-label">A ＋ B 優惠價</div>
+            <div style="font-size:12px;opacity:0.8;margin-top:3px;letter-spacing:1px">一起買更划算</div>
+          </div>
+          <div class="combo-deal-price">$110</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE 3: 在家自己炸組合 -->
+    <div class="page" id="page-2">
+      <div class="fry-title">在家自己炸組合</div>
+      <div class="fry-price-badge">＄170</div>
+      <div class="fry-box">
+        <div class="fry-items">
+          <div class="fry-item">🍢 生炸臭豆腐（9片）</div>
+          <div class="fry-plus">＋</div>
+          <div class="fry-item">🥬 手工台式泡菜</div>
+          <div class="fry-plus">＋</div>
+          <div class="fry-item">🍶 特調醬汁</div>
+        </div>
+        <div style="margin-top:20px;padding-top:16px;border-top:1px dashed rgba(201,151,58,0.3);font-size:13px;color:var(--mid);line-height:1.8;letter-spacing:1px;">
+          在家輕鬆重現深坑老街<br>現炸臭豆腐的好滋味
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE 4: 訂購資訊 -->
+    <div class="page" id="page-3">
+      <div class="section-title">訂購資訊</div>
+      <div class="info-card">
+        <div class="info-title">配送 &amp; 保存</div>
+        <div class="info-row">
+          <span class="info-icon">🐱</span>
+          <span>黑貓冷藏配送，安心到府</span>
+        </div>
+        <div class="info-row">
+          <span class="info-icon">📦</span>
+          <span>滿 <strong>$2,200</strong> 免運費</span>
+        </div>
+        <div class="info-row">
+          <span class="info-icon">🌡️</span>
+          <span>熟食冷藏保存 <strong>7 天</strong></span>
+        </div>
+        <div class="info-row">
+          <span class="info-icon">❄️</span>
+          <span>生食冷藏保存 <strong>14 天</strong></span>
+        </div>
+      </div>
+      <div class="qr-card">
+        <p>訂購請掃描 LINE QR CODE</p>
+        <div class="qr-placeholder">
+          <div style="font-size:36px;letter-spacing:2px;color:var(--dark)">LINE</div>
+          <div style="font-size:11px;margin-top:4px;color:var(--mid)">掃描加入好友下單</div>
+        </div>
+        <div class="qr-label">源春深坑老街特產</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- NAV BUTTONS -->
+  <div class="nav-buttons">
+    <button class="nav-btn prev" id="prevBtn" onclick="changePage(-1)" disabled>
+      ← 上一頁
+    </button>
+    <div class="page-indicator" id="pageIndicator">1 / 4</div>
+    <button class="nav-btn next" id="nextBtn" onclick="changePage(1)">
+      下一頁 →
+    </button>
+  </div>
+
+</div>
+
+<script>
+  let currentPage = 0;
+  const totalPages = 4;
+
+  function goToPage(index) {
+    if (index === currentPage) return;
+    const pages = document.querySelectorAll('.page');
+    const dots = document.querySelectorAll('.dot');
+
+    const oldPage = currentPage; // capture before it changes
+
+    pages[oldPage].classList.remove('active');
+    pages[oldPage].style.transform = index < oldPage ? 'translateX(40px)' : 'translateX(-40px)';
+    pages[oldPage].style.opacity = '0';
+    pages[oldPage].style.pointerEvents = 'none';
+    pages[oldPage].style.position = 'absolute';
+
+    setTimeout(() => {
+      pages[oldPage].style.transform = '';
+      pages[oldPage].style.opacity = '';
+      pages[oldPage].style.pointerEvents = '';
+      pages[oldPage].style.position = '';
+    }, 400);
+
+    dots[oldPage].classList.remove('active');
+    currentPage = index;
+    dots[currentPage].classList.add('active');
+
+    // Animate incoming page
+    const incoming = pages[currentPage];
+    incoming.style.position = 'relative';
+    incoming.style.transform = index > oldPage ? 'translateX(40px)' : 'translateX(-40px)';
+    incoming.style.opacity = '0';
+    incoming.style.pointerEvents = 'all';
+
+    // Force reflow
+    incoming.offsetHeight;
+
+    incoming.classList.add('active');
+    incoming.style.transform = '';
+    incoming.style.opacity = '';
+
+    updateButtons();
+  }
+
+  function changePage(dir) {
+    const next = currentPage + dir;
+    if (next < 0 || next >= totalPages) return;
+    goToPage(next);
+  }
+
+  function updateButtons() {
+    document.getElementById('prevBtn').disabled = currentPage === 0;
+    document.getElementById('nextBtn').disabled = currentPage === totalPages - 1;
+    document.getElementById('pageIndicator').textContent = `${currentPage + 1} / ${totalPages}`;
+  }
+
+  updateButtons();
+</script>
+</body>
+</html>
