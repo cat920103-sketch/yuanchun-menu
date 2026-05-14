@@ -170,66 +170,83 @@
     border-radius: 2px;
   }
 
-  /* MENU ITEMS */
-  .menu-list {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
+  /* MENU GRID */
+  .menu-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
   }
 
-  .menu-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 14px 18px;
+  .menu-card {
     background: var(--warm-white);
     border-radius: 12px;
     border: 1px solid rgba(201, 151, 58, 0.2);
     box-shadow: 0 2px 8px var(--shadow);
+    overflow: hidden;
     transition: all 0.25s ease;
     cursor: default;
     animation: slideIn 0.4s ease both;
-  }
-
-  .menu-item:hover {
-    transform: translateY(-2px) translateX(3px);
-    box-shadow: 0 6px 20px var(--shadow);
-    border-color: rgba(201, 151, 58, 0.5);
-    background: #fffef9;
-  }
-
-  .item-info {
     display: flex;
     flex-direction: column;
-    gap: 2px;
+  }
+
+  .menu-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px var(--shadow);
+    border-color: rgba(201, 151, 58, 0.5);
+  }
+
+  .menu-card-img {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    display: block;
+    background: var(--light-tan);
+  }
+
+  .menu-card-img-placeholder {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    background: linear-gradient(135deg, var(--light-tan), #e8d0b0);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+  }
+
+  .menu-card-body {
+    padding: 8px 8px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex: 1;
   }
 
   .item-name {
-    font-size: 16px;
-    font-weight: 600;
+    font-size: 12px;
+    font-weight: 700;
     color: var(--dark);
-    letter-spacing: 1px;
+    letter-spacing: 0.5px;
+    line-height: 1.3;
   }
 
   .item-tag {
     display: inline-block;
-    font-size: 10px;
+    font-size: 9px;
     color: #4a8c4a;
     background: rgba(74, 140, 74, 0.1);
     border: 1px solid rgba(74, 140, 74, 0.3);
     border-radius: 4px;
-    padding: 1px 6px;
-    letter-spacing: 0.5px;
-    margin-top: 2px;
+    padding: 1px 4px;
     width: fit-content;
   }
 
   .item-price {
-    font-size: 20px;
-    font-weight: 700;
+    font-size: 14px;
+    font-weight: 900;
     color: var(--orange);
-    letter-spacing: 1px;
-    white-space: nowrap;
+    letter-spacing: 0.5px;
+    margin-top: auto;
   }
 
   /* COMBO SECTION */
@@ -518,40 +535,58 @@
     <!-- PAGE 1: 加熱直接吃 -->
     <div class="page active" id="page-0">
       <div class="section-title">加熱直接吃</div>
-      <div class="featured-img-wrap">
-        <img src="malatoufu.png" alt="經典麻辣臭豆腐" class="featured-img">
-      </div>
-      <div class="menu-list">
-        <div class="menu-item">
-          <div class="item-info"><div class="item-name">麻辣臭豆腐</div></div>
-          <div class="item-price">$140</div>
+      <div class="menu-grid">
+
+        <div class="menu-card">
+          <img src="malatoufu.png" alt="麻辣臭豆腐" class="menu-card-img">
+          <div class="menu-card-body">
+            <div class="item-name">麻辣臭豆腐</div>
+            <div class="item-price">$140</div>
+          </div>
         </div>
-        <div class="menu-item">
-          <div class="item-info"><div class="item-name">清蒸臭豆腐</div></div>
-          <div class="item-price">$140</div>
+
+        <div class="menu-card">
+          <div class="menu-card-img-placeholder">🥢</div>
+          <div class="menu-card-body">
+            <div class="item-name">清蒸臭豆腐</div>
+            <div class="item-price">$140</div>
+          </div>
         </div>
-        <div class="menu-item">
-          <div class="item-info"><div class="item-name">麻辣嫩鴨血</div></div>
-          <div class="item-price">$180</div>
+
+        <div class="menu-card">
+          <img src="maladuxue.png" alt="麻辣嫩鴨血" class="menu-card-img">
+          <div class="menu-card-body">
+            <div class="item-name">麻辣嫩鴨血</div>
+            <div class="item-price">$120</div>
+          </div>
         </div>
-        <div class="menu-item">
-          <div class="item-info"><div class="item-name">肥腸＋嫩鴨血</div></div>
-          <div class="item-price">$230</div>
+
+        <div class="menu-card">
+          <img src="feichangduxue.png" alt="肥腸嫩鴨血" class="menu-card-img">
+          <div class="menu-card-body">
+            <div class="item-name">肥腸＋嫩鴨血</div>
+            <div class="item-price">$230</div>
+          </div>
         </div>
-        <div class="menu-item">
-          <div class="item-info">
+
+        <div class="menu-card">
+          <div class="menu-card-img-placeholder">🎋</div>
+          <div class="menu-card-body">
             <div class="item-name">滷桂竹筍</div>
             <div class="item-tag">全素</div>
+            <div class="item-price">$130</div>
           </div>
-          <div class="item-price">$220</div>
         </div>
-        <div class="menu-item">
-          <div class="item-info">
+
+        <div class="menu-card">
+          <div class="menu-card-img-placeholder">🍱</div>
+          <div class="menu-card-body">
             <div class="item-name">滷紅燒豆腐</div>
             <div class="item-tag">全素</div>
+            <div class="item-price">$120</div>
           </div>
-          <div class="item-price">$130</div>
         </div>
+
       </div>
     </div>
 
@@ -564,7 +599,7 @@
             <div class="combo-label">A：生滷臭豆腐</div>
             <div class="combo-desc">6 片</div>
           </div>
-          <div class="combo-price">$80</div>
+          <div class="combo-price">$70</div>
         </div>
         <div class="combo-row">
           <div>
@@ -576,9 +611,9 @@
         <div class="combo-deal">
           <div>
             <div class="combo-deal-label">A ＋ B 優惠價</div>
-            <div style="font-size:12px;opacity:0.8;margin-top:3px;letter-spacing:1px">一起煮才對味</div>
+            <div style="font-size:12px;opacity:0.8;margin-top:3px;letter-spacing:1px">一起買更划算</div>
           </div>
-          <div class="combo-deal-price">$130</div>
+          <div class="combo-deal-price">$110</div>
         </div>
       </div>
     </div>
@@ -709,7 +744,3 @@
 </script>
 </body>
 </html>
-
-
-
-
