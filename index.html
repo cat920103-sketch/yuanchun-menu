@@ -535,53 +535,56 @@
     <!-- PAGE 1: 加熱直接吃 -->
     <div class="page active" id="page-0">
       <div class="section-title">加熱直接吃</div>
-      <div class="menu-grid">
 
-        <div class="menu-card">
-          <img src="malatoufu.png" alt="麻辣臭豆腐" class="menu-card-img">
-          <div class="menu-card-body">
-            <div class="item-name">麻辣臭豆腐</div>
-            <div class="item-price">$140</div>
+      <!-- Hero card -->
+      <div style="position:relative;border-radius:16px;overflow:hidden;box-shadow:0 4px 20px var(--shadow);margin-bottom:10px;">
+        <img src="malatoufu.png" alt="麻辣臭豆腐" style="width:100%;height:180px;object-fit:cover;display:block;">
+        <div style="position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(44,26,14,0.75));padding:14px 16px;">
+          <div style="color:white;font-size:18px;font-weight:900;letter-spacing:2px;">麻辣臭豆腐</div>
+          <div style="color:rgba(255,255,255,0.9);font-size:16px;font-weight:900;margin-top:2px;">$140</div>
+        </div>
+      </div>
+
+      <!-- 2x2 grid for remaining items -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+
+        <div style="background:var(--warm-white);border-radius:12px;overflow:hidden;box-shadow:0 2px 8px var(--shadow);border:1px solid rgba(201,151,58,0.2);">
+          <div style="background:var(--light-tan);height:80px;display:flex;align-items:center;justify-content:center;font-size:28px;">🥢</div>
+          <div style="padding:8px 10px;">
+            <div style="font-size:12px;font-weight:700;color:var(--dark);">清蒸臭豆腐</div>
+            <div style="font-size:14px;font-weight:900;color:var(--orange);margin-top:4px;">$140</div>
           </div>
         </div>
 
-        <div class="menu-card">
-          <div class="menu-card-img-placeholder">🥢</div>
-          <div class="menu-card-body">
-            <div class="item-name">清蒸臭豆腐</div>
-            <div class="item-price">$140</div>
+        <div style="background:var(--warm-white);border-radius:12px;overflow:hidden;box-shadow:0 2px 8px var(--shadow);border:1px solid rgba(201,151,58,0.2);">
+          <img src="maladuxue.png" alt="麻辣嫩鴨血" style="width:100%;height:80px;object-fit:cover;display:block;">
+          <div style="padding:8px 10px;">
+            <div style="font-size:12px;font-weight:700;color:var(--dark);">麻辣嫩鴨血</div>
+            <div style="font-size:14px;font-weight:900;color:var(--orange);margin-top:4px;">$180</div>
           </div>
         </div>
 
-        <div class="menu-card">
-          <img src="maladuxue.png" alt="麻辣嫩鴨血" class="menu-card-img">
-          <div class="menu-card-body">
-            <div class="item-name">麻辣嫩鴨血</div>
-            <div class="item-price">$180</div>
+        <div style="background:var(--warm-white);border-radius:12px;overflow:hidden;box-shadow:0 2px 8px var(--shadow);border:1px solid rgba(201,151,58,0.2);">
+          <img src="feichangduxue.png" alt="肥腸嫩鴨血" style="width:100%;height:80px;object-fit:cover;display:block;">
+          <div style="padding:8px 10px;">
+            <div style="font-size:12px;font-weight:700;color:var(--dark);">肥腸＋嫩鴨血</div>
+            <div style="font-size:14px;font-weight:900;color:var(--orange);margin-top:4px;">$230</div>
           </div>
         </div>
 
-        <div class="menu-card">
-          <img src="feichangduxue.png" alt="肥腸嫩鴨血" class="menu-card-img">
-          <div class="menu-card-body">
-            <div class="item-name">肥腸＋嫩鴨血</div>
-            <div class="item-price">$230</div>
+        <div style="background:var(--warm-white);border-radius:12px;overflow:hidden;box-shadow:0 2px 8px var(--shadow);border:1px solid rgba(201,151,58,0.2);">
+          <img src="zhusun.jpg" alt="滷桂竹筍" style="width:100%;height:80px;object-fit:cover;display:block;">
+          <div style="padding:8px 10px;">
+            <div style="font-size:12px;font-weight:700;color:var(--dark);">滷桂竹筍</div>
+            <div style="font-size:14px;font-weight:900;color:var(--orange);margin-top:4px;">$220</div>
           </div>
         </div>
 
-        <div class="menu-card">
-          <div class="menu-card-img-placeholder">🎋</div>
-          <div class="menu-card-body">
-            <div class="item-name">滷桂竹筍</div>
-            <div class="item-price">$220</div>
-          </div>
-        </div>
-
-        <div class="menu-card">
-          <div class="menu-card-img-placeholder">🍱</div>
-          <div class="menu-card-body">
-            <div class="item-name">滷紅燒豆腐</div>
-            <div class="item-price">$130</div>
+        <div style="background:var(--warm-white);border-radius:12px;overflow:hidden;box-shadow:0 2px 8px var(--shadow);border:1px solid rgba(201,151,58,0.2);grid-column:span 2;">
+          <img src="redtofu.jpg" alt="滷紅燒豆腐" style="width:100%;height:80px;object-fit:cover;display:block;">
+          <div style="padding:8px 10px;display:flex;justify-content:space-between;align-items:center;">
+            <div style="font-size:12px;font-weight:700;color:var(--dark);">滷紅燒豆腐</div>
+            <div style="font-size:14px;font-weight:900;color:var(--orange);">$130</div>
           </div>
         </div>
 
