@@ -28,7 +28,6 @@
     overflow-x: hidden;
   }
 
-  /* Background texture */
   body::before {
     content: '';
     position: fixed;
@@ -64,6 +63,37 @@
     background: linear-gradient(90deg, var(--red), var(--orange), var(--gold), var(--orange), var(--red));
   }
 
+  /* CART TOP RIGHT */
+  .cart-top-btn {
+    position: absolute;
+    top: 14px;
+    right: 16px;
+    background: var(--warm-white);
+    border: 1.5px solid rgba(201,151,58,0.3);
+    border-radius: 50%;
+    width: 40px; height: 40px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    font-size: 18px;
+    box-shadow: 0 2px 8px var(--shadow);
+    z-index: 10;
+    transition: all 0.2s ease;
+  }
+  .cart-top-btn:hover { background: var(--light-tan); transform: scale(1.05); }
+  .cart-badge {
+    position: absolute;
+    top: -4px; right: -4px;
+    background: var(--red);
+    color: white;
+    font-size: 9px;
+    font-weight: 900;
+    border-radius: 50%;
+    width: 16px; height: 16px;
+    display: none;
+    align-items: center;
+    justify-content: center;
+  }
+
   .brand-name {
     font-family: 'Playfair Display', 'Noto Serif TC', serif;
     font-size: clamp(56px, 15vw, 80px);
@@ -73,7 +103,10 @@
     line-height: 1;
     text-shadow: 3px 3px 0 rgba(192,57,43,0.15);
     animation: fadeDown 0.7s ease both;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
   }
+  .brand-name:hover { opacity: 0.8; }
 
   .brand-sub {
     font-size: 13px;
@@ -97,10 +130,7 @@
     height: 1px;
     background: linear-gradient(90deg, transparent, var(--gold), transparent);
   }
-  .divider-orn span {
-    color: var(--gold);
-    font-size: 16px;
-  }
+  .divider-orn span { color: var(--gold); font-size: 16px; }
 
   /* PAGINATION DOTS */
   .page-dots {
@@ -124,6 +154,93 @@
     transform: scale(1.3);
   }
 
+  /* SIDEBAR */
+  .sidebar-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(44,26,14,0.5);
+    z-index: 200;
+  }
+  .sidebar {
+    position: fixed;
+    top: 0; left: -260px;
+    width: 260px;
+    height: 100vh;
+    background: var(--cream);
+    z-index: 300;
+    transition: left 0.35s cubic-bezier(0.4,0,0.2,1);
+    box-shadow: 4px 0 20px var(--shadow);
+    overflow-y: auto;
+    padding-bottom: 40px;
+  }
+  .sidebar.open { left: 0; }
+  .sidebar-header {
+    background: linear-gradient(135deg, var(--red), #a93226);
+    padding: 24px 20px 16px;
+    color: white;
+  }
+  .sidebar-header-title { font-size: 20px; font-weight: 900; letter-spacing: 3px; }
+  .sidebar-header-sub { font-size: 11px; opacity: 0.8; margin-top: 4px; letter-spacing: 2px; }
+  .sidebar-close {
+    position: absolute;
+    top: 16px; right: 16px;
+    background: rgba(255,255,255,0.2);
+    border: none;
+    border-radius: 50%;
+    width: 28px; height: 28px;
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+  }
+  .sidebar-section { padding: 14px 20px 6px; }
+  .sidebar-section-title {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--mid);
+    letter-spacing: 2px;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--light-tan);
+    padding-bottom: 6px;
+  }
+  .sidebar-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 12px;
+    margin-bottom: 4px;
+    background: var(--warm-white);
+    border-radius: 10px;
+    border: 1px solid rgba(201,151,58,0.15);
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .sidebar-item:hover {
+    background: var(--light-tan);
+    border-color: rgba(201,151,58,0.4);
+    transform: translateX(3px);
+  }
+  .sidebar-item-name { font-size: 13px; font-weight: 600; color: var(--dark); }
+  .sidebar-item-price { font-size: 12px; font-weight: 700; color: var(--orange); }
+
+  /* SIDEBAR TOGGLE BTN */
+  .sidebar-toggle {
+    position: absolute;
+    top: 14px; left: 16px;
+    background: var(--warm-white);
+    border: 1.5px solid rgba(201,151,58,0.3);
+    border-radius: 50%;
+    width: 40px; height: 40px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    font-size: 16px;
+    box-shadow: 0 2px 8px var(--shadow);
+    z-index: 10;
+    transition: all 0.2s ease;
+  }
+  .sidebar-toggle:hover { background: var(--light-tan); }
+
   /* PAGES CONTAINER */
   .pages-container {
     flex: 1;
@@ -139,16 +256,13 @@
     transform: translateX(40px);
     pointer-events: none;
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow-y: auto;
   }
   .page.active {
     opacity: 1;
     transform: translateX(0);
     pointer-events: all;
     position: relative;
-  }
-  .page.exit-left {
-    opacity: 0;
-    transform: translateX(-40px);
   }
 
   /* SECTION TITLE */
@@ -171,12 +285,7 @@
   }
 
   /* MENU GRID */
-  .menu-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-  }
-
+  .menu-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
   .menu-card {
     background: var(--warm-white);
     border-radius: 12px;
@@ -189,334 +298,126 @@
     display: flex;
     flex-direction: column;
   }
+  .menu-card:hover { transform: translateY(-3px); box-shadow: 0 8px 20px var(--shadow); }
+  .menu-card-img { width: 100%; aspect-ratio: 1/1; object-fit: cover; display: block; background: var(--light-tan); }
+  .menu-card-img-placeholder { width: 100%; aspect-ratio: 1/1; background: linear-gradient(135deg, var(--light-tan), #e8d0b0); display: flex; align-items: center; justify-content: center; font-size: 28px; }
+  .menu-card-body { padding: 8px 8px 10px; display: flex; flex-direction: column; gap: 4px; flex: 1; }
+  .item-name { font-size: 12px; font-weight: 700; color: var(--dark); letter-spacing: 0.5px; line-height: 1.3; }
+  .item-price { font-size: 14px; font-weight: 900; color: var(--orange); letter-spacing: 0.5px; margin-top: auto; }
 
-  .menu-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 20px var(--shadow);
-    border-color: rgba(201, 151, 58, 0.5);
-  }
-
-  .menu-card-img {
-    width: 100%;
-    aspect-ratio: 1 / 1;
-    object-fit: cover;
-    display: block;
-    background: var(--light-tan);
-  }
-
-  .menu-card-img-placeholder {
-    width: 100%;
-    aspect-ratio: 1 / 1;
-    background: linear-gradient(135deg, var(--light-tan), #e8d0b0);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 28px;
-  }
-
-  .menu-card-body {
-    padding: 8px 8px 10px;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    flex: 1;
-  }
-
-  .item-name {
-    font-size: 12px;
-    font-weight: 700;
-    color: var(--dark);
-    letter-spacing: 0.5px;
-    line-height: 1.3;
-  }
-
-  .item-tag {
-    display: inline-block;
-    font-size: 9px;
-    color: #4a8c4a;
-    background: rgba(74, 140, 74, 0.1);
-    border: 1px solid rgba(74, 140, 74, 0.3);
-    border-radius: 4px;
-    padding: 1px 4px;
-    width: fit-content;
-  }
-
-  .item-price {
-    font-size: 14px;
-    font-weight: 900;
-    color: var(--orange);
-    letter-spacing: 0.5px;
-    margin-top: auto;
-  }
-
-  /* COMBO SECTION */
-  .combo-box {
-    background: linear-gradient(135deg, var(--warm-white), #fff8ee);
-    border: 1.5px solid var(--gold);
-    border-radius: 16px;
-    padding: 20px;
-    box-shadow: 0 4px 20px var(--shadow);
-    animation: slideIn 0.4s ease both;
-  }
-
-  .combo-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 0;
-    border-bottom: 1px dashed rgba(201, 151, 58, 0.35);
-  }
+  /* COMBO */
+  .combo-box { background: linear-gradient(135deg, var(--warm-white), #fff8ee); border: 1.5px solid var(--gold); border-radius: 16px; padding: 20px; box-shadow: 0 4px 20px var(--shadow); animation: slideIn 0.4s ease both; }
+  .combo-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px dashed rgba(201, 151, 58, 0.35); }
   .combo-row:last-child { border-bottom: none; padding-bottom: 0; }
   .combo-row:first-child { padding-top: 0; }
-
   .combo-label { font-size: 15px; font-weight: 600; color: var(--dark); letter-spacing: 1px; }
   .combo-desc { font-size: 12px; color: var(--mid); margin-top: 2px; }
   .combo-price { font-size: 20px; font-weight: 700; color: var(--orange); }
-
-  .combo-deal {
-    background: var(--red);
-    color: white;
-    border-radius: 10px;
-    padding: 16px 20px;
-    margin-top: 12px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
+  .combo-deal { background: var(--red); color: white; border-radius: 10px; padding: 16px 20px; margin-top: 12px; display: flex; justify-content: space-between; align-items: center; }
   .combo-deal-label { font-size: 16px; font-weight: 700; letter-spacing: 1px; }
   .combo-deal-price { font-size: 28px; font-weight: 900; }
 
-  /* FRYING COMBO */
-  .fry-title {
-    font-size: 20px;
-    font-weight: 900;
-    color: var(--red);
-    letter-spacing: 2px;
-    margin-bottom: 16px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  .fry-title::after {
-    content: '';
-    flex: 1;
-    height: 2px;
-    background: linear-gradient(90deg, var(--orange), transparent);
-  }
+  /* FRY */
+  .fry-title { font-size: 20px; font-weight: 900; color: var(--red); letter-spacing: 2px; margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
+  .fry-title::after { content: ''; flex: 1; height: 2px; background: linear-gradient(90deg, var(--orange), transparent); }
+  .fry-price-badge { background: var(--red); color: white; font-size: 24px; font-weight: 900; padding: 4px 14px; border-radius: 8px; letter-spacing: 2px; display: inline-block; margin-bottom: 16px; box-shadow: 2px 3px 0 rgba(192,57,43,0.25); }
+  .fry-box { background: var(--warm-white); border: 1.5px solid rgba(201,151,58,0.3); border-radius: 16px; padding: 20px; text-align: center; box-shadow: 0 4px 16px var(--shadow); animation: slideIn 0.4s ease both; }
+  .fry-items { display: flex; flex-direction: column; gap: 8px; align-items: center; }
+  .fry-item { font-size: 16px; font-weight: 600; color: var(--dark); letter-spacing: 1px; }
+  .fry-plus { font-size: 22px; color: var(--gold); font-weight: 900; line-height: 1; }
 
-  .fry-price-badge {
-    background: var(--red);
-    color: white;
-    font-size: 24px;
-    font-weight: 900;
-    padding: 4px 14px;
-    border-radius: 8px;
-    letter-spacing: 2px;
-    display: inline-block;
-    margin-bottom: 16px;
-    box-shadow: 2px 3px 0 rgba(192,57,43,0.25);
-  }
-
-  .fry-box {
-    background: var(--warm-white);
-    border: 1.5px solid rgba(201,151,58,0.3);
-    border-radius: 16px;
-    padding: 20px;
-    text-align: center;
-    box-shadow: 0 4px 16px var(--shadow);
-    animation: slideIn 0.4s ease both;
-  }
-
-  .fry-items {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    align-items: center;
-  }
-
-  .fry-item {
-    font-size: 16px;
-    font-weight: 600;
-    color: var(--dark);
-    letter-spacing: 1px;
-  }
-
-  .fry-plus {
-    font-size: 22px;
-    color: var(--gold);
-    font-weight: 900;
-    line-height: 1;
-  }
-
-  /* INFO PAGE */
-  .info-card {
-    background: var(--warm-white);
-    border: 1.5px solid rgba(201,151,58,0.3);
-    border-radius: 16px;
-    padding: 20px;
-    box-shadow: 0 4px 16px var(--shadow);
-    margin-bottom: 16px;
-    animation: slideIn 0.4s ease both;
-  }
-
-  .info-title {
-    font-size: 13px;
-    font-weight: 700;
-    color: var(--mid);
-    letter-spacing: 2px;
-    margin-bottom: 12px;
-    text-transform: uppercase;
-  }
-
-  .info-row {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    margin-bottom: 10px;
-    font-size: 14px;
-    color: var(--dark);
-    line-height: 1.6;
-  }
+  /* INFO */
+  .info-card { background: var(--warm-white); border: 1.5px solid rgba(201,151,58,0.3); border-radius: 16px; padding: 20px; box-shadow: 0 4px 16px var(--shadow); margin-bottom: 16px; animation: slideIn 0.4s ease both; }
+  .info-title { font-size: 13px; font-weight: 700; color: var(--mid); letter-spacing: 2px; margin-bottom: 12px; text-transform: uppercase; }
+  .info-row { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 10px; font-size: 14px; color: var(--dark); line-height: 1.6; }
   .info-row:last-child { margin-bottom: 0; }
   .info-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
-
-  .qr-card {
-    background: linear-gradient(135deg, var(--red), #a93226);
-    border-radius: 16px;
-    padding: 20px;
-    text-align: center;
-    color: white;
-    box-shadow: 0 6px 24px rgba(192,57,43,0.3);
-    animation: slideIn 0.4s 0.1s ease both;
-  }
+  .qr-card { background: linear-gradient(135deg, var(--red), #a93226); border-radius: 16px; padding: 20px; text-align: center; color: white; box-shadow: 0 6px 24px rgba(192,57,43,0.3); animation: slideIn 0.4s 0.1s ease both; }
   .qr-card p { font-size: 14px; margin-bottom: 12px; letter-spacing: 2px; opacity: 0.9; }
-  .qr-placeholder {
-    background: white;
-    border-radius: 10px;
-    padding: 16px;
-    display: inline-block;
-    font-size: 12px;
-    color: var(--mid);
-  }
-  .qr-label {
-    margin-top: 12px;
-    font-size: 12px;
-    letter-spacing: 2px;
-    opacity: 0.8;
-  }
+  .qr-placeholder { background: white; border-radius: 10px; padding: 16px; display: inline-block; font-size: 12px; color: var(--mid); }
+  .qr-label { margin-top: 12px; font-size: 12px; letter-spacing: 2px; opacity: 0.8; }
 
   /* NAV BUTTONS */
-  .nav-buttons {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 16px 24px 32px;
-    gap: 12px;
-    animation: fadeIn 0.5s ease both;
-  }
-
-  .nav-btn {
-    flex: 1;
-    padding: 12px 20px;
-    border: none;
-    border-radius: 12px;
-    font-family: 'Noto Serif TC', serif;
-    font-size: 14px;
-    font-weight: 700;
-    letter-spacing: 2px;
-    cursor: pointer;
-    transition: all 0.25s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-  }
-
-  .nav-btn.prev {
-    background: var(--warm-white);
-    color: var(--mid);
-    border: 1.5px solid var(--light-tan);
-    box-shadow: 0 2px 8px var(--shadow);
-  }
-  .nav-btn.prev:hover:not(:disabled) {
-    background: var(--light-tan);
-    transform: translateX(-2px);
-  }
-  .nav-btn.prev:disabled {
-    opacity: 0.3;
-    cursor: default;
-  }
-
-  .nav-btn.next {
-    background: var(--red);
-    color: white;
-    box-shadow: 0 4px 16px rgba(192,57,43,0.3);
-  }
-  .nav-btn.next:hover:not(:disabled) {
-    background: #a93226;
-    transform: translateX(2px);
-    box-shadow: 0 6px 20px rgba(192,57,43,0.4);
-  }
-  .nav-btn.next:disabled {
-    opacity: 0.3;
-    cursor: default;
-    background: var(--mid);
-    box-shadow: none;
-  }
-
-  .page-indicator {
-    font-size: 12px;
-    color: var(--mid);
-    font-weight: 600;
-    letter-spacing: 1px;
-    white-space: nowrap;
-  }
+  .nav-buttons { display: flex; justify-content: space-between; align-items: center; padding: 16px 24px 32px; gap: 12px; animation: fadeIn 0.5s ease both; }
+  .nav-btn { flex: 1; padding: 12px 20px; border: none; border-radius: 12px; font-family: 'Noto Serif TC', serif; font-size: 14px; font-weight: 700; letter-spacing: 2px; cursor: pointer; transition: all 0.25s ease; display: flex; align-items: center; justify-content: center; gap: 6px; }
+  .nav-btn.prev { background: var(--warm-white); color: var(--mid); border: 1.5px solid var(--light-tan); box-shadow: 0 2px 8px var(--shadow); }
+  .nav-btn.prev:hover:not(:disabled) { background: var(--light-tan); transform: translateX(-2px); }
+  .nav-btn.prev:disabled { opacity: 0.3; cursor: default; }
+  .nav-btn.next { background: var(--red); color: white; box-shadow: 0 4px 16px rgba(192,57,43,0.3); }
+  .nav-btn.next:hover:not(:disabled) { background: #a93226; transform: translateX(2px); }
+  .nav-btn.next:disabled { opacity: 0.3; cursor: default; background: var(--mid); box-shadow: none; }
+  .page-indicator { font-size: 12px; color: var(--mid); font-weight: 600; letter-spacing: 1px; white-space: nowrap; }
 
   /* ANIMATIONS */
-  @keyframes fadeDown {
-    from { opacity: 0; transform: translateY(-16px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-  }
-  @keyframes slideIn {
-    from { opacity: 0; transform: translateY(12px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  /* FEATURED IMAGE */
-  .featured-img-wrap {
-    margin-bottom: 14px;
-    border-radius: 16px;
-    overflow: hidden;
-    box-shadow: 0 4px 20px var(--shadow);
-  }
-  .featured-img {
-    width: 100%;
-    display: block;
-    object-fit: cover;
-    max-height: 220px;
-  }
-
-  /* staggered item animation */
-  .menu-item:nth-child(1) { animation-delay: 0.04s; }
-  .menu-item:nth-child(2) { animation-delay: 0.09s; }
-  .menu-item:nth-child(3) { animation-delay: 0.14s; }
-  .menu-item:nth-child(4) { animation-delay: 0.19s; }
-  .menu-item:nth-child(5) { animation-delay: 0.24s; }
-  .menu-item:nth-child(6) { animation-delay: 0.29s; }
+  @keyframes fadeDown { from { opacity: 0; transform: translateY(-16px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes slideIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
 </style>
 </head>
 <body>
+
+<!-- SIDEBAR OVERLAY -->
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+<!-- SIDEBAR -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <button class="sidebar-close" onclick="closeSidebar()">✕</button>
+    <div class="sidebar-header-title">源 春</div>
+    <div class="sidebar-header-sub">點選商品直接加入購物車</div>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-section-title">🍲 熟食系列</div>
+    <div class="sidebar-item" onclick="sidebarOrder('麻辣臭豆腐',140,'malatoufu.png')">
+      <span class="sidebar-item-name">麻辣臭豆腐</span>
+      <span class="sidebar-item-price">$140</span>
+    </div>
+    <div class="sidebar-item" onclick="sidebarOrder('清蒸臭豆腐',140,'steamtofu.jpg')">
+      <span class="sidebar-item-name">清蒸臭豆腐</span>
+      <span class="sidebar-item-price">$140</span>
+    </div>
+    <div class="sidebar-item" onclick="sidebarOrder('麻辣嫩鴨血',180,'maladuxue.png')">
+      <span class="sidebar-item-name">麻辣嫩鴨血</span>
+      <span class="sidebar-item-price">$180</span>
+    </div>
+    <div class="sidebar-item" onclick="sidebarOrder('肥腸嫩鴨血',230,'feichangduxue.png')">
+      <span class="sidebar-item-name">肥腸嫩鴨血</span>
+      <span class="sidebar-item-price">$230</span>
+    </div>
+    <div class="sidebar-item" onclick="sidebarOrder('滷桂竹筍',220,'zhusun.jpg')">
+      <span class="sidebar-item-name">滷桂竹筍</span>
+      <span class="sidebar-item-price">$220</span>
+    </div>
+    <div class="sidebar-item" onclick="sidebarOrder('滷紅燒嫩豆腐',130,'redtofu.jpg')">
+      <span class="sidebar-item-name">滷紅燒嫩豆腐</span>
+      <span class="sidebar-item-price">$130</span>
+    </div>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-section-title">🥩 生食系列</div>
+    <div class="sidebar-item" onclick="sidebarOrder('手工生臭豆腐',80,'handmade.jpg')">
+      <span class="sidebar-item-name">手工生臭豆腐</span>
+      <span class="sidebar-item-price">$80</span>
+    </div>
+    <div class="sidebar-item" onclick="sidebarOrder('濃縮麻辣湯底',50,'soupbase.jpg')">
+      <span class="sidebar-item-name">濃縮麻辣湯底</span>
+      <span class="sidebar-item-price">$50</span>
+    </div>
+  </div>
+</div>
 
 <div class="site-wrapper">
 
   <!-- HEADER -->
   <header>
     <div class="header-deco"></div>
-    <div class="brand-name">源 春</div>
+    <button class="sidebar-toggle" onclick="openSidebar()">☰</button>
+    <button class="cart-top-btn" onclick="showToast('購物車功能即將開放！')">
+      🛒<span class="cart-badge" id="cartBadge">0</span>
+    </button>
+    <div class="brand-name" onclick="goToPage(0)">源 春</div>
     <div class="brand-sub">深坑老街特產</div>
     <div class="divider-orn"><span>✦</span></div>
   </header>
@@ -537,7 +438,7 @@
       <div class="section-title">加熱直接吃</div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
 
-        <div style="background:var(--warm-white);border-radius:14px;overflow:hidden;box-shadow:0 2px 10px var(--shadow);border:1px solid rgba(201,151,58,0.2);">
+        <div style="background:var(--warm-white);border-radius:14px;overflow:hidden;box-shadow:0 2px 10px var(--shadow);border:1px solid rgba(201,151,58,0.2);cursor:pointer;" onclick="openItem('麻辣臭豆腐',140,'malatoufu.png')">
           <img src="malatoufu.png" alt="麻辣臭豆腐" style="width:100%;aspect-ratio:1/1;object-fit:cover;display:block;">
           <div style="padding:10px;">
             <div style="font-size:13px;font-weight:700;color:var(--dark);">麻辣臭豆腐</div>
@@ -545,7 +446,7 @@
           </div>
         </div>
 
-        <div style="background:var(--warm-white);border-radius:14px;overflow:hidden;box-shadow:0 2px 10px var(--shadow);border:1px solid rgba(201,151,58,0.2);">
+        <div style="background:var(--warm-white);border-radius:14px;overflow:hidden;box-shadow:0 2px 10px var(--shadow);border:1px solid rgba(201,151,58,0.2);cursor:pointer;" onclick="openItem('清蒸臭豆腐',140,'steamtofu.jpg')">
           <img src="steamtofu.jpg" alt="清蒸臭豆腐" style="width:100%;aspect-ratio:1/1;object-fit:cover;display:block;">
           <div style="padding:10px;">
             <div style="font-size:13px;font-weight:700;color:var(--dark);">清蒸臭豆腐</div>
@@ -553,7 +454,7 @@
           </div>
         </div>
 
-        <div style="background:var(--warm-white);border-radius:14px;overflow:hidden;box-shadow:0 2px 10px var(--shadow);border:1px solid rgba(201,151,58,0.2);">
+        <div style="background:var(--warm-white);border-radius:14px;overflow:hidden;box-shadow:0 2px 10px var(--shadow);border:1px solid rgba(201,151,58,0.2);cursor:pointer;" onclick="openItem('麻辣嫩鴨血',180,'maladuxue.png')">
           <img src="maladuxue.png" alt="麻辣嫩鴨血" style="width:100%;aspect-ratio:1/1;object-fit:cover;display:block;">
           <div style="padding:10px;">
             <div style="font-size:13px;font-weight:700;color:var(--dark);">麻辣嫩鴨血</div>
@@ -561,15 +462,15 @@
           </div>
         </div>
 
-        <div style="background:var(--warm-white);border-radius:14px;overflow:hidden;box-shadow:0 2px 10px var(--shadow);border:1px solid rgba(201,151,58,0.2);">
+        <div style="background:var(--warm-white);border-radius:14px;overflow:hidden;box-shadow:0 2px 10px var(--shadow);border:1px solid rgba(201,151,58,0.2);cursor:pointer;" onclick="openItem('肥腸嫩鴨血',230,'feichangduxue.png')">
           <img src="feichangduxue.png" alt="肥腸嫩鴨血" style="width:100%;aspect-ratio:1/1;object-fit:cover;display:block;">
           <div style="padding:10px;">
-            <div style="font-size:13px;font-weight:700;color:var(--dark);">肥腸＋嫩鴨血</div>
+            <div style="font-size:13px;font-weight:700;color:var(--dark);">肥腸嫩鴨血</div>
             <div style="font-size:16px;font-weight:900;color:var(--orange);margin-top:4px;">$230</div>
           </div>
         </div>
 
-        <div style="background:var(--warm-white);border-radius:14px;overflow:hidden;box-shadow:0 2px 10px var(--shadow);border:1px solid rgba(201,151,58,0.2);">
+        <div style="background:var(--warm-white);border-radius:14px;overflow:hidden;box-shadow:0 2px 10px var(--shadow);border:1px solid rgba(201,151,58,0.2);cursor:pointer;" onclick="openItem('滷桂竹筍',220,'zhusun.jpg')">
           <img src="zhusun.jpg" alt="滷桂竹筍" style="width:100%;aspect-ratio:1/1;object-fit:cover;display:block;">
           <div style="padding:10px;">
             <div style="font-size:13px;font-weight:700;color:var(--dark);">滷桂竹筍</div>
@@ -577,10 +478,10 @@
           </div>
         </div>
 
-        <div style="background:var(--warm-white);border-radius:14px;overflow:hidden;box-shadow:0 2px 10px var(--shadow);border:1px solid rgba(201,151,58,0.2);">
-          <img src="redtofu.jpg" alt="滷紅燒豆腐" style="width:100%;aspect-ratio:1/1;object-fit:cover;display:block;">
+        <div style="background:var(--warm-white);border-radius:14px;overflow:hidden;box-shadow:0 2px 10px var(--shadow);border:1px solid rgba(201,151,58,0.2);cursor:pointer;" onclick="openItem('滷紅燒嫩豆腐',130,'redtofu.jpg')">
+          <img src="redtofu.jpg" alt="滷紅燒嫩豆腐" style="width:100%;aspect-ratio:1/1;object-fit:cover;display:block;">
           <div style="padding:10px;">
-            <div style="font-size:13px;font-weight:700;color:var(--dark);">滷紅燒豆腐</div>
+            <div style="font-size:13px;font-weight:700;color:var(--dark);">滷紅燒嫩豆腐</div>
             <div style="font-size:16px;font-weight:900;color:var(--orange);margin-top:4px;">$130</div>
           </div>
         </div>
@@ -591,14 +492,12 @@
     <!-- PAGE 2: 在家自己煮 -->
     <div class="page" id="page-1">
       <div class="section-title">在家自己煮</div>
-
-      <!-- Two product cards -->
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;">
         <div style="background:var(--warm-white);border-radius:14px;overflow:hidden;box-shadow:0 2px 10px var(--shadow);border:1px solid rgba(201,151,58,0.2);">
           <img src="handmade.jpg" alt="手工臭豆腐" style="width:100%;display:block;object-fit:contain;background:var(--light-tan);">
           <div style="padding:10px;">
             <div style="font-size:11px;font-weight:900;color:var(--red);letter-spacing:1px;margin-bottom:2px;">A</div>
-            <div style="font-size:12px;font-weight:700;color:var(--dark);letter-spacing:0.5px;">生滷臭豆腐</div>
+            <div style="font-size:12px;font-weight:700;color:var(--dark);">生滷臭豆腐</div>
             <div style="font-size:10px;color:var(--mid);margin-top:2px;">6 片</div>
             <div style="font-size:16px;font-weight:900;color:var(--orange);margin-top:6px;">$80</div>
           </div>
@@ -607,54 +506,34 @@
           <img src="soupbase.jpg" alt="濃縮麻辣湯底" style="width:100%;display:block;object-fit:contain;background:var(--light-tan);">
           <div style="padding:10px;">
             <div style="font-size:11px;font-weight:900;color:var(--red);letter-spacing:1px;margin-bottom:2px;">B</div>
-            <div style="font-size:12px;font-weight:700;color:var(--dark);letter-spacing:0.5px;">濃縮麻辣湯底</div>
+            <div style="font-size:12px;font-weight:700;color:var(--dark);">濃縮麻辣湯底</div>
             <div style="font-size:10px;color:var(--mid);margin-top:2px;">料理包</div>
             <div style="font-size:16px;font-weight:900;color:var(--orange);margin-top:6px;">$50</div>
           </div>
         </div>
       </div>
-
-      <!-- Feature tags -->
       <div style="display:flex;gap:8px;margin-bottom:14px;">
         <div style="flex:1;background:var(--warm-white);border:1px solid rgba(201,151,58,0.2);border-radius:10px;padding:8px;text-align:center;box-shadow:0 2px 6px var(--shadow);">
           <div style="font-size:18px;">🧪</div>
-          <div style="font-size:10px;font-weight:700;color:var(--red);margin-top:4px;letter-spacing:0.5px;">無防腐劑</div>
+          <div style="font-size:10px;font-weight:700;color:var(--red);margin-top:4px;">無防腐劑</div>
         </div>
         <div style="flex:1;background:var(--warm-white);border:1px solid rgba(201,151,58,0.2);border-radius:10px;padding:8px;text-align:center;box-shadow:0 2px 6px var(--shadow);">
           <div style="font-size:18px;">🤲</div>
-          <div style="font-size:10px;font-weight:700;color:var(--red);margin-top:4px;letter-spacing:0.5px;">純手工製作</div>
+          <div style="font-size:10px;font-weight:700;color:var(--red);margin-top:4px;">純手工製作</div>
         </div>
         <div style="flex:1;background:var(--warm-white);border:1px solid rgba(201,151,58,0.2);border-radius:10px;padding:8px;text-align:center;box-shadow:0 2px 6px var(--shadow);">
           <div style="font-size:18px;">🌿</div>
-          <div style="font-size:10px;font-weight:700;color:var(--red);margin-top:4px;letter-spacing:0.5px;">古法發酵</div>
+          <div style="font-size:10px;font-weight:700;color:var(--red);margin-top:4px;">古法發酵</div>
         </div>
       </div>
-
-      <!-- Combo deal -->
       <div class="combo-deal" style="border-radius:14px;">
-        <div>
-          <div class="combo-deal-label">A+B一起煮最對味</div>
-        </div>
+        <div><div class="combo-deal-label">A+B一起煮最對味</div></div>
         <div class="combo-deal-price">$130</div>
       </div>
     </div>
 
     <!-- PAGE 3: 在家自己炸組合 -->
     <div class="page" id="page-2">
-      <div class="fry-title">在家自己炸組合</div>
-      <div class="fry-price-badge">＄170</div>
-      <div class="fry-box">
-        <div class="fry-items">
-          <div class="fry-item">🍢 生炸臭豆腐（9片）</div>
-          <div class="fry-plus">＋</div>
-          <div class="fry-item">🥬 手工台式泡菜</div>
-          <div class="fry-plus">＋</div>
-          <div class="fry-item">🍶 特調醬汁</div>
-        </div>
-        <div style="margin-top:20px;padding-top:16px;border-top:1px dashed rgba(201,151,58,0.3);font-size:13px;color:var(--mid);line-height:1.8;letter-spacing:1px;">
-          在家輕鬆重現深坑老街<br>現炸臭豆腐的好滋味
-        </div>
-      </div>
     </div>
 
     <!-- PAGE 4: 訂購資訊 -->
@@ -690,15 +569,34 @@
 
   </div>
 
+  <!-- ITEM POPUP -->
+  <div id="itemPopup" style="display:none;position:fixed;inset:0;background:rgba(44,26,14,0.6);z-index:100;align-items:flex-end;justify-content:center;">
+    <div style="background:var(--cream);border-radius:24px 24px 0 0;width:100%;max-width:480px;padding:24px;animation:slideIn 0.3s ease;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+        <div id="popupName" style="font-size:18px;font-weight:900;color:var(--dark);letter-spacing:2px;"></div>
+        <button onclick="closeItem()" style="background:var(--light-tan);border:none;border-radius:50%;width:32px;height:32px;font-size:18px;cursor:pointer;color:var(--mid);">✕</button>
+      </div>
+      <img id="popupImg" src="" alt="" style="width:100%;height:180px;object-fit:cover;border-radius:14px;margin-bottom:16px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+        <div id="popupPrice" style="font-size:22px;font-weight:900;color:var(--orange);"></div>
+        <div style="display:flex;align-items:center;gap:12px;">
+          <button onclick="changeQty(-1)" style="background:var(--light-tan);border:none;border-radius:50%;width:36px;height:36px;font-size:20px;cursor:pointer;color:var(--dark);font-weight:700;">−</button>
+          <div id="popupQty" style="font-size:20px;font-weight:900;color:var(--dark);min-width:24px;text-align:center;">1</div>
+          <button onclick="changeQty(1)" style="background:var(--red);border:none;border-radius:50%;width:36px;height:36px;font-size:20px;cursor:pointer;color:white;font-weight:700;">＋</button>
+        </div>
+      </div>
+      <button onclick="addToCart()" style="width:100%;padding:14px;background:var(--red);border:none;border-radius:14px;font-family:'Noto Serif TC',serif;font-size:16px;font-weight:900;color:white;cursor:pointer;letter-spacing:2px;box-shadow:0 4px 16px rgba(192,57,43,0.3);">加入購物車</button>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div id="toast" style="display:none;position:fixed;top:24px;left:50%;transform:translateX(-50%);background:var(--dark);color:white;padding:10px 24px;border-radius:24px;font-size:13px;font-weight:700;letter-spacing:1px;z-index:400;white-space:nowrap;"></div>
+
   <!-- NAV BUTTONS -->
   <div class="nav-buttons">
-    <button class="nav-btn prev" id="prevBtn" onclick="changePage(-1)" disabled>
-      ← 上一頁
-    </button>
+    <button class="nav-btn prev" id="prevBtn" onclick="changePage(-1)" disabled>← 上一頁</button>
     <div class="page-indicator" id="pageIndicator">1 / 4</div>
-    <button class="nav-btn next" id="nextBtn" onclick="changePage(1)">
-      下一頁 →
-    </button>
+    <button class="nav-btn next" id="nextBtn" onclick="changePage(1)">下一頁 →</button>
   </div>
 
 </div>
@@ -706,45 +604,141 @@
 <script>
   let currentPage = 0;
   const totalPages = 4;
+  let cart = [];
+  let currentItem = { name: '', price: 0, img: '', qty: 1 };
+
+  function openSidebar() {
+    document.getElementById('sidebar').classList.add('open');
+    document.getElementById('sidebarOverlay').style.display = 'block';
+  }
+
+  function closeSidebar() {
+    document.getElementById('sidebar').classList.remove('open');
+    document.getElementById('sidebarOverlay').style.display = 'none';
+  }
+
+  function sidebarOrder(name, price, img) {
+    closeSidebar();
+    openItem(name, price, img);
+  }
+
+  function openItem(name, price, img) {
+    currentItem = { name, price, img, qty: 1 };
+    document.getElementById('popupName').textContent = name;
+    document.getElementById('popupPrice').textContent = '$' + price;
+    document.getElementById('popupImg').src = img;
+    document.getElementById('popupQty').textContent = 1;
+    const popup = document.getElementById('itemPopup');
+    popup.style.display = 'flex';
+  }
+
+  function closeItem() {
+    document.getElementById('itemPopup').style.display = 'none';
+  }
+
+  function changeQty(dir) {
+    currentItem.qty = Math.max(1, currentItem.qty + dir);
+    document.getElementById('popupQty').textContent = currentItem.qty;
+  }
+
+  function addToCart() {
+    const existing = cart.find(i => i.name === currentItem.name);
+    if (existing) {
+      existing.qty += currentItem.qty;
+    } else {
+      cart.push({ ...currentItem });
+    }
+    closeItem();
+    showToast('✓ 已加入購物車！');
+    updateCartBadge();
+    renderCart();
+  }
+
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.style.display = 'block';
+    setTimeout(() => { t.style.display = 'none'; }, 2000);
+  }
+
+  function updateCartBadge() {
+    const total = cart.reduce((s, i) => s + i.qty, 0);
+    const badge = document.getElementById('cartBadge');
+    if (total > 0) {
+      badge.textContent = total;
+      badge.style.display = 'flex';
+    } else {
+      badge.style.display = 'none';
+    }
+  }
+
+  function renderCart() {
+    const list = document.getElementById('cartList');
+    const empty = document.getElementById('cartEmpty');
+    const totalDiv = document.getElementById('cartTotal');
+    if (cart.length === 0) {
+      list.innerHTML = '';
+      empty.style.display = 'block';
+      totalDiv.style.display = 'none';
+      return;
+    }
+    empty.style.display = 'none';
+    totalDiv.style.display = 'block';
+    list.innerHTML = cart.map((item, i) => `
+      <div style="background:var(--warm-white);border-radius:12px;padding:12px 16px;margin-bottom:8px;display:flex;align-items:center;gap:12px;box-shadow:0 2px 8px var(--shadow);border:1px solid rgba(201,151,58,0.2);">
+        <img src="${item.img}" style="width:48px;height:48px;border-radius:8px;object-fit:cover;flex-shrink:0;">
+        <div style="flex:1;">
+          <div style="font-size:13px;font-weight:700;color:var(--dark);">${item.name}</div>
+          <div style="font-size:12px;color:var(--mid);margin-top:2px;">$${item.price} × ${item.qty}</div>
+        </div>
+        <div style="font-size:15px;font-weight:900;color:var(--orange);">$${item.price * item.qty}</div>
+        <button onclick="removeItem(${i})" style="background:none;border:none;color:var(--mid);font-size:16px;cursor:pointer;padding:4px;">✕</button>
+      </div>
+    `).join('');
+    const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
+    document.getElementById('totalPrice').textContent = '$' + total;
+  }
+
+  function removeItem(index) {
+    cart.splice(index, 1);
+    updateCartBadge();
+    renderCart();
+  }
+
+  function clearCart() {
+    cart = [];
+    updateCartBadge();
+    renderCart();
+  }
 
   function goToPage(index) {
     if (index === currentPage) return;
     const pages = document.querySelectorAll('.page');
     const dots = document.querySelectorAll('.dot');
-
-    const oldPage = currentPage; // capture before it changes
-
+    const oldPage = currentPage;
     pages[oldPage].classList.remove('active');
     pages[oldPage].style.transform = index < oldPage ? 'translateX(40px)' : 'translateX(-40px)';
     pages[oldPage].style.opacity = '0';
     pages[oldPage].style.pointerEvents = 'none';
     pages[oldPage].style.position = 'absolute';
-
     setTimeout(() => {
       pages[oldPage].style.transform = '';
       pages[oldPage].style.opacity = '';
       pages[oldPage].style.pointerEvents = '';
       pages[oldPage].style.position = '';
     }, 400);
-
     dots[oldPage].classList.remove('active');
     currentPage = index;
     dots[currentPage].classList.add('active');
-
-    // Animate incoming page
     const incoming = pages[currentPage];
     incoming.style.position = 'relative';
     incoming.style.transform = index > oldPage ? 'translateX(40px)' : 'translateX(-40px)';
     incoming.style.opacity = '0';
     incoming.style.pointerEvents = 'all';
-
-    // Force reflow
     incoming.offsetHeight;
-
     incoming.classList.add('active');
     incoming.style.transform = '';
     incoming.style.opacity = '';
-
     updateButtons();
   }
 
