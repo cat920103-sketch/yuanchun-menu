@@ -61,19 +61,11 @@ body {
   display: flex;
   align-items: center;
   gap: 10px;
-  background: linear-gradient(135deg, #ffd6e0, #fff3b0);
-  padding: 6px 18px;
-  border-radius: 30px;
-  border: 1.5px solid rgba(232,117,138,0.25);
-  box-shadow: 0 2px 10px rgba(232,117,138,0.15);
   transition: all 0.2s ease;
 }
-.nav-logo:hover {
-  box-shadow: 0 4px 16px rgba(232,117,138,0.25);
-  transform: translateY(-1px);
-}
+.nav-logo:hover { opacity: 0.8; }
 .nav-logo img {
-  height: 48px;
+  height: 52px;
   object-fit: contain;
   vertical-align: middle;
 }
@@ -734,6 +726,120 @@ body {
 .points-label { font-size: 12px; letter-spacing: 1px; opacity: 0.9; }
 .points-value { font-size: 20px; font-weight: 900; }
 
+/* ===== CAROUSEL ===== */
+.carousel {
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+  margin-bottom: 28px;
+  height: 360px;
+  box-shadow: 0 8px 32px var(--shadow);
+}
+
+.carousel-track {
+  display: flex;
+  height: 100%;
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.carousel-slide {
+  min-width: 100%;
+  height: 100%;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.carousel-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.carousel-overlay {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  background: linear-gradient(transparent, rgba(58,42,30,0.75));
+  padding: 32px 28px 24px;
+  color: white;
+}
+
+.carousel-name {
+  font-size: 26px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  margin-bottom: 4px;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+.carousel-price {
+  font-size: 20px;
+  font-weight: 700;
+  color: #ffd6e0;
+  margin-bottom: 12px;
+}
+
+.carousel-btn {
+  padding: 8px 20px;
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 20px;
+  font-family: 'Noto Serif TC', serif;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  letter-spacing: 1px;
+  transition: all 0.2s ease;
+  box-shadow: 0 3px 12px rgba(232,117,138,0.4);
+}
+.carousel-btn:hover { background: var(--primary-dark); transform: translateY(-1px); }
+
+.carousel-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255,255,255,0.85);
+  border: none;
+  border-radius: 50%;
+  width: 44px; height: 44px;
+  font-size: 26px;
+  cursor: pointer;
+  color: var(--dark);
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+  transition: all 0.2s ease;
+  z-index: 10;
+  line-height: 1;
+}
+.carousel-arrow:hover { background: white; transform: translateY(-50%) scale(1.1); }
+.carousel-arrow.left { left: 16px; }
+.carousel-arrow.right { right: 16px; }
+
+.carousel-dots {
+  position: absolute;
+  bottom: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 6px;
+  z-index: 10;
+}
+
+.carousel-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.5);
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 0;
+}
+.carousel-dot.active {
+  background: white;
+  transform: scale(1.3);
+}
+
 /* ===== CATEGORY TAB BAR ===== */
 .cat-bar {
   display: flex;
@@ -848,15 +954,66 @@ body {
 
     <!-- HOME PAGE -->
     <div id="page-home">
-      <div class="hero">
-        <div class="hero-title">源 春</div>
-        <div class="hero-sub">深坑老街特產 · 古法製作 · 無添加防腐劑</div>
-        <div class="hero-tags">
-          <span class="hero-tag">🔥 麻辣臭豆腐</span>
-          <span class="hero-tag">🥢 清蒸臭豆腐</span>
-          <span class="hero-tag">🍲 嫩鴨血</span>
-          <span class="hero-tag">✨ 純手工製作</span>
+
+      <!-- CAROUSEL -->
+      <div class="carousel" id="carousel">
+        <div class="carousel-track" id="carouselTrack">
+          <div class="carousel-slide">
+            <img src="malatoufu.png" alt="麻辣臭豆腐" onerror="this.style.display='none'">
+            <div class="carousel-overlay">
+              <div class="carousel-name">麻辣臭豆腐</div>
+              <div class="carousel-price">$140</div>
+              <button class="carousel-btn" onclick="quickAdd(1)">加入購物車</button>
+            </div>
+          </div>
+          <div class="carousel-slide">
+            <img src="steamtofu.jpg" alt="清蒸臭豆腐" onerror="this.style.display='none'">
+            <div class="carousel-overlay">
+              <div class="carousel-name">清蒸臭豆腐</div>
+              <div class="carousel-price">$140</div>
+              <button class="carousel-btn" onclick="quickAdd(2)">加入購物車</button>
+            </div>
+          </div>
+          <div class="carousel-slide">
+            <img src="maladuxue.png" alt="麻辣嫩鴨血" onerror="this.style.display='none'">
+            <div class="carousel-overlay">
+              <div class="carousel-name">麻辣嫩鴨血</div>
+              <div class="carousel-price">$180</div>
+              <button class="carousel-btn" onclick="quickAdd(3)">加入購物車</button>
+            </div>
+          </div>
+          <div class="carousel-slide">
+            <img src="feichangduxue.png" alt="肥腸嫩鴨血" onerror="this.style.display='none'">
+            <div class="carousel-overlay">
+              <div class="carousel-name">肥腸嫩鴨血</div>
+              <div class="carousel-price">$230</div>
+              <button class="carousel-btn" onclick="quickAdd(4)">加入購物車</button>
+            </div>
+          </div>
+          <div class="carousel-slide">
+            <img src="zhusun.jpg" alt="滷桂竹筍" onerror="this.style.display='none'">
+            <div class="carousel-overlay">
+              <div class="carousel-name">滷桂竹筍</div>
+              <div class="carousel-price">$220</div>
+              <button class="carousel-btn" onclick="quickAdd(5)">加入購物車</button>
+            </div>
+          </div>
+          <div class="carousel-slide">
+            <img src="redtofu.jpg" alt="滷紅燒嫩豆腐" onerror="this.style.display='none'">
+            <div class="carousel-overlay">
+              <div class="carousel-name">滷紅燒嫩豆腐</div>
+              <div class="carousel-price">$130</div>
+              <button class="carousel-btn" onclick="quickAdd(6)">加入購物車</button>
+            </div>
+          </div>
         </div>
+
+        <!-- Arrows -->
+        <button class="carousel-arrow left" onclick="carouselMove(-1)">‹</button>
+        <button class="carousel-arrow right" onclick="carouselMove(1)">›</button>
+
+        <!-- Dots -->
+        <div class="carousel-dots" id="carouselDots"></div>
       </div>
 
       <div class="page-header">
@@ -869,7 +1026,6 @@ body {
         <button class="cat-tab active" onclick="homeCatFilter('all',this)">🏠 全部</button>
         <button class="cat-tab" onclick="homeCatFilter('hot',this)">🍲 加熱直接吃</button>
         <button class="cat-tab" onclick="homeCatFilter('raw',this)">🥩 在家自己煮</button>
-        
       </div>
 
       <div class="product-grid" id="homeGrid"></div>
@@ -1377,9 +1533,50 @@ function prodCatFilter(cat, btn) {
   document.getElementById('productsCount').textContent = `共 ${items.length} 項商品`;
 }
 
+// ===== CAROUSEL =====
+let carouselIndex = 0;
+const carouselTotal = 6;
+let carouselTimer;
+
+function carouselMove(dir) {
+  carouselIndex = (carouselIndex + dir + carouselTotal) % carouselTotal;
+  updateCarousel();
+  resetCarouselTimer();
+}
+
+function carouselGoTo(i) {
+  carouselIndex = i;
+  updateCarousel();
+  resetCarouselTimer();
+}
+
+function updateCarousel() {
+  document.getElementById('carouselTrack').style.transform = `translateX(-${carouselIndex * 100}%)`;
+  document.querySelectorAll('.carousel-dot').forEach((d, i) => {
+    d.classList.toggle('active', i === carouselIndex);
+  });
+}
+
+function resetCarouselTimer() {
+  clearInterval(carouselTimer);
+  carouselTimer = setInterval(() => carouselMove(1), 4000);
+}
+
+function initCarousel() {
+  const dots = document.getElementById('carouselDots');
+  for (let i = 0; i < carouselTotal; i++) {
+    const d = document.createElement('button');
+    d.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+    d.onclick = () => carouselGoTo(i);
+    dots.appendChild(d);
+  }
+  resetCarouselTimer();
+}
+
 // ===== INIT =====
 renderHome();
 renderCartItems();
+initCarousel();
 </script>
 </body>
 </html>
