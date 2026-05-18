@@ -1966,7 +1966,7 @@ function renderMember() {
     return;
   }
   const userOrders = orders;
-  const mi = members.findIndex(m => m.email === currentUser.email);
+  const mi = members.findIndex(m => m.phone === currentUser.phone);
   const pts = mi >= 0 ? members[mi].points : currentUser.points;
   el.innerHTML = `
     <div class="member-panel">
@@ -2035,46 +2035,6 @@ function renderMember() {
           <div class="order-right">
             <div class="order-total">$${o.total}</div>
             <div style="font-size:11px;color:var(--mid);margin-top:2px;">運費: ${o.shipping === 0 ? '免費' : '$'+(o.shipping||180)}</div>
-            <div class="order-status">${o.status}</div>
-          </div>
-        </div>
-      `).join('') : '<div style="text-align:center;padding:30px;color:var(--mid);font-size:13px;">尚無訂單紀錄</div>'}
-    </div>
-  `;
-        <div class="stat-box">
-          <div class="stat-value">${pts}</div>
-          <div class="stat-label">累積點數</div>
-        </div>
-        <div class="stat-box">
-          <div class="stat-value">${userOrders.length}</div>
-          <div class="stat-label">訂單數量</div>
-        </div>
-        <div class="stat-box">
-          <div class="stat-value">${Math.floor(pts/100)*50}</div>
-          <div class="stat-label">可折抵金額</div>
-        </div>
-      </div>
-    </div>
-    <div class="points-bar" onclick="showToast('每消費$100獲得1點，累積100點可折抵$50')">
-      <div>
-        <div class="points-label">⭐ 我的點數</div>
-        <div style="font-size:11px;opacity:0.8;margin-top:2px;">每消費$100獲得1點</div>
-      </div>
-      <div class="points-value">${pts} 點</div>
-    </div>
-    <div style="font-size:14px;font-weight:700;color:var(--dark);letter-spacing:1px;margin-bottom:12px;">📦 訂單紀錄</div>
-    <div class="order-list">
-      ${userOrders.length ? userOrders.map(o => `
-        <div class="order-item">
-          <div class="order-info">
-            <div class="order-id">${o.id}</div>
-            <div class="order-date">${o.date}</div>
-            <div class="order-items-list">${o.items}</div>
-            <div style="font-size:11px;color:var(--mid);margin-top:2px;">💳 ${o.paymentLabel || o.paymentMethod || '未知'}</div>
-          </div>
-          <div class="order-right">
-            <div class="order-total">$${o.total}</div>
-            <div style="font-size:11px;color:var(--mid);margin-top:2px;">運費: ${o.shipping === 0 ? '免費' : '$'+o.shipping}</div>
             <div class="order-status">${o.status}</div>
           </div>
         </div>
