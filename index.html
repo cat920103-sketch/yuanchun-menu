@@ -5,1326 +5,359 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>源春 · 深坑老街特產</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@300;400;600;700;900&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <style>
 :root {
-  --primary: #e8758a;
-  --primary-dark: #d4607a;
-  --primary-light: #fce8ed;
-  --accent-yellow: #f5c842;
-  --accent-yellow-light: #fef8e1;
-  --accent-blue: #6aaed6;
-  --accent-blue-light: #e3f2fb;
-  --cream: #fdf8f2;
-  --warm-white: #fffcf7;
-  --dark: #3a2a1e;
-  --mid: #8a6a58;
-  --light-tan: #f0e6d8;
-  --shadow: rgba(58,42,30,0.10);
-  --nav-h: 72px;
-  --sidebar-w: 220px;
-}
-
-* { margin:0; padding:0; box-sizing:border-box; }
-
-body {
-  font-family: 'Noto Serif TC', serif;
-  background: var(--cream);
-  color: var(--dark);
-  min-height: 100vh;
-  font-size: 16px;
-}
-
-/* ===== TOP NAV ===== */
-.nav {
-  position: fixed;
-  top: 0; left: 0; right: 0;
-  height: var(--nav-h);
-  background: var(--warm-white);
-  border-bottom: 2px solid var(--light-tan);
-  display: flex;
-  align-items: center;
-  padding: 0 24px;
-  z-index: 1000;
-  box-shadow: 0 2px 12px var(--shadow);
-  gap: 20px;
-}
-
-.nav-logo {
-  font-family: 'Playfair Display', 'Noto Serif TC', serif;
-  font-size: 28px;
-  font-weight: 700;
-  color: var(--primary);
-  letter-spacing: 4px;
-  cursor: pointer;
-  white-space: nowrap;
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  transition: all 0.2s ease;
-}
-.nav-logo:hover { opacity: 0.8; }
-.nav-logo img {
-  height: 52px;
-  object-fit: contain;
-  vertical-align: middle;
-}
-
-.nav-menu {
-  display: flex;
-  gap: 4px;
-  list-style: none;
-  flex: 1;
-  justify-content: center;
-}
-
-.nav-menu a {
-  text-decoration: none;
-  color: var(--mid);
-  font-size: 15px;
-  font-weight: 600;
-  letter-spacing: 1px;
-  padding: 6px 12px;
-  border-radius: 8px;
-  transition: all 0.2s ease;
-  white-space: nowrap;
-}
-.nav-menu a:hover, .nav-menu a.active {
-  background: var(--light-tan);
-  color: var(--primary);
-}
-
-.nav-actions {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-shrink: 0;
-}
-
-.nav-btn {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 7px 14px;
-  border-radius: 10px;
-  border: 1.5px solid var(--light-tan);
-  background: var(--warm-white);
-  font-family: 'Noto Serif TC', serif;
-  font-size: 14px;
-  font-weight: 700;
-  color: var(--mid);
-  cursor: pointer;
-  transition: all 0.2s ease;
-  white-space: nowrap;
-}
-.nav-btn:hover { background: var(--light-tan); color: var(--primary); }
-.nav-btn.primary { background: var(--primary); color: white; border-color: var(--primary); }
-.nav-btn.primary:hover { background: var(--primary-dark); }
-
-.cart-btn {
-  position: relative;
-  background: var(--warm-white);
-  border: 1.5px solid var(--light-tan);
-  border-radius: 50%;
-  width: 40px; height: 40px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 18px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-.cart-btn:hover { background: var(--light-tan); }
-.cart-count {
-  position: absolute;
-  top: -4px; right: -4px;
-  background: var(--primary);
-  color: white;
-  font-size: 11px;
-  font-weight: 900;
-  border-radius: 50%;
-  width: 16px; height: 16px;
-  display: none;
-  align-items: center;
-  justify-content: center;
-}
-
-/* ===== LAYOUT ===== */
-.layout {
-  display: flex;
-  margin-top: var(--nav-h);
-  min-height: calc(100vh - var(--nav-h));
-}
-
-/* ===== SIDEBAR ===== */
-.sidebar {
-  width: var(--sidebar-w);
-  flex-shrink: 0;
-  background: var(--warm-white);
-  border-right: 1.5px solid var(--light-tan);
-  padding: 24px 16px;
-  position: sticky;
-  top: var(--nav-h);
-  height: calc(100vh - var(--nav-h));
-  overflow-y: auto;
-}
-
-.sidebar-section { margin-bottom: 24px; }
-
-.sidebar-title {
-  font-size: 12px;
-  font-weight: 700;
-  color: var(--mid);
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  padding-bottom: 8px;
-  border-bottom: 1.5px solid var(--light-tan);
-  margin-bottom: 8px;
-}
-
-.sidebar-item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 9px 12px;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  font-size: 15px;
-  font-weight: 600;
-  color: var(--dark);
-  margin-bottom: 2px;
-}
-.sidebar-item:hover { background: var(--light-tan); color: var(--primary); }
-.sidebar-item.active { background: rgba(232,117,138,0.1); color: var(--primary); }
-.sidebar-item .icon { font-size: 16px; }
-
-/* ===== MAIN CONTENT ===== */
-.main {
-  flex: 1;
-  padding: 28px;
-  overflow: hidden;
-  max-width: 900px;
-}
-
-.page-header {
-  margin-bottom: 24px;
-}
-
-.page-title {
-  font-size: 24px;
-  font-weight: 900;
-  color: var(--dark);
-  letter-spacing: 2px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-.page-title::after {
-  content: '';
-  flex: 1;
-  height: 2px;
-  background: linear-gradient(90deg, var(--accent-yellow), transparent);
-}
-
-.page-sub {
-  font-size: 15px;
-  color: var(--mid);
-  margin-top: 6px;
-  letter-spacing: 1px;
-}
-
-/* ===== PRODUCT GRID ===== */
-.product-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
-}
-
-.product-card {
-  background: var(--warm-white);
-  border-radius: 16px;
-  overflow: hidden;
-  border: 1.5px solid rgba(106,174,214,0.2);
-  box-shadow: 0 2px 12px var(--shadow);
-  transition: all 0.25s ease;
-  cursor: pointer;
-}
-.product-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 24px var(--shadow);
-  border-color: rgba(106,174,214,0.5);
-}
-
-.product-img {
-  width: 100%;
-  aspect-ratio: 1/1;
-  object-fit: contain;
-  display: block;
-  background: var(--light-tan);
-}
-
-.product-img-placeholder {
-  width: 100%;
-  aspect-ratio: 1/1;
-  background: linear-gradient(135deg, var(--light-tan), #e8d0b0);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 40px;
-}
-
-.product-body { padding: 12px; }
-
-.product-name {
-  font-size: 15px;
-  font-weight: 700;
-  color: var(--dark);
-  line-height: 1.4;
-  margin-bottom: 6px;
-}
-
-.product-price {
-  font-size: 20px;
-  font-weight: 900;
-  color: var(--primary);
-}
-
-.product-add-btn {
-  width: 100%;
-  margin-top: 10px;
-  padding: 8px;
-  background: var(--primary);
-  color: white;
-  border: none;
-  border-radius: 8px;
-  font-family: 'Noto Serif TC', serif;
-  font-size: 14px;
-  font-weight: 700;
-  cursor: pointer;
-  letter-spacing: 1px;
-  transition: all 0.2s ease;
-}
-.product-add-btn:hover { background: var(--primary-dark); }
-
-/* ===== MODAL BASE ===== */
-.modal-overlay {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(44,26,14,0.6);
-  z-index: 2000;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-}
-.modal-overlay.active { display: flex; }
-
-.modal {
-  background: var(--cream);
-  border-radius: 20px;
-  padding: 32px;
-  width: 100%;
-  max-width: 420px;
-  position: relative;
-  box-shadow: 0 20px 60px rgba(44,26,14,0.3);
-  animation: modalIn 0.3s ease;
-}
-@keyframes modalIn {
-  from { opacity:0; transform:scale(0.95) translateY(10px); }
-  to { opacity:1; transform:scale(1) translateY(0); }
-}
-
-.modal-close {
-  position: absolute;
-  top: 16px; right: 16px;
-  background: var(--light-tan);
-  border: none;
-  border-radius: 50%;
-  width: 32px; height: 32px;
-  font-size: 16px;
-  cursor: pointer;
-  color: var(--mid);
-  display: flex; align-items: center; justify-content: center;
-}
-
-.modal-title {
-  font-size: 20px;
-  font-weight: 900;
-  color: var(--dark);
-  letter-spacing: 2px;
-  margin-bottom: 4px;
-}
-.modal-sub {
-  font-size: 14px;
-  color: var(--mid);
-  margin-bottom: 24px;
-  letter-spacing: 1px;
-}
-
-.form-group { margin-bottom: 16px; }
-.form-label {
-  display: block;
-  font-size: 14px;
-  font-weight: 700;
-  color: var(--mid);
-  letter-spacing: 1px;
-  margin-bottom: 6px;
-}
-.form-input {
-  width: 100%;
-  padding: 10px 14px;
-  border: 1.5px solid var(--light-tan);
-  border-radius: 10px;
-  font-family: 'Noto Serif TC', serif;
-  font-size: 14px;
-  color: var(--dark);
-  background: var(--warm-white);
-  outline: none;
-  transition: border-color 0.2s;
-}
-.form-input:focus { border-color: var(--accent-blue); }
-
-.form-btn {
-  width: 100%;
-  padding: 12px;
-  background: var(--primary);
-  color: white;
-  border: none;
-  border-radius: 12px;
-  font-family: 'Noto Serif TC', serif;
-  font-size: 15px;
-  font-weight: 900;
-  cursor: pointer;
-  letter-spacing: 2px;
-  margin-top: 8px;
-  transition: all 0.2s ease;
-  box-shadow: 0 4px 16px rgba(232,117,138,0.3);
-}
-.form-btn:hover { background: var(--primary-dark); }
-
-.form-switch {
-  text-align: center;
-  margin-top: 16px;
-  font-size: 14px;
-  color: var(--mid);
-}
-.form-switch a {
-  color: var(--primary);
-  font-weight: 700;
-  cursor: pointer;
-  text-decoration: none;
-}
-
-.divider {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin: 16px 0;
-}
-.divider::before, .divider::after {
-  content: '';
-  flex: 1;
-  height: 1px;
-  background: var(--light-tan);
-}
-.divider span { font-size: 11px; color: var(--mid); }
-
-/* ===== CART DRAWER ===== */
-.cart-drawer {
-  position: fixed;
-  top: 0; right: -400px;
-  width: 380px;
-  height: 100vh;
-  background: var(--cream);
-  z-index: 2000;
-  box-shadow: -4px 0 20px var(--shadow);
-  transition: right 0.35s cubic-bezier(0.4,0,0.2,1);
-  display: flex;
-  flex-direction: column;
-}
-.cart-drawer.open { right: 0; }
-
-.cart-header {
-  padding: 20px 24px;
-  background: linear-gradient(135deg, #ffd6e0, #d0eaff);
-  color: var(--dark);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.cart-header-title { font-size: 18px; font-weight: 900; letter-spacing: 2px; color: var(--dark); }
-.cart-close {
-  background: rgba(255,255,255,0.6);
-  border: none;
-  border-radius: 50%;
-  width: 32px; height: 32px;
-  color: var(--dark);
-  font-size: 16px;
-  cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-}
-
-.cart-items { flex: 1; overflow-y: auto; padding: 16px; }
-
-.cart-empty {
-  text-align: center;
-  padding: 60px 20px;
-  color: var(--mid);
-}
-.cart-empty-icon { font-size: 48px; margin-bottom: 12px; }
-.cart-empty-text { font-size: 14px; letter-spacing: 1px; }
-
-.cart-item {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 12px;
-  background: var(--warm-white);
-  border-radius: 12px;
-  border: 1px solid rgba(106,174,214,0.2);
-  margin-bottom: 8px;
-}
-.cart-item-img {
-  width: 56px; height: 56px;
-  border-radius: 8px;
-  object-fit: cover;
-  flex-shrink: 0;
-  background: var(--light-tan);
-}
-.cart-item-info { flex: 1; }
-.cart-item-name { font-size: 13px; font-weight: 700; color: var(--dark); }
-.cart-item-price { font-size: 12px; color: var(--mid); margin-top: 2px; }
-.cart-item-qty {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.qty-btn {
-  background: var(--light-tan);
-  border: none;
-  border-radius: 50%;
-  width: 26px; height: 26px;
-  font-size: 14px;
-  cursor: pointer;
-  color: var(--dark);
-  display: flex; align-items: center; justify-content: center;
-}
-.qty-num { font-size: 14px; font-weight: 700; color: var(--dark); min-width: 20px; text-align: center; }
-.cart-item-remove {
-  background: none;
-  border: none;
-  color: var(--mid);
-  cursor: pointer;
-  font-size: 16px;
-  padding: 4px;
-}
-
-.cart-footer {
-  padding: 16px 24px;
-  border-top: 1.5px solid var(--light-tan);
-  background: var(--warm-white);
-}
-.cart-total {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 14px;
-}
-.cart-total-label { font-size: 14px; font-weight: 700; color: var(--dark); }
-.cart-total-price { font-size: 24px; font-weight: 900; color: var(--primary); }
-.checkout-btn {
-  width: 100%;
-  padding: 14px;
-  background: var(--primary);
-  color: white;
-  border: none;
-  border-radius: 12px;
-  font-family: 'Noto Serif TC', serif;
-  font-size: 15px;
-  font-weight: 900;
-  cursor: pointer;
-  letter-spacing: 2px;
-  box-shadow: 0 4px 16px rgba(232,117,138,0.3);
-  transition: all 0.2s ease;
-}
-.checkout-btn:hover { background: var(--primary-dark); }
-
-/* ===== MEMBER PANEL ===== */
-.member-panel {
-  background: var(--warm-white);
-  border: 1.5px solid rgba(106,174,214,0.3);
-  border-radius: 16px;
-  padding: 20px;
-  margin-bottom: 20px;
-}
-.member-greeting {
-  font-size: 16px;
-  font-weight: 900;
-  color: var(--dark);
-  letter-spacing: 1px;
-  margin-bottom: 16px;
-}
-.member-stats {
-  display: grid;
-  grid-template-columns: repeat(3,1fr);
-  gap: 12px;
-}
-.stat-box {
-  background: var(--cream);
-  border-radius: 12px;
-  padding: 12px;
-  text-align: center;
-  border: 1px solid var(--light-tan);
-}
-.stat-value { font-size: 22px; font-weight: 900; color: var(--primary); }
-.stat-label { font-size: 10px; color: var(--mid); margin-top: 2px; letter-spacing: 1px; }
-
-.order-list { margin-top: 20px; }
-.order-item {
-  background: var(--warm-white);
-  border: 1.5px solid rgba(106,174,214,0.2);
-  border-radius: 12px;
-  padding: 14px 16px;
-  margin-bottom: 8px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.order-info { }
-.order-id { font-size: 12px; font-weight: 700; color: var(--mid); letter-spacing: 1px; }
-.order-date { font-size: 11px; color: var(--mid); margin-top: 2px; }
-.order-items-list { font-size: 12px; color: var(--dark); margin-top: 4px; }
-.order-right { text-align: right; }
-.order-total { font-size: 16px; font-weight: 900; color: var(--primary); }
-.order-status {
-  display: inline-block;
-  font-size: 12px;
-  font-weight: 700;
-  padding: 2px 8px;
-  border-radius: 20px;
-  margin-top: 4px;
-  background: rgba(74,140,74,0.1);
-  color: #4a8c4a;
-  border: 1px solid rgba(74,140,74,0.3);
-}
-
-/* ===== PRODUCT DETAIL MODAL ===== */
-.product-modal-img {
-  width: 100%;
-  border-radius: 12px;
-  margin-bottom: 16px;
-  object-fit: cover;
-  max-height: 240px;
-}
-.product-modal-name { font-size: 20px; font-weight: 900; color: var(--dark); letter-spacing: 1px; margin-bottom: 8px; }
-.product-modal-price { font-size: 28px; font-weight: 900; color: var(--primary); margin-bottom: 16px; }
-.qty-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 16px;
-}
-.qty-label { font-size: 13px; font-weight: 700; color: var(--mid); }
-.qty-controls {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-.qty-ctrl-btn {
-  background: var(--light-tan);
-  border: none;
-  border-radius: 50%;
-  width: 36px; height: 36px;
-  font-size: 20px;
-  cursor: pointer;
-  color: var(--dark);
-  display: flex; align-items: center; justify-content: center;
-  font-weight: 700;
-}
-.qty-ctrl-num { font-size: 20px; font-weight: 900; min-width: 32px; text-align: center; }
-
-/* ===== TOAST ===== */
-.toast {
-  display: none;
-  position: fixed;
-  top: 80px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: var(--dark);
-  color: white;
-  padding: 10px 24px;
-  border-radius: 24px;
-  font-size: 15px;
-  font-weight: 700;
-  letter-spacing: 1px;
-  z-index: 9999;
-  white-space: nowrap;
-  box-shadow: 0 4px 16px rgba(44,26,14,0.3);
-}
-
-/* ===== OVERLAY ===== */
-.overlay {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(44,26,14,0.5);
-  z-index: 1999;
-}
-.overlay.active { display: block; }
-
-/* ===== HERO BANNER ===== */
-.hero {
-  background: linear-gradient(135deg, #ffd6e0, #fff3b0, #d0eaff);
-  border-radius: 20px;
-  padding: 32px;
-  margin-bottom: 28px;
-  color: var(--dark);
-  position: relative;
-  overflow: hidden;
-  border: 1.5px solid rgba(255,255,255,0.8);
-  box-shadow: 0 4px 24px rgba(232,117,138,0.15);
-}
-.hero::before {
-  content: '源春';
-  position: absolute;
-  right: -20px;
-  top: -20px;
-  font-family: 'Playfair Display', serif;
-  font-size: 120px;
-  font-weight: 700;
-  opacity: 0.06;
-  letter-spacing: 10px;
-  pointer-events: none;
-}
-.hero-title { font-size: 28px; font-weight: 900; letter-spacing: 4px; margin-bottom: 6px; color: var(--dark); }
-.hero-sub { font-size: 13px; opacity: 0.7; letter-spacing: 2px; margin-bottom: 16px; color: var(--mid); }
-.hero-tags { display: flex; gap: 8px; flex-wrap: wrap; }
-.hero-tag {
-  background: rgba(255,255,255,0.7);
-  border: 1px solid rgba(255,255,255,0.9);
-  border-radius: 20px;
-  padding: 4px 12px;
-  font-size: 13px;
-  letter-spacing: 1px;
-  color: var(--dark);
-  backdrop-filter: blur(4px);
-}
-
-/* ===== POINTS BAR ===== */
-.points-bar {
-  background: linear-gradient(135deg, var(--accent-blue), var(--accent-yellow));
-  border-radius: 12px;
-  padding: 12px 16px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  color: white;
-  margin-bottom: 16px;
-  cursor: pointer;
-  transition: opacity 0.2s;
-}
-.points-bar:hover { opacity: 0.9; }
-.points-label { font-size: 12px; letter-spacing: 1px; opacity: 0.9; }
-.points-value { font-size: 20px; font-weight: 900; }
-
-/* ===== LAYOUT ===== */
-.layout {
-  display: flex;
-  margin-top: var(--nav-h);
-  min-height: calc(100vh - var(--nav-h));
-}
-
-/* ===== RIGHT SIDEBAR ===== */
-.right-sidebar {
-  width: 220px;
-  flex-shrink: 0;
-  background: var(--warm-white);
-  border-left: 1.5px solid var(--light-tan);
-  padding: 20px 14px;
-  position: sticky;
-  top: var(--nav-h);
-  height: calc(100vh - var(--nav-h));
-  overflow-y: auto;
-}
-
-.right-section {
-  margin-bottom: 20px;
-  padding-bottom: 16px;
-  border-bottom: 1px solid var(--light-tan);
-}
-.right-section:last-child { border-bottom: none; }
-
-.right-title {
-  font-size: 12px;
-  font-weight: 700;
-  color: var(--mid);
-  letter-spacing: 1px;
-  margin-bottom: 10px;
-  text-transform: uppercase;
-}
-
-.hot-rank-item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 6px 0;
-  border-bottom: 1px dashed var(--light-tan);
-  cursor: pointer;
-  transition: all 0.2s;
-}
-.hot-rank-item:last-child { border-bottom: none; }
-.hot-rank-item:hover { opacity: 0.7; }
-.rank-num {
-  width: 20px; height: 20px;
-  border-radius: 50%;
-  background: var(--primary);
-  color: white;
-  font-size: 10px;
-  font-weight: 900;
-  display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0;
-}
-.rank-num.top { background: #f5c842; color: var(--dark); }
-.rank-name { font-size: 12px; font-weight: 600; color: var(--dark); flex: 1; }
-.rank-price { font-size: 11px; color: var(--primary); font-weight: 700; }
-
-.announce-item {
-  margin-bottom: 10px;
-  padding-bottom: 10px;
-  border-bottom: 1px dashed var(--light-tan);
-}
-.announce-item:last-child { border-bottom: none; margin-bottom: 0; }
-.announce-tag {
-  display: inline-block;
-  font-size: 10px;
-  font-weight: 700;
-  padding: 1px 6px;
-  border-radius: 4px;
-  background: var(--primary-light);
-  color: var(--primary);
-  margin-bottom: 4px;
-}
-.announce-text { font-size: 12px; color: var(--dark); line-height: 1.5; }
-.announce-date { font-size: 10px; color: var(--mid); margin-top: 3px; }
-
-.review-item {
-  margin-bottom: 10px;
-  padding-bottom: 10px;
-  border-bottom: 1px dashed var(--light-tan);
-}
-.review-item:last-child { border-bottom: none; margin-bottom: 0; }
-.review-stars { color: #f5c842; font-size: 11px; margin-bottom: 3px; }
-.review-text { font-size: 11px; color: var(--dark); line-height: 1.5; font-style: italic; }
-.review-author { font-size: 10px; color: var(--mid); margin-top: 3px; text-align: right; }
-
-/* ===== MEMBER ILLUSTRATION ===== */
-.member-banner {
-  background: linear-gradient(135deg, #ffd6e0, #fff3b0, #d0eaff);
-  border-radius: 16px;
-  padding: 20px 24px;
-  margin-bottom: 24px;
-  display: flex;
-  gap: 12px;
-  align-items: center;
-  border: 1.5px solid rgba(255,255,255,0.8);
-  box-shadow: 0 4px 16px rgba(232,117,138,0.1);
-}
-.member-step {
-  flex: 1;
-  text-align: center;
-}
-.member-step-icon { font-size: 28px; margin-bottom: 6px; }
-.member-step-title { font-size: 12px; font-weight: 700; color: var(--dark); margin-bottom: 3px; }
-.member-step-desc { font-size: 10px; color: var(--mid); line-height: 1.4; }
-.member-step-arrow { font-size: 18px; color: var(--primary); flex-shrink: 0; }
-
-/* ===== FOOTER ===== */
-.site-footer {
-  background: linear-gradient(135deg, #3a2a1e, #5a3a28);
-  color: white;
-  padding: 32px 0 20px;
-  margin-top: 0;
-}
-.footer-inner {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 32px;
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 24px;
-  align-items: start;
-}
-.footer-logo {
-  font-family: 'Playfair Display', serif;
-  font-size: 28px;
-  font-weight: 700;
-  color: #ffd6e0;
-  letter-spacing: 4px;
-}
-.footer-info { font-size: 13px; line-height: 2; opacity: 0.85; }
-.footer-links { display: flex; flex-direction: column; gap: 8px; }
-.footer-links a { color: rgba(255,255,255,0.8); text-decoration: none; font-size: 13px; transition: color 0.2s; }
-.footer-links a:hover { color: #ffd6e0; }
-.footer-copy {
-  grid-column: 1/-1;
-  text-align: center;
-  font-size: 11px;
-  opacity: 0.5;
-  padding-top: 16px;
-  border-top: 1px solid rgba(255,255,255,0.1);
-  margin-top: 8px;
-}
-
-/* ===== CAROUSEL FIX ===== */
-.carousel {
-  position: relative;
-  border-radius: 20px;
-  overflow: hidden;
-  margin-bottom: 28px;
-  height: 320px;
-  box-shadow: 0 8px 32px var(--shadow);
-  background: #f5f0ea;
-}
-
-.carousel-track {
-  display: flex;
-  height: 100%;
-  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.carousel-slide {
-  min-width: 100%;
-  height: 100%;
-  position: relative;
-  flex-shrink: 0;
-}
-
-.carousel-slide img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  display: block;
-  background: #f5f0ea;
-}
-
-.carousel-overlay {
-  position: absolute;
-  bottom: 0; left: 0; right: 0;
-  background: linear-gradient(transparent, rgba(58,42,30,0.65));
-  padding: 28px 28px 20px;
-  color: white;
-}
-
-.carousel-name {
-  font-size: 22px;
-  font-weight: 900;
-  letter-spacing: 2px;
-  margin-bottom: 4px;
-  text-shadow: 0 2px 8px rgba(0,0,0,0.3);
-}
-
-.carousel-price {
-  font-size: 18px;
-  font-weight: 700;
-  color: #ffd6e0;
-  margin-bottom: 10px;
-}
-
-.carousel-btn {
-  padding: 7px 18px;
-  background: var(--primary);
-  color: white;
-  border: none;
-  border-radius: 20px;
-  font-family: 'Noto Serif TC', serif;
-  font-size: 13px;
-  font-weight: 700;
-  cursor: pointer;
-  letter-spacing: 1px;
-  transition: all 0.2s ease;
-  box-shadow: 0 3px 12px rgba(232,117,138,0.4);
-}
-.carousel-btn:hover { background: var(--primary-dark); transform: translateY(-1px); }
-
-.carousel-arrow {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background: rgba(255,255,255,0.85);
-  border: none;
-  border-radius: 50%;
-  width: 44px; height: 44px;
-  font-size: 26px;
-  cursor: pointer;
-  color: var(--dark);
-  display: flex; align-items: center; justify-content: center;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.15);
-  transition: all 0.2s ease;
-  z-index: 10;
-  line-height: 1;
-}
-.carousel-arrow:hover { background: white; transform: translateY(-50%) scale(1.1); }
-.carousel-arrow.left { left: 16px; }
-.carousel-arrow.right { right: 16px; }
-
-.carousel-dots {
-  position: absolute;
-  bottom: 14px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  gap: 6px;
-  z-index: 10;
-}
-
-.carousel-dot {
-  width: 8px; height: 8px;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.5);
-  border: none;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  padding: 0;
-}
-.carousel-dot.active {
-  background: white;
-  transform: scale(1.3);
-}
-
-/* ===== CATEGORY TAB BAR ===== */
-.cat-bar {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 20px;
-  flex-wrap: wrap;
-}
-
-.cat-tab {
-  padding: 8px 16px;
-  border-radius: 20px;
-  border: 1.5px solid var(--light-tan);
-  background: var(--warm-white);
-  font-family: 'Noto Serif TC', serif;
-  font-size: 15px;
-  font-weight: 700;
-  color: var(--mid);
-  cursor: pointer;
-  transition: all 0.2s ease;
-  white-space: nowrap;
-  letter-spacing: 0.5px;
-}
-.cat-tab:hover { background: var(--light-tan); color: var(--primary); }
-.cat-tab.active {
-  background: var(--primary);
-  color: white;
-  border-color: var(--primary);
-  box-shadow: 0 3px 10px rgba(232,117,138,0.3);
-}
-
-/* ===== HAMBURGER ===== */
-.hamburger-btn {
-  display: none;
-  background: none;
-  border: none;
-  font-size: 22px;
-  cursor: pointer;
-  color: var(--dark);
-  padding: 4px 8px;
-  border-radius: 8px;
-  transition: background 0.2s;
-  flex-shrink: 0;
-}
-.hamburger-btn:hover { background: var(--light-tan); }
-
-@media (max-width: 768px) {
-  .hamburger-btn { display: block; }
-}
-
-/* Mobile menu drawer */
-.mobile-menu {
-  position: fixed;
-  top: 0; left: -280px;
-  width: 280px;
-  height: 100vh;
-  background: var(--cream);
-  z-index: 3000;
-  transition: left 0.35s cubic-bezier(0.4,0,0.2,1);
-  box-shadow: 4px 0 20px var(--shadow);
-  overflow-y: auto;
-  padding-bottom: 40px;
-}
-.mobile-menu.open { left: 0; }
-.mobile-menu-header {
-  background: linear-gradient(135deg, #ffd6e0, #d0eaff);
-  padding: 20px 16px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.mobile-menu-title { font-size: 18px; font-weight: 900; color: var(--dark); letter-spacing: 2px; }
-.mobile-menu-close {
-  background: rgba(255,255,255,0.6);
-  border: none;
-  border-radius: 50%;
-  width: 30px; height: 30px;
-  font-size: 16px;
-  cursor: pointer;
-  color: var(--dark);
-}
-.mobile-menu-section { padding: 12px 16px 4px; }
-.mobile-menu-section-title {
-  font-size: 10px;
-  font-weight: 700;
-  color: var(--mid);
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  padding-bottom: 6px;
-  border-bottom: 1px solid var(--light-tan);
-  margin-bottom: 6px;
-}
-.mobile-menu-item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 11px 12px;
-  border-radius: 10px;
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--dark);
-  margin-bottom: 2px;
-  transition: all 0.2s;
-}
-.mobile-menu-item:hover { background: var(--light-tan); color: var(--primary); }
-
-/* ===== RESPONSIVE ===== */
-@media (max-width: 1100px) {
-  .right-sidebar { display: none; }
-  .mobile-right { display: block !important; }
-}
-
-@media (max-width: 768px) {
-  .sidebar { display: none; }
-  .nav-menu { display: none; }
-  .right-sidebar { display: none; }
-
-  .nav { padding: 0 12px; gap: 8px; height: 56px; }
-  :root { --nav-h: 56px; }
-  .nav-logo img { height: 36px; }
-  .nav-btn { padding: 6px 10px; font-size: 11px; }
-  .cart-btn { width: 36px; height: 36px; font-size: 16px; }
-
-  .layout { flex-direction: column; }
-  .main { padding: 10px; max-width: 100%; width: 100%; }
-
-  .carousel { height: 280px; border-radius: 12px; }
-  .carousel-slide img { object-fit: contain; background: #f5f0ea; width: 100%; height: 100%; }
-  .carousel-overlay { padding: 20px 16px 16px; }
-  .carousel-name { font-size: 16px; }
-  .carousel-price { font-size: 14px; margin-bottom: 6px; }
-  .carousel-btn { font-size: 12px; padding: 6px 14px; }
-  .carousel-arrow { width: 32px; height: 32px; font-size: 20px; }
-  .carousel-arrow.left { left: 8px; }
-  .carousel-arrow.right { right: 8px; }
-
-  .member-banner { flex-wrap: nowrap; overflow-x: auto; padding: 12px; gap: 6px; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
-  .member-banner::-webkit-scrollbar { display: none; }
-  .member-step { min-width: 68px; }
-  .member-step-icon { font-size: 22px; }
-  .member-step-title { font-size: 11px; }
-  .member-step-desc { font-size: 9px; }
-  .member-step-arrow { font-size: 14px; flex-shrink: 0; }
-
-  .cat-bar { flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; padding-bottom: 4px; }
-  .cat-bar::-webkit-scrollbar { display: none; }
-  .cat-tab { font-size: 12px; padding: 6px 12px; white-space: nowrap; }
-
-  .product-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
-  .product-img { object-fit: contain; background: var(--light-tan); }
-  .product-name { font-size: 12px; }
-  .product-price { font-size: 15px; }
-  .product-add-btn { font-size: 11px; padding: 6px; }
-
-  .page-title { font-size: 18px; }
-  .cart-drawer { width: 100%; right: -100%; }
-  .modal { padding: 20px 16px; border-radius: 16px; max-height: 95vh; overflow-y: auto; }
-  .modal-title { font-size: 18px; }
-
-  .footer-inner { grid-template-columns: 1fr; gap: 16px; padding: 0 16px; text-align: center; }
-  .footer-links { flex-direction: row; justify-content: center; flex-wrap: wrap; gap: 12px; }
-
-  .mobile-nav { display: flex !important; }
-  .mobile-right { display: block !important; }
-}
-
-/* Mobile bottom nav */
-.mobile-nav {
-  display: none;
-  position: fixed;
-  bottom: 0; left: 0; right: 0;
-  background: var(--warm-white);
-  border-top: 1.5px solid var(--light-tan);
-  z-index: 1000;
-  padding: 8px 0 max(8px, env(safe-area-inset-bottom));
-  box-shadow: 0 -2px 12px var(--shadow);
-}
-.mobile-nav-item {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 3px;
-  cursor: pointer;
-  padding: 4px 0;
-  transition: all 0.2s;
-}
-.mobile-nav-item:hover { opacity: 0.7; }
-.mobile-nav-icon { font-size: 20px; }
-.mobile-nav-label { font-size: 10px; font-weight: 600; color: var(--mid); }
-.mobile-nav-item.active .mobile-nav-label { color: var(--primary); }
-
-/* Mobile right content - shows below products */
-.mobile-right {
-  display: none;
-  padding: 0 10px 10px;
-}
-.mobile-right .right-section {
-  margin-bottom: 16px;
-  padding-bottom: 16px;
-  border-bottom: 1px solid var(--light-tan);
-}
-
-@media (max-width: 768px) {
-  body { padding-bottom: 70px; }
+  --primary:#e8758a; --primary-dark:#d4607a; --primary-light:#fce8ed;
+  --yellow:#f5c842; --yellow-light:#fef8e1;
+  --blue:#6aaed6; --blue-light:#e3f2fb;
+  --cream:#fdf8f2; --warm-white:#fffcf7;
+  --dark:#3a2a1e; --mid:#8a6a58; --light-tan:#f0e6d8;
+  --shadow:rgba(58,42,30,0.10);
+  --nav-h:64px; --mq-h:34px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Noto Serif TC',serif;background:var(--cream);color:var(--dark);min-height:100vh;font-size:15px;}
+
+/* NAV */
+.nav{position:fixed;top:0;left:0;right:0;height:var(--nav-h);background:var(--warm-white);border-bottom:1.5px solid var(--light-tan);display:flex;align-items:center;padding:0 20px;z-index:1000;box-shadow:0 2px 12px var(--shadow);gap:14px;}
+.ham{display:none;background:none;border:none;font-size:22px;cursor:pointer;color:var(--dark);padding:4px 8px;border-radius:8px;flex-shrink:0;}
+.ham:hover{background:var(--light-tan);}
+.logo{font-family:'Playfair Display','Noto Serif TC',serif;font-size:24px;font-weight:700;color:var(--primary);letter-spacing:4px;cursor:pointer;white-space:nowrap;flex-shrink:0;display:flex;align-items:center;}
+.logo img{height:48px;object-fit:contain;}
+.nav-menu{display:flex;gap:4px;list-style:none;flex:1;justify-content:center;}
+.nav-menu a{text-decoration:none;color:var(--mid);font-size:13px;font-weight:600;letter-spacing:1px;padding:6px 10px;border-radius:8px;transition:all .2s;white-space:nowrap;}
+.nav-menu a:hover,.nav-menu a.active{background:var(--light-tan);color:var(--primary);}
+.nav-actions{display:flex;align-items:center;gap:8px;flex-shrink:0;}
+.nbtn{display:flex;align-items:center;gap:5px;padding:6px 12px;border-radius:10px;border:1.5px solid var(--light-tan);background:var(--warm-white);font-family:'Noto Serif TC',serif;font-size:12px;font-weight:700;color:var(--mid);cursor:pointer;transition:all .2s;white-space:nowrap;}
+.nbtn:hover{background:var(--light-tan);color:var(--primary);}
+.nbtn.p{background:var(--primary);color:white;border-color:var(--primary);}
+.nbtn.p:hover{background:var(--primary-dark);}
+.cart-btn{position:relative;background:var(--warm-white);border:1.5px solid var(--light-tan);border-radius:50%;width:40px;height:40px;display:flex;align-items:center;justify-content:center;font-size:18px;cursor:pointer;transition:all .2s;}
+.cart-btn:hover{background:var(--light-tan);}
+.cart-badge{position:absolute;top:-4px;right:-4px;background:var(--primary);color:white;font-size:9px;font-weight:900;border-radius:50%;width:16px;height:16px;display:none;align-items:center;justify-content:center;}
+
+/* MARQUEE */
+.mq{position:fixed;top:var(--nav-h);left:0;right:0;height:var(--mq-h);background:linear-gradient(135deg,#ffd6e0,#fff3b0,#d0eaff);overflow:hidden;white-space:nowrap;z-index:999;border-bottom:1px solid rgba(232,117,138,.2);display:flex;align-items:center;}
+.mq-text{display:inline-block;animation:mq 30s linear infinite;font-size:13px;font-weight:600;color:var(--dark);padding-right:80px;}
+@keyframes mq{from{transform:translateX(100vw)}to{transform:translateX(-100%)}}
+
+/* LAYOUT */
+.layout{display:flex;margin-top:calc(var(--nav-h) + var(--mq-h));min-height:calc(100vh - var(--nav-h) - var(--mq-h));}
+
+/* LEFT SIDEBAR */
+.lsb{width:220px;flex-shrink:0;background:var(--warm-white);border-right:1.5px solid var(--light-tan);padding:20px 14px;position:sticky;top:calc(var(--nav-h)+var(--mq-h));height:calc(100vh - var(--nav-h) - var(--mq-h));overflow-y:auto;}
+.sb-sec{margin-bottom:20px;}
+.sb-ttl{font-size:10px;font-weight:700;color:var(--mid);letter-spacing:2px;text-transform:uppercase;padding-bottom:7px;border-bottom:1.5px solid var(--light-tan);margin-bottom:7px;}
+.sb-item{display:flex;align-items:center;gap:8px;padding:9px 12px;border-radius:10px;cursor:pointer;transition:all .2s;font-size:13px;font-weight:600;color:var(--dark);margin-bottom:2px;}
+.sb-item:hover{background:var(--light-tan);color:var(--primary);}
+.sb-item.active{background:rgba(232,117,138,.1);color:var(--primary);}
+
+/* MAIN */
+.main{flex:1;padding:22px;overflow:hidden;max-width:900px;}
+
+/* CAROUSEL */
+.carousel{position:relative;border-radius:18px;overflow:hidden;margin-bottom:18px;height:340px;box-shadow:0 6px 28px var(--shadow);background:#2a1a0e;}
+.c-track{display:flex;height:100%;transition:transform .5s cubic-bezier(.4,0,.2,1);}
+.c-slide{min-width:100%;height:100%;position:relative;flex-shrink:0;}
+.c-slide img{width:100%;height:100%;object-fit:cover;display:block;}
+.c-overlay{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(30,10,0,.72));padding:24px 22px 18px;color:white;}
+.c-name{font-size:21px;font-weight:900;letter-spacing:2px;margin-bottom:4px;text-shadow:0 2px 8px rgba(0,0,0,.3);}
+.c-price{font-size:16px;font-weight:700;color:#ffd6e0;margin-bottom:10px;}
+.c-btn{padding:6px 16px;background:var(--primary);color:white;border:none;border-radius:20px;font-family:'Noto Serif TC',serif;font-size:13px;font-weight:700;cursor:pointer;}
+.c-btn:hover{background:var(--primary-dark);}
+.c-arr{position:absolute;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.85);border:none;border-radius:50%;width:42px;height:42px;font-size:26px;cursor:pointer;color:var(--dark);display:flex;align-items:center;justify-content:center;box-shadow:0 2px 10px rgba(0,0,0,.15);transition:all .2s;z-index:10;}
+.c-arr:hover{background:white;transform:translateY(-50%) scale(1.1);}
+.c-arr.l{left:14px;}.c-arr.r{right:14px;}
+.c-dots{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);display:flex;gap:6px;z-index:10;}
+.c-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.45);border:none;cursor:pointer;transition:all .3s;padding:0;}
+.c-dot.active{background:white;transform:scale(1.3);}
+
+/* MEMBER BANNER */
+.mbanner{background:linear-gradient(135deg,#ffd6e0,#fff3b0,#d0eaff);border-radius:14px;padding:16px 18px;margin-bottom:18px;display:flex;gap:8px;align-items:center;border:1.5px solid rgba(255,255,255,.8);box-shadow:0 3px 14px rgba(232,117,138,.1);}
+.mstep{flex:1;text-align:center;}
+.mstep-icon{font-size:24px;margin-bottom:5px;}
+.mstep-title{font-size:11px;font-weight:700;color:var(--dark);margin-bottom:2px;}
+.mstep-desc{font-size:9px;color:var(--mid);line-height:1.4;}
+.mstep-arrow{font-size:16px;color:var(--primary);flex-shrink:0;}
+
+/* CAT TABS */
+.cat-bar{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;}
+.cat-tab{padding:7px 15px;border-radius:20px;border:1.5px solid var(--light-tan);background:var(--warm-white);font-family:'Noto Serif TC',serif;font-size:13px;font-weight:700;color:var(--mid);cursor:pointer;transition:all .2s;white-space:nowrap;}
+.cat-tab:hover{background:var(--light-tan);color:var(--primary);}
+.cat-tab.active{background:var(--primary);color:white;border-color:var(--primary);box-shadow:0 3px 10px rgba(232,117,138,.3);}
+
+/* PRODUCT GRID */
+.pgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+.pcard{background:var(--warm-white);border-radius:14px;overflow:hidden;border:1.5px solid rgba(106,174,214,.2);box-shadow:0 2px 10px var(--shadow);transition:all .25s;cursor:pointer;}
+.pcard:hover{transform:translateY(-4px);box-shadow:0 8px 22px var(--shadow);}
+.pimg{width:100%;height:160px;object-fit:cover;display:block;background:var(--light-tan);}
+.pimg-ph{width:100%;height:160px;background:linear-gradient(135deg,var(--light-tan),#e8d0b0);display:flex;align-items:center;justify-content:center;font-size:40px;}
+.pbody{padding:11px;}
+.pname{font-size:13px;font-weight:700;color:var(--dark);line-height:1.4;margin-bottom:5px;}
+.pprice{font-size:17px;font-weight:900;color:var(--primary);}
+.padd{width:100%;margin-top:9px;padding:7px;background:var(--primary);color:white;border:none;border-radius:8px;font-family:'Noto Serif TC',serif;font-size:12px;font-weight:700;cursor:pointer;letter-spacing:1px;transition:all .2s;}
+.padd:hover{background:var(--primary-dark);}
+
+/* PAGE HEADER */
+.ph{margin-bottom:18px;}
+.ph-title{font-size:21px;font-weight:900;color:var(--dark);letter-spacing:2px;display:flex;align-items:center;gap:10px;}
+.ph-title::after{content:'';flex:1;height:2px;background:linear-gradient(90deg,var(--primary),transparent);}
+.ph-sub{font-size:13px;color:var(--mid);margin-top:5px;letter-spacing:1px;}
+
+/* RIGHT SIDEBAR */
+.rsb{width:210px;flex-shrink:0;background:var(--warm-white);border-left:1.5px solid var(--light-tan);padding:18px 13px;position:sticky;top:calc(var(--nav-h)+var(--mq-h));height:calc(100vh - var(--nav-h) - var(--mq-h));overflow-y:auto;}
+.rs-sec{margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid var(--light-tan);}
+.rs-sec:last-child{border-bottom:none;}
+.rs-title{font-size:10px;font-weight:700;color:var(--mid);letter-spacing:1px;margin-bottom:9px;text-transform:uppercase;}
+.rank-item{display:flex;align-items:center;gap:7px;padding:5px 0;border-bottom:1px dashed var(--light-tan);cursor:pointer;}
+.rank-item:last-child{border-bottom:none;}
+.rank-item:hover{opacity:.7;}
+.rnum{width:20px;height:20px;border-radius:50%;background:var(--primary);color:white;font-size:10px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.rnum.top{background:var(--yellow);color:var(--dark);}
+.rname{font-size:12px;font-weight:600;color:var(--dark);flex:1;}
+.rprice{font-size:11px;color:var(--primary);font-weight:700;}
+.ann-item{margin-bottom:9px;padding-bottom:9px;border-bottom:1px dashed var(--light-tan);}
+.ann-item:last-child{border-bottom:none;margin-bottom:0;}
+.ann-tag{display:inline-block;font-size:9px;font-weight:700;padding:1px 5px;border-radius:4px;background:var(--primary-light);color:var(--primary);margin-bottom:3px;}
+.ann-text{font-size:11px;color:var(--dark);line-height:1.5;}
+.ann-date{font-size:9px;color:var(--mid);margin-top:2px;}
+.rev-item{margin-bottom:9px;padding-bottom:9px;border-bottom:1px dashed var(--light-tan);}
+.rev-item:last-child{border-bottom:none;margin-bottom:0;}
+.rev-stars{color:var(--yellow);font-size:10px;margin-bottom:2px;}
+.rev-text{font-size:10px;color:var(--dark);line-height:1.5;font-style:italic;}
+.rev-author{font-size:9px;color:var(--mid);margin-top:2px;text-align:right;}
+
+/* MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(30,10,0,.6);z-index:2000;align-items:center;justify-content:center;padding:14px;}
+.modal-overlay.active{display:flex;}
+.modal{background:var(--cream);border-radius:18px;padding:26px;width:100%;max-width:420px;position:relative;box-shadow:0 18px 55px rgba(30,10,0,.3);animation:min .3s ease;max-height:92vh;overflow-y:auto;}
+@keyframes min{from{opacity:0;transform:scale(.95) translateY(10px)}to{opacity:1;transform:scale(1) translateY(0)}}
+.mc{position:absolute;top:14px;right:14px;background:var(--light-tan);border:none;border-radius:50%;width:30px;height:30px;font-size:15px;cursor:pointer;color:var(--mid);display:flex;align-items:center;justify-content:center;}
+.mt{font-size:19px;font-weight:900;color:var(--dark);letter-spacing:2px;margin-bottom:3px;}
+.ms{font-size:12px;color:var(--mid);margin-bottom:18px;}
+.fg{margin-bottom:13px;}
+.fl{display:block;font-size:11px;font-weight:700;color:var(--mid);letter-spacing:1px;margin-bottom:5px;}
+.fi{width:100%;padding:9px 13px;border:1.5px solid var(--light-tan);border-radius:10px;font-family:'Noto Serif TC',serif;font-size:13px;color:var(--dark);background:var(--warm-white);outline:none;transition:border-color .2s;}
+.fi:focus{border-color:var(--blue);}
+.fb{width:100%;padding:12px;background:var(--primary);color:white;border:none;border-radius:12px;font-family:'Noto Serif TC',serif;font-size:14px;font-weight:900;cursor:pointer;letter-spacing:2px;margin-top:7px;transition:all .2s;box-shadow:0 4px 14px rgba(232,117,138,.3);}
+.fb:hover{background:var(--primary-dark);}
+.fsw{text-align:center;margin-top:13px;font-size:12px;color:var(--mid);}
+.fsw a{color:var(--primary);font-weight:700;cursor:pointer;}
+
+/* CART */
+.overlay{display:none;position:fixed;inset:0;background:rgba(30,10,0,.5);z-index:1999;}
+.overlay.active{display:block;}
+.cdrawer{position:fixed;top:0;right:-400px;width:380px;height:100vh;background:var(--cream);z-index:2000;box-shadow:-4px 0 18px var(--shadow);transition:right .35s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;}
+.cdrawer.open{right:0;}
+.ch{padding:18px 22px;background:linear-gradient(135deg,#ffd6e0,#d0eaff);color:var(--dark);display:flex;justify-content:space-between;align-items:center;}
+.ch-title{font-size:17px;font-weight:900;letter-spacing:2px;}
+.cclose{background:rgba(255,255,255,.6);border:none;border-radius:50%;width:30px;height:30px;color:var(--dark);font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.citems{flex:1;overflow-y:auto;padding:14px;}
+.cempty{text-align:center;padding:55px 20px;color:var(--mid);}
+.citem{display:flex;align-items:center;gap:10px;padding:11px;background:var(--warm-white);border-radius:11px;border:1px solid rgba(106,174,214,.2);margin-bottom:7px;}
+.citem-img{width:52px;height:52px;border-radius:8px;object-fit:cover;flex-shrink:0;background:var(--light-tan);}
+.citem-info{flex:1;}
+.citem-name{font-size:13px;font-weight:700;color:var(--dark);}
+.citem-price{font-size:11px;color:var(--mid);margin-top:2px;}
+.citem-qty{display:flex;align-items:center;gap:7px;}
+.qbtn{background:var(--light-tan);border:none;border-radius:50%;width:24px;height:24px;font-size:13px;cursor:pointer;color:var(--dark);display:flex;align-items:center;justify-content:center;}
+.qnum{font-size:13px;font-weight:700;color:var(--dark);min-width:18px;text-align:center;}
+.cremove{background:none;border:none;color:var(--mid);cursor:pointer;font-size:15px;padding:3px;}
+.cfooter{padding:14px 22px;border-top:1.5px solid var(--light-tan);background:var(--warm-white);}
+.ctotal{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
+.ctotal-label{font-size:14px;font-weight:700;color:var(--dark);}
+.ctotal-price{font-size:22px;font-weight:900;color:var(--primary);}
+.ckbtn{width:100%;padding:13px;background:var(--primary);color:white;border:none;border-radius:12px;font-family:'Noto Serif TC',serif;font-size:14px;font-weight:900;cursor:pointer;letter-spacing:2px;box-shadow:0 4px 14px rgba(232,117,138,.3);transition:all .2s;}
+.ckbtn:hover{background:var(--primary-dark);}
+
+/* MEMBER PAGE */
+.mpanel{background:var(--warm-white);border:1.5px solid rgba(106,174,214,.2);border-radius:14px;padding:18px;margin-bottom:14px;}
+.mgreet{font-size:15px;font-weight:900;color:var(--dark);letter-spacing:1px;margin-bottom:11px;}
+.mstats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+.sbox{background:var(--cream);border-radius:10px;padding:11px;text-align:center;border:1px solid var(--light-tan);}
+.sval{font-size:20px;font-weight:900;color:var(--primary);}
+.slbl{font-size:10px;color:var(--mid);margin-top:2px;letter-spacing:1px;}
+.ptsbar{background:linear-gradient(135deg,#c9973a,#e07b39);border-radius:11px;padding:11px 15px;display:flex;justify-content:space-between;align-items:center;color:white;margin-bottom:14px;cursor:pointer;}
+.pts-lbl{font-size:11px;letter-spacing:1px;opacity:.9;}
+.pts-val{font-size:19px;font-weight:900;}
+.oitem{display:flex;justify-content:space-between;align-items:flex-start;background:var(--warm-white);border:1.5px solid rgba(106,174,214,.12);border-radius:11px;padding:13px 15px;margin-bottom:7px;}
+.oid{font-size:11px;font-weight:700;color:var(--mid);letter-spacing:1px;}
+.odate{font-size:10px;color:var(--mid);margin-top:2px;}
+.oitems{font-size:11px;color:var(--dark);margin-top:3px;}
+.ototal{font-size:15px;font-weight:900;color:var(--primary);}
+.ostatus{display:inline-block;font-size:9px;font-weight:700;padding:2px 7px;border-radius:20px;margin-top:3px;background:rgba(74,140,74,.1);color:#4a8c4a;border:1px solid rgba(74,140,74,.3);}
+
+/* TOAST */
+.toast{display:none;position:fixed;top:76px;left:50%;transform:translateX(-50%);background:var(--dark);color:white;padding:9px 22px;border-radius:22px;font-size:13px;font-weight:700;letter-spacing:1px;z-index:9999;white-space:nowrap;box-shadow:0 4px 14px rgba(30,10,0,.3);}
+
+/* FOOTER */
+.footer{background:linear-gradient(135deg,#3a2a1e,#5a3a28);color:white;padding:26px 0 14px;}
+.footer-in{max-width:1100px;margin:0 auto;padding:0 28px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:22px;align-items:start;}
+.flogo{font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:#ffd6e0;letter-spacing:4px;}
+.finfo{font-size:12px;line-height:2.2;opacity:.82;}
+.flinks{display:flex;flex-direction:column;gap:7px;}
+.flinks a{color:rgba(255,255,255,.78);text-decoration:none;font-size:12px;transition:color .2s;}
+.flinks a:hover{color:#ffd6e0;}
+.fcopy{grid-column:1/-1;text-align:center;font-size:10px;opacity:.45;padding-top:14px;border-top:1px solid rgba(255,255,255,.1);margin-top:6px;}
+
+/* MOBILE MENU */
+.mmenu{position:fixed;top:0;left:-290px;width:290px;height:100vh;background:var(--cream);z-index:3000;transition:left .35s cubic-bezier(.4,0,.2,1);box-shadow:4px 0 18px var(--shadow);overflow-y:auto;padding-bottom:40px;}
+.mmenu.open{left:0;}
+.mmenu-hd{background:linear-gradient(135deg,#ffd6e0,#d0eaff);padding:18px 15px;display:flex;justify-content:space-between;align-items:center;}
+.mmenu-title{font-size:17px;font-weight:900;color:var(--dark);letter-spacing:2px;}
+.mmenu-close{background:rgba(255,255,255,.6);border:none;border-radius:50%;width:28px;height:28px;font-size:15px;cursor:pointer;color:var(--dark);}
+.mmenu-sec{padding:11px 15px 3px;}
+.mmenu-sec-title{font-size:9px;font-weight:700;color:var(--mid);letter-spacing:2px;text-transform:uppercase;padding-bottom:5px;border-bottom:1px solid var(--light-tan);margin-bottom:5px;}
+.mmenu-item{display:flex;align-items:center;gap:9px;padding:10px 11px;border-radius:9px;cursor:pointer;font-size:13px;font-weight:600;color:var(--dark);margin-bottom:2px;transition:all .2s;}
+.mmenu-item:hover{background:var(--light-tan);color:var(--primary);}
+.mob-overlay{display:none;position:fixed;inset:0;background:rgba(30,10,0,.5);z-index:2999;}
+
+/* MOBILE NAV */
+.mobnav{display:none;position:fixed;bottom:0;left:0;right:0;background:var(--warm-white);border-top:1.5px solid var(--light-tan);z-index:1000;padding:6px 0 max(6px,env(safe-area-inset-bottom));box-shadow:0 -2px 10px var(--shadow);}
+.mobnav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;padding:3px 0;}
+.mobnav-icon{font-size:19px;}
+.mobnav-label{font-size:10px;font-weight:600;color:var(--mid);}
+.mobnav-item.active .mobnav-label{color:var(--primary);}
+
+/* MOBILE RIGHT */
+.mob-right{display:none;padding:0 11px 11px;}
+.mob-right .rs-sec{background:var(--warm-white);border-radius:11px;padding:13px;margin-bottom:10px;}
+
+/* RESPONSIVE */
+@media(max-width:1100px){.rsb{display:none;}.mob-right{display:block;}}
+@media(max-width:768px){
+  .lsb{display:none;}.nav-menu{display:none;}.rsb{display:none;}
+  .ham{display:block;}
+  .nav{padding:0 10px;height:56px;gap:9px;}
+  :root{--nav-h:56px;--mq-h:30px;}
+  .logo img{height:34px;}
+  .nbtn{padding:5px 9px;font-size:11px;}
+  .cart-btn{width:34px;height:34px;font-size:15px;}
+  .layout{flex-direction:column;}
+  .main{padding:9px;max-width:100%;width:100%;}
+  .carousel{height:240px;border-radius:11px;}
+  .c-slide img{object-fit:cover;}
+  .c-name{font-size:15px;}.c-price{font-size:13px;margin-bottom:5px;}
+  .c-btn{font-size:11px;padding:5px 11px;}
+  .c-arr{width:28px;height:28px;font-size:17px;}
+  .c-arr.l{left:7px;}.c-arr.r{right:7px;}
+  .mbanner{flex-wrap:nowrap;overflow-x:auto;padding:11px;gap:5px;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+  .mbanner::-webkit-scrollbar{display:none;}
+  .mstep{min-width:66px;}.mstep-icon{font-size:19px;}.mstep-title{font-size:10px;}.mstep-desc{font-size:9px;}
+  .mstep-arrow{font-size:12px;flex-shrink:0;}
+  .cat-bar{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:3px;}
+  .cat-bar::-webkit-scrollbar{display:none;}
+  .cat-tab{font-size:11px;padding:5px 11px;white-space:nowrap;}
+  .pgrid{grid-template-columns:repeat(2,1fr);gap:7px;}
+  .pimg,.pimg-ph{height:120px;}
+  .pname{font-size:11px;}.pprice{font-size:14px;}.padd{font-size:10px;padding:5px;}
+  .ph-title{font-size:17px;}
+  .cdrawer{width:100%;right:-100%;}
+  .modal{padding:16px 13px;border-radius:14px;}
+  .mt{font-size:16px;}
+  .footer-in{grid-template-columns:1fr;gap:13px;padding:0 14px;text-align:center;}
+  .flinks{flex-direction:row;justify-content:center;flex-wrap:wrap;gap:10px;}
+  .mobnav{display:flex;}
+  .mob-right{display:block;}
+  body{padding-bottom:66px;}
 }
 </style>
 </head>
 <body>
 
-<!-- MOBILE BOTTOM NAV -->
-<div class="sidebar-overlay" id="mobileMenuOverlay" style="display:none;z-index:2999;" onclick="toggleMobileMenu()"></div>
+<!-- MOB OVERLAY -->
+<div class="mob-overlay" id="mobOverlay" onclick="closeMobMenu()"></div>
 
-<!-- MOBILE MENU DRAWER -->
-<div class="mobile-menu" id="mobileMenu">
-  <div class="mobile-menu-header">
-    <div class="mobile-menu-title">源 春</div>
-    <button class="mobile-menu-close" onclick="toggleMobileMenu()">✕</button>
+<!-- MOBILE MENU -->
+<div class="mmenu" id="mmenu">
+  <div class="mmenu-hd">
+    <div class="mmenu-title">源 春</div>
+    <button class="mmenu-close" onclick="closeMobMenu()">✕</button>
   </div>
-  <div class="mobile-menu-section">
-    <div class="mobile-menu-section-title">頁面導覽</div>
-    <div class="mobile-menu-item" onclick="showPage('home');toggleMobileMenu()">🏠 首頁</div>
-    <div class="mobile-menu-item" onclick="showPage('products');toggleMobileMenu()">🛍️ 所有商品</div>
-    <div class="mobile-menu-item" onclick="showPage('about');toggleMobileMenu()">📖 品牌故事</div>
-    <div class="mobile-menu-item" onclick="showPage('faq');toggleMobileMenu()">❓ 常見問題</div>
+  <div class="mmenu-sec">
+    <div class="mmenu-sec-title">頁面導覽</div>
+    <div class="mmenu-item" onclick="go('home')">🏠 首頁</div>
+    <div class="mmenu-item" onclick="go('products')">🛍️ 所有商品</div>
+    <div class="mmenu-item" onclick="go('tracking')">🔍 訂單查詢</div>
+    <div class="mmenu-item" onclick="go('about')">📖 品牌故事</div>
+    <div class="mmenu-item" onclick="go('faq')">❓ 常見問題</div>
   </div>
-  <div class="mobile-menu-section">
-    <div class="mobile-menu-section-title">商品分類</div>
-    <div class="mobile-menu-item" onclick="filterCategory('all',this);showPage('products');toggleMobileMenu()">🏠 全部商品</div>
-    <div class="mobile-menu-item" onclick="filterCategory('hot',this);showPage('products');toggleMobileMenu()">🍲 加熱直接吃</div>
-    <div class="mobile-menu-item" onclick="filterCategory('raw',this);showPage('products');toggleMobileMenu()">🥩 在家自己煮</div>
+  <div class="mmenu-sec">
+    <div class="mmenu-sec-title">商品分類</div>
+    <div class="mmenu-item" onclick="go('products');renderProducts('all')">🏠 全部商品</div>
+    <div class="mmenu-item" onclick="go('products');renderProducts('hot')">🍲 加熱直接吃</div>
+    <div class="mmenu-item" onclick="go('products');renderProducts('raw')">🥩 在家自己煮</div>
   </div>
-  <div class="mobile-menu-section">
-    <div class="mobile-menu-section-title">會員專區</div>
-    <div class="mobile-menu-item" onclick="showPage('member');toggleMobileMenu()">👤 我的帳戶</div>
-    <div class="mobile-menu-item" onclick="showMemberOrders();toggleMobileMenu()">📦 訂單紀錄</div>
-    <div class="mobile-menu-item" onclick="showMemberPoints();toggleMobileMenu()">⭐ 點數紀錄</div>
+  <div class="mmenu-sec">
+    <div class="mmenu-sec-title">會員專區</div>
+    <div class="mmenu-item" onclick="go('member')">👤 我的帳戶</div>
+    <div class="mmenu-item" onclick="go('tracking')">📦 訂單查詢</div>
+    <div class="mmenu-item" onclick="closeMobMenu();openModal('loginModal')">🔑 登入 / 註冊</div>
   </div>
-  <div class="mobile-menu-section">
-    <div class="mobile-menu-section-title">配送資訊</div>
-    <div style="font-size:13px;color:var(--mid);line-height:2;padding:4px 12px;">
-      🐱 黑貓冷藏配送<br>
-      📦 滿$2,600免運費<br>
-      🌡️ 熟食冷藏7天<br>
-      ❄️ 生食冷藏14天<br>
-      🕘 平日 11:00–18:00（週二公休）<br>
-      🎉 假日 11:00–19:30
+  <div class="mmenu-sec">
+    <div class="mmenu-sec-title">配送 &amp; 營業</div>
+    <div style="font-size:12px;color:var(--mid);line-height:2.2;padding:4px 11px;">
+      🐱 黑貓冷藏配送<br>📦 滿$2,600免運費<br>🌡️ 熟食冷藏7天<br>❄️ 生食冷藏14天<br>🕘 平日 11:00–18:00（週二公休）<br>🎉 假日/國定假日 11:00–19:30
     </div>
   </div>
 </div>
-<div class="mobile-nav" id="mobileNav">
-  <div class="mobile-nav-item active" onclick="showPage('home');setMobileNav(this)">
-    <div class="mobile-nav-icon">🏠</div>
-    <div class="mobile-nav-label">首頁</div>
-  </div>
-  <div class="mobile-nav-item" onclick="showPage('products');setMobileNav(this)">
-    <div class="mobile-nav-icon">🛍️</div>
-    <div class="mobile-nav-label">商品</div>
-  </div>
-  <div class="mobile-nav-item" onclick="showPage('member');setMobileNav(this)">
-    <div class="mobile-nav-icon">👤</div>
-    <div class="mobile-nav-label">會員</div>
-  </div>
-  <div class="mobile-nav-item" onclick="toggleCart()">
-    <div class="mobile-nav-icon">🛒<span id="mobileCartCount" style="font-size:10px;background:var(--primary);color:white;border-radius:50%;padding:0 4px;display:none;"></span></div>
-    <div class="mobile-nav-label">購物車</div>
-  </div>
-  <div class="mobile-nav-item" onclick="showPage('faq');setMobileNav(this)">
-    <div class="mobile-nav-icon">❓</div>
-    <div class="mobile-nav-label">說明</div>
-  </div>
-</div>
 
-<!-- TOP NAV -->
+<!-- NAV -->
 <nav class="nav">
-  <button class="hamburger-btn" onclick="toggleMobileMenu()" id="hamburgerBtn">☰</button>
-  <div class="nav-logo" onclick="showPage('home')"><img src="logo1.png" alt="源春" onerror="this.outerHTML='源 春'"></div>
+  <button class="ham" onclick="openMobMenu()">☰</button>
+  <div class="logo" onclick="showPage('home')">
+    <img src="logo1.png" alt="源春" onerror="this.outerHTML='源 春'">
+  </div>
   <ul class="nav-menu">
-    <li><a href="#" class="active" onclick="showPage('home')">首頁</a></li>
-    <li><a href="#" onclick="showPage('products')">所有商品</a></li>
-    <li><a href="#" onclick="showPage('about')">品牌故事</a></li>
-    <li><a href="#" onclick="showPage('faq')">常見問題</a></li>
+    <li><a href="#" onclick="showPage('home');return false">首頁</a></li>
+    <li><a href="#" onclick="showPage('products');return false">所有商品</a></li>
+    <li><a href="#" onclick="showPage('tracking');return false">訂單查詢</a></li>
+    <li><a href="#" onclick="showPage('about');return false">品牌故事</a></li>
+    <li><a href="#" onclick="showPage('faq');return false">常見問題</a></li>
   </ul>
   <div class="nav-actions">
-    <div id="navGuest" style="display:flex;gap:8px;">
-      <button class="nav-btn" onclick="openModal('loginModal')">登入</button>
-      <button class="nav-btn primary" onclick="openModal('registerModal')">註冊</button>
+    <div id="navGuest" style="display:flex;gap:7px;">
+      <button class="nbtn" onclick="openModal('loginModal')">登入</button>
+      <button class="nbtn p" onclick="openModal('registerModal')">註冊</button>
     </div>
-    <div id="navUser" style="display:none;gap:8px;align-items:center;">
-      <button class="nav-btn" onclick="showPage('member')">👤 <span id="navUsername"></span></button>
-      <button class="nav-btn" onclick="logout()">登出</button>
+    <div id="navUser" style="display:none;gap:7px;align-items:center;">
+      <button class="nbtn" onclick="showPage('member')">👤 <span id="navName"></span></button>
+      <button class="nbtn" onclick="doLogout()">登出</button>
     </div>
     <button class="cart-btn" onclick="toggleCart()">
-      🛒<span class="cart-count" id="cartCount">0</span>
+      🛒<span class="cart-badge" id="cartBadge"></span>
     </button>
   </div>
 </nav>
+
+<!-- MARQUEE -->
+<div class="mq">
+  <div class="mq-text">
+    🎉 註冊會員即送100點數！&nbsp;&nbsp;&nbsp;⭐ 每週二、六、日限定優惠活動！&nbsp;&nbsp;&nbsp;📦 滿$2,600免運費！&nbsp;&nbsp;&nbsp;🏢 歡迎公司團購，量大優惠！&nbsp;&nbsp;&nbsp;🎉 註冊會員即送100點數！&nbsp;&nbsp;&nbsp;⭐ 每週二、六、日限定優惠活動！&nbsp;&nbsp;&nbsp;📦 滿$2,600免運費！&nbsp;&nbsp;&nbsp;🏢 歡迎公司團購，量大優惠！
+  </div>
+</div>
 
 <!-- LAYOUT -->
 <div class="layout">
 
   <!-- LEFT SIDEBAR -->
-  <aside class="sidebar">
-    <div class="sidebar-section">
-      <div class="sidebar-title">商品分類</div>
-      <div class="sidebar-item active" onclick="filterCategory('all',this)">
-        <span class="icon">🏠</span> 全部商品
-      </div>
-      <div class="sidebar-item" onclick="filterCategory('hot',this)">
-        <span class="icon">🍲</span> 加熱直接吃
-      </div>
-      <div class="sidebar-item" onclick="filterCategory('raw',this)">
-        <span class="icon">🥩</span> 在家自己煮
-      </div>
+  <aside class="lsb">
+    <div class="sb-sec">
+      <div class="sb-ttl">商品分類</div>
+      <div class="sb-item active" onclick="filterCat('all',this)">🏠 全部商品</div>
+      <div class="sb-item" onclick="filterCat('hot',this)">🍲 加熱直接吃</div>
+      <div class="sb-item" onclick="filterCat('raw',this)">🥩 在家自己煮</div>
     </div>
-    <div class="sidebar-section">
-      <div class="sidebar-title">會員專區</div>
-      <div class="sidebar-item" onclick="showPage('member')">
-        <span class="icon">👤</span> 我的帳戶
-      </div>
-      <div class="sidebar-item" onclick="showMemberOrders()">
-        <span class="icon">📦</span> 訂單紀錄
-      </div>
-      <div class="sidebar-item" onclick="showMemberPoints()">
-        <span class="icon">⭐</span> 點數紀錄
-      </div>
+    <div class="sb-sec">
+      <div class="sb-ttl">會員專區</div>
+      <div class="sb-item" onclick="showPage('member')">👤 我的帳戶</div>
+      <div class="sb-item" onclick="showPage('tracking')">🔍 訂單查詢</div>
+      <div class="sb-item" onclick="showPage('member')">⭐ 點數紀錄</div>
     </div>
-    <div class="sidebar-section">
-      <div class="sidebar-title">配送資訊</div>
-      <div style="font-size:13px;color:var(--mid);line-height:2;padding:4px 0;">
-        🐱 黑貓冷藏配送<br>
-        📦 滿$2,600免運費<br>
-        🌡️ 熟食冷藏7天<br>
-        ❄️ 生食冷藏14天
+    <div class="sb-sec">
+      <div class="sb-ttl">配送資訊</div>
+      <div style="font-size:11px;color:var(--mid);line-height:2.1;padding:3px 0;">
+        🐱 黑貓冷藏配送<br>📦 滿$2,600免運費<br>🌡️ 熟食冷藏7天<br>❄️ 生食冷藏14天<br>🕘 平日 11:00–18:00<br>🚫 週二公休<br>🎉 假日 11:00–19:30
       </div>
     </div>
   </aside>
@@ -1332,214 +365,103 @@ body {
   <!-- MAIN -->
   <main class="main">
 
-    <!-- HOME PAGE -->
+    <!-- HOME -->
     <div id="page-home">
-
-      <!-- CAROUSEL - full width stretch -->
+      <!-- Carousel -->
       <div class="carousel" id="carousel">
-        <div class="carousel-track" id="carouselTrack">
-          <div class="carousel-slide">
-            <img src="slide1.jpg" alt="鴨血">
-            <div class="carousel-overlay">
-              <div class="carousel-name">麻辣嫩鴨血</div>
-              <div class="carousel-price">$180</div>
-              <button class="carousel-btn" onclick="quickAdd(3)">加入購物車</button>
-            </div>
-          </div>
-          <div class="carousel-slide">
-            <img src="slide2.jpg" alt="源春配送">
-            <div class="carousel-overlay">
-              <div class="carousel-name">源春 · 創立於1997</div>
-              <div class="carousel-price">深坑老街特產</div>
-            </div>
-          </div>
-          <div class="carousel-slide">
-            <img src="slide3.jpg" alt="自製青草茶">
-            <div class="carousel-overlay">
-              <div class="carousel-name">源春自製青草茶</div>
-              <div class="carousel-price">清涼降火 · 無添加</div>
-            </div>
-          </div>
-          <div class="carousel-slide">
-            <img src="slide4.jpg" alt="配送中">
-            <div class="carousel-overlay">
-              <div class="carousel-name">黑貓冷藏配送</div>
-              <div class="carousel-price">滿$2,600免運費</div>
-            </div>
-          </div>
-          <div class="carousel-slide">
-            <img src="slide5.jpg" alt="保鮮配送">
-            <div class="carousel-overlay">
-              <div class="carousel-name">冷藏保鮮到府</div>
-              <div class="carousel-price">安心新鮮配送</div>
-            </div>
-          </div>
-          <div class="carousel-slide">
-            <img src="slide6.jpg" alt="臭豆腐">
-            <div class="carousel-overlay">
-              <div class="carousel-name">麻辣臭豆腐</div>
-              <div class="carousel-price">$140</div>
-              <button class="carousel-btn" onclick="quickAdd(1)">加入購物車</button>
-            </div>
-          </div>
-          <div class="carousel-slide">
-            <img src="malatoufu.png" alt="麻辣臭豆腐">
-            <div class="carousel-overlay">
-              <div class="carousel-name">麻辣臭豆腐</div>
-              <div class="carousel-price">$140</div>
-              <button class="carousel-btn" onclick="quickAdd(1)">加入購物車</button>
-            </div>
-          </div>
-          <div class="carousel-slide">
-            <img src="steamtofu.jpg" alt="清蒸臭豆腐">
-            <div class="carousel-overlay">
-              <div class="carousel-name">清蒸臭豆腐</div>
-              <div class="carousel-price">$140</div>
-              <button class="carousel-btn" onclick="quickAdd(2)">加入購物車</button>
-            </div>
-          </div>
-          <div class="carousel-slide">
-            <img src="maladuxue.png" alt="麻辣嫩鴨血">
-            <div class="carousel-overlay">
-              <div class="carousel-name">麻辣嫩鴨血</div>
-              <div class="carousel-price">$180</div>
-              <button class="carousel-btn" onclick="quickAdd(3)">加入購物車</button>
-            </div>
-          </div>
-          <div class="carousel-slide">
-            <img src="zhusun.jpg" alt="滷桂竹筍">
-            <div class="carousel-overlay">
-              <div class="carousel-name">滷桂竹筍</div>
-              <div class="carousel-price">$220</div>
-              <button class="carousel-btn" onclick="quickAdd(5)">加入購物車</button>
-            </div>
-          </div>
-          <div class="carousel-slide">
-            <img src="redtofu.jpg" alt="滷紅燒嫩豆腐">
-            <div class="carousel-overlay">
-              <div class="carousel-name">滷紅燒嫩豆腐</div>
-              <div class="carousel-price">$130</div>
-              <button class="carousel-btn" onclick="quickAdd(6)">加入購物車</button>
-            </div>
-          </div>
-          <div class="carousel-slide">
-            <img src="logo1.png" alt="深坑源春">
-            <div class="carousel-overlay">
-              <div class="carousel-name">深坑源春</div>
-              <div class="carousel-price">麻辣臭豆腐 · 嫩鴨血</div>
-            </div>
-          </div>
+        <div class="c-track" id="cTrack">
+          <div class="c-slide"><img src="slide1.jpg" alt="鴨血"><div class="c-overlay"><div class="c-name">麻辣嫩鴨血</div><div class="c-price">$180</div><button class="c-btn" onclick="quickAdd(3)">加入購物車</button></div></div>
+          <div class="c-slide"><img src="slide2.jpg" alt="源春"><div class="c-overlay"><div class="c-name">源春 · 創立於1997</div><div class="c-price">深坑老街特產</div></div></div>
+          <div class="c-slide"><img src="slide3.jpg" alt="青草茶"><div class="c-overlay"><div class="c-name">源春自製青草茶</div><div class="c-price">清涼降火 · 無添加</div></div></div>
+          <div class="c-slide"><img src="slide4.jpg" alt="配送"><div class="c-overlay"><div class="c-name">黑貓冷藏配送</div><div class="c-price">滿$2,600免運費</div></div></div>
+          <div class="c-slide"><img src="slide5.jpg" alt="保鮮"><div class="c-overlay"><div class="c-name">冷藏保鮮到府</div><div class="c-price">安心新鮮配送</div></div></div>
+          <div class="c-slide"><img src="slide6.jpg" alt="臭豆腐"><div class="c-overlay"><div class="c-name">麻辣臭豆腐</div><div class="c-price">$140</div><button class="c-btn" onclick="quickAdd(1)">加入購物車</button></div></div>
+          <div class="c-slide"><img src="malatoufu.png" alt="麻辣臭豆腐"><div class="c-overlay"><div class="c-name">麻辣臭豆腐</div><div class="c-price">$140</div><button class="c-btn" onclick="quickAdd(1)">加入購物車</button></div></div>
+          <div class="c-slide"><img src="maladuxue.png" alt="麻辣嫩鴨血"><div class="c-overlay"><div class="c-name">麻辣嫩鴨血</div><div class="c-price">$180</div><button class="c-btn" onclick="quickAdd(3)">加入購物車</button></div></div>
+          <div class="c-slide"><img src="redtofu.jpg" alt="滷紅燒嫩豆腐"><div class="c-overlay"><div class="c-name">滷紅燒嫩豆腐</div><div class="c-price">$130</div><button class="c-btn" onclick="quickAdd(6)">加入購物車</button></div></div>
+          <div class="c-slide"><img src="logo1.png" alt="源春" style="object-fit:contain;background:#fdf8f2;"><div class="c-overlay"><div class="c-name">深坑源春</div><div class="c-price">麻辣臭豆腐 · 嫩鴨血</div></div></div>
         </div>
-
-        <!-- Arrows -->
-        <button class="carousel-arrow left" onclick="carouselMove(-1)">‹</button>
-        <button class="carousel-arrow right" onclick="carouselMove(1)">›</button>
-
-        <!-- Dots -->
-        <div class="carousel-dots" id="carouselDots"></div>
+        <button class="c-arr l" onclick="cMove(-1)">‹</button>
+        <button class="c-arr r" onclick="cMove(1)">›</button>
+        <div class="c-dots" id="cDots"></div>
       </div>
 
-      <!-- Member System Illustration -->
-      <div class="member-banner">
-        <div class="member-step">
-          <div class="member-step-icon">📝</div>
-          <div class="member-step-title">免費註冊</div>
-          <div class="member-step-desc">手機號碼快速加入</div>
-        </div>
-        <div class="member-step-arrow">→</div>
-        <div class="member-step">
-          <div class="member-step-icon">🛒</div>
-          <div class="member-step-title">下單購物</div>
-          <div class="member-step-desc">每$100賺1點</div>
-        </div>
-        <div class="member-step-arrow">→</div>
-        <div class="member-step">
-          <div class="member-step-icon">⭐</div>
-          <div class="member-step-title">累積點數</div>
-          <div class="member-step-desc">100點折$50</div>
-        </div>
-        <div class="member-step-arrow">→</div>
-        <div class="member-step">
-          <div class="member-step-icon">🎁</div>
-          <div class="member-step-title">專屬優惠</div>
-          <div class="member-step-desc">生日禮・限定活動</div>
-        </div>
+      <!-- Member banner -->
+      <div class="mbanner">
+        <div class="mstep"><div class="mstep-icon">📝</div><div class="mstep-title">免費註冊</div><div class="mstep-desc">手機號碼快速加入</div></div>
+        <div class="mstep-arrow">→</div>
+        <div class="mstep"><div class="mstep-icon">🛒</div><div class="mstep-title">下單購物</div><div class="mstep-desc">每$100賺1點</div></div>
+        <div class="mstep-arrow">→</div>
+        <div class="mstep"><div class="mstep-icon">⭐</div><div class="mstep-title">累積點數</div><div class="mstep-desc">100點折$50</div></div>
+        <div class="mstep-arrow">→</div>
+        <div class="mstep"><div class="mstep-icon">🎁</div><div class="mstep-title">專屬優惠</div><div class="mstep-desc">生日禮・限定活動</div></div>
       </div>
 
-      <div class="page-header">
-        <div class="page-title">精選商品</div>
-        <div class="page-sub">嚴選深坑老街道地好味道</div>
+      <div class="ph"><div class="ph-title">精選商品</div><div class="ph-sub">嚴選深坑老街道地好味道</div></div>
+      <div class="cat-bar" id="homeCats">
+        <button class="cat-tab active" onclick="homeCat('all',this)">🏠 全部</button>
+        <button class="cat-tab" onclick="homeCat('hot',this)">🍲 加熱直接吃</button>
+        <button class="cat-tab" onclick="homeCat('raw',this)">🥩 在家自己煮</button>
       </div>
-
-      <!-- Category Tab Bar -->
-      <div class="cat-bar" id="homeCatBar">
-        <button class="cat-tab active" onclick="homeCatFilter('all',this)">🏠 全部</button>
-        <button class="cat-tab" onclick="homeCatFilter('hot',this)">🍲 加熱直接吃</button>
-        <button class="cat-tab" onclick="homeCatFilter('raw',this)">🥩 在家自己煮</button>
-      </div>
-
-      <div class="product-grid" id="homeGrid"></div>
+      <div class="pgrid" id="homeGrid"></div>
     </div>
 
-    <!-- PRODUCTS PAGE -->
+    <!-- PRODUCTS -->
     <div id="page-products" style="display:none;">
-      <div class="page-header">
-        <div class="page-title" id="productsTitle">所有商品</div>
-        <div class="page-sub" id="productsCount"></div>
+      <div class="ph"><div class="ph-title" id="prodTitle">所有商品</div><div class="ph-sub" id="prodCount"></div></div>
+      <div class="cat-bar" id="prodCats">
+        <button class="cat-tab active" onclick="prodCat('all',this)">🏠 全部</button>
+        <button class="cat-tab" onclick="prodCat('hot',this)">🍲 加熱直接吃</button>
+        <button class="cat-tab" onclick="prodCat('raw',this)">🥩 在家自己煮</button>
       </div>
-
-      <!-- Category Tab Bar -->
-      <div class="cat-bar" id="productsCatBar">
-        <button class="cat-tab active" onclick="prodCatFilter('all',this)">🏠 全部</button>
-        <button class="cat-tab" onclick="prodCatFilter('hot',this)">🍲 加熱直接吃</button>
-        <button class="cat-tab" onclick="prodCatFilter('raw',this)">🥩 在家自己煮</button>
-        
-      </div>
-
-      <div class="product-grid" id="productsGrid"></div>
+      <div class="pgrid" id="prodGrid"></div>
     </div>
 
-    <!-- MEMBER PAGE -->
+    <!-- MEMBER -->
     <div id="page-member" style="display:none;">
-      <div class="page-header">
-        <div class="page-title">我的帳戶</div>
-      </div>
+      <div class="ph"><div class="ph-title">我的帳戶</div></div>
       <div id="memberContent"></div>
     </div>
 
-    <!-- ABOUT PAGE -->
-    <div id="page-about" style="display:none;">
-      <div class="page-header">
-        <div class="page-title">品牌故事</div>
+    <!-- TRACKING -->
+    <div id="page-tracking" style="display:none;">
+      <div class="ph"><div class="ph-title">📦 訂單查詢</div><div class="ph-sub">輸入訂單編號查詢出貨進度</div></div>
+      <div style="background:var(--warm-white);border-radius:14px;padding:22px;border:1.5px solid rgba(106,174,214,.2);margin-bottom:18px;">
+        <div class="fg"><label class="fl">訂單編號</label><input class="fi" type="text" id="trackId" placeholder="例：YC1234567890"></div>
+        <button class="fb" onclick="doTrack()">查詢訂單</button>
       </div>
-      <div style="background:var(--warm-white);border-radius:16px;padding:28px;border:1.5px solid rgba(106,174,214,0.2);line-height:2;font-size:14px;color:var(--mid);">
-        <p style="margin-bottom:16px;">源春深坑老街特產，傳承深坑古法製作臭豆腐的技藝，嚴選新鮮食材，不添加任何防腐劑，讓每一口都是大自然最純粹的美味饋贈。</p>
-        <p style="margin-bottom:16px;">我們的臭豆腐採用獨家配方，細心醃製自然發酵，豆香濃郁，口感細緻滑順。搭配特調麻辣湯底，香辣入味，越吃越涮嘴。</p>
-        <p>深坑老街是台灣著名的臭豆腐聖地，源春在此扎根多年，堅持傳統工藝，將這份古早味帶到每個家庭的餐桌上。</p>
+      <div id="trackResult"></div>
+    </div>
+
+    <!-- ABOUT -->
+    <div id="page-about" style="display:none;">
+      <div class="ph"><div class="ph-title">品牌故事</div></div>
+      <div style="background:var(--warm-white);border-radius:14px;padding:26px;border:1.5px solid rgba(106,174,214,.2);line-height:2;font-size:14px;color:var(--mid);">
+        <p style="margin-bottom:14px;">源春深坑老街特產，傳承深坑古法製作臭豆腐的技藝，嚴選新鮮食材，不添加任何防腐劑。</p>
+        <p style="margin-bottom:14px;">我們的臭豆腐採用獨家配方，細心醃製自然發酵，豆香濃郁，口感細緻滑順。</p>
+        <p>深坑老街是台灣著名的臭豆腐聖地，源春在此扎根多年，堅持傳統工藝。</p>
       </div>
     </div>
 
-    <!-- FAQ PAGE -->
+    <!-- FAQ -->
     <div id="page-faq" style="display:none;">
-      <div class="page-header">
-        <div class="page-title">常見問題</div>
-      </div>
-      <div style="display:flex;flex-direction:column;gap:12px;">
-        <div style="background:var(--warm-white);border-radius:12px;padding:16px 20px;border:1.5px solid rgba(106,174,214,0.2);">
-          <div style="font-size:14px;font-weight:700;color:var(--dark);margin-bottom:8px;">Q：如何保存商品？</div>
-          <div style="font-size:13px;color:var(--mid);line-height:1.8;">熟食冷藏保存 7 天，生食冷藏保存 14 天。請收到後立即冷藏，勿放置常溫。</div>
+      <div class="ph"><div class="ph-title">常見問題</div></div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div style="background:var(--warm-white);border-radius:11px;padding:14px 18px;border:1.5px solid rgba(106,174,214,.2);">
+          <div style="font-size:13px;font-weight:700;color:var(--dark);margin-bottom:6px;">Q：如何保存商品？</div>
+          <div style="font-size:12px;color:var(--mid);line-height:1.8;">熟食冷藏7天，生食冷藏14天，請立即冷藏。</div>
         </div>
-        <div style="background:var(--warm-white);border-radius:12px;padding:16px 20px;border:1.5px solid rgba(106,174,214,0.2);">
-          <div style="font-size:14px;font-weight:700;color:var(--dark);margin-bottom:8px;">Q：配送方式？</div>
-          <div style="font-size:13px;color:var(--mid);line-height:1.8;">採用黑貓冷藏宅急便配送，確保食品新鮮到府。滿 $2,600 免運費。</div>
+        <div style="background:var(--warm-white);border-radius:11px;padding:14px 18px;border:1.5px solid rgba(106,174,214,.2);">
+          <div style="font-size:13px;font-weight:700;color:var(--dark);margin-bottom:6px;">Q：配送方式？</div>
+          <div style="font-size:12px;color:var(--mid);line-height:1.8;">黑貓冷藏宅急便。滿$2,600免運，未滿運費$180。</div>
         </div>
-        <div style="background:var(--warm-white);border-radius:12px;padding:16px 20px;border:1.5px solid rgba(106,174,214,0.2);">
-          <div style="font-size:14px;font-weight:700;color:var(--dark);margin-bottom:8px;">Q：會員點數如何使用？</div>
-          <div style="font-size:13px;color:var(--mid);line-height:1.8;">每消費 $100 獲得 1 點，累積 100 點可折抵 $50 元購物金。</div>
+        <div style="background:var(--warm-white);border-radius:11px;padding:14px 18px;border:1.5px solid rgba(106,174,214,.2);">
+          <div style="font-size:13px;font-weight:700;color:var(--dark);margin-bottom:6px;">Q：付款方式？</div>
+          <div style="font-size:12px;color:var(--mid);line-height:1.8;">貨到付款（+$30手續費）或銀行匯款。</div>
         </div>
-        <div style="background:var(--warm-white);border-radius:12px;padding:16px 20px;border:1.5px solid rgba(106,174,214,0.2);">
-          <div style="font-size:14px;font-weight:700;color:var(--dark);margin-bottom:8px;">Q：可以退換貨嗎？</div>
-          <div style="font-size:13px;color:var(--mid);line-height:1.8;">食品類商品因衛生因素，收到後如有品質問題請於 24 小時內聯繫客服。</div>
+        <div style="background:var(--warm-white);border-radius:11px;padding:14px 18px;border:1.5px solid rgba(106,174,214,.2);">
+          <div style="font-size:13px;font-weight:700;color:var(--dark);margin-bottom:6px;">Q：點數如何使用？</div>
+          <div style="font-size:12px;color:var(--mid);line-height:1.8;">每消費$100獲得1點，100點折抵$50。結帳時選擇使用點數。</div>
         </div>
       </div>
     </div>
@@ -1547,324 +469,215 @@ body {
   </main>
 
   <!-- RIGHT SIDEBAR -->
-  <aside class="right-sidebar">
-
-    <!-- 熱銷排行 -->
-    <div class="right-section">
-      <div class="right-title">🔥 熱銷排行</div>
-      <div id="hotRanking"></div>
+  <aside class="rsb">
+    <div class="rs-sec"><div class="rs-title">🔥 熱銷排行</div><div id="hotRank"></div></div>
+    <div class="rs-sec">
+      <div class="rs-title">📢 最新公告</div>
+      <div class="ann-item"><div class="ann-tag">促銷</div><div class="ann-text">滿$2,600免運費！限時優惠中</div><div class="ann-date">2026/05/18</div></div>
+      <div class="ann-item"><div class="ann-tag">新品</div><div class="ann-text">自製青草茶上架，清涼消暑</div><div class="ann-date">2026/05/10</div></div>
+      <div class="ann-item"><div class="ann-tag">公告</div><div class="ann-text">端午節出貨時間調整，敬請見諒</div><div class="ann-date">2026/05/01</div></div>
     </div>
-
-    <!-- 最新公告 -->
-    <div class="right-section">
-      <div class="right-title">📢 最新公告</div>
-      <div class="announce-item">
-        <div class="announce-tag">促銷</div>
-        <div class="announce-text">滿$2,600免運費！限時優惠中</div>
-        <div class="announce-date">2026/05/18</div>
-      </div>
-      <div class="announce-item">
-        <div class="announce-tag">新品</div>
-        <div class="announce-text">自製青草茶上架，清涼消暑好選擇</div>
-        <div class="announce-date">2026/05/10</div>
-      </div>
-      <div class="announce-item">
-        <div class="announce-tag">公告</div>
-        <div class="announce-text">端午節前後出貨時間調整，敬請見諒</div>
-        <div class="announce-date">2026/05/01</div>
-      </div>
+    <div class="rs-sec">
+      <div class="rs-title">⭐ 顧客評價</div>
+      <div class="rev-item"><div class="rev-stars">★★★★★</div><div class="rev-text">「麻辣臭豆腐超好吃！回購第三次了！」</div><div class="rev-author">— 小芳 ❤️</div></div>
+      <div class="rev-item"><div class="rev-stars">★★★★★</div><div class="rev-text">「冷藏新鮮配送，強力推薦！」</div><div class="rev-author">— 阿明 👍</div></div>
+      <div class="rev-item"><div class="rev-stars">★★★★☆</div><div class="rev-text">「鴨血滑嫩，家人都喜歡！」</div><div class="rev-author">— 台北 林小姐</div></div>
     </div>
-
-    <!-- 顧客評價 -->
-    <div class="right-section">
-      <div class="right-title">⭐ 顧客評價</div>
-      <div class="review-item">
-        <div class="review-stars">★★★★★</div>
-        <div class="review-text">「麻辣臭豆腐超好吃！湯汁濃郁，回購第三次了！」</div>
-        <div class="review-author">— 小芳 ❤️</div>
-      </div>
-      <div class="review-item">
-        <div class="review-stars">★★★★★</div>
-        <div class="review-text">「包裝很用心，冷藏配送新鮮到府，強力推薦！」</div>
-        <div class="review-author">— 阿明 👍</div>
-      </div>
-      <div class="review-item">
-        <div class="review-stars">★★★★☆</div>
-        <div class="review-text">「鴨血滑嫩，口感很好，家人都很喜歡！」</div>
-        <div class="review-author">— 台北 林小姐</div>
-      </div>
-    </div>
-
-    <!-- LINE QR + 聯絡 -->
-    <div class="right-section">
-      <div class="right-title">📱 聯絡我們</div>
+    <div class="rs-sec">
+      <div class="rs-title">📱 聯絡我們</div>
       <div style="text-align:center;">
-        <img src="lineqr.jpg" alt="LINE QR" style="width:120px;height:120px;border-radius:10px;object-fit:cover;margin-bottom:10px;display:block;margin-left:auto;margin-right:auto;">
-        <div style="font-size:12px;color:var(--mid);margin-bottom:8px;">掃描加入LINE好友</div>
-        <div style="font-size:14px;font-weight:700;color:var(--dark);">📞 02-2664-7116</div>
-        <div style="font-size:12px;color:var(--mid);margin-top:4px;">深坑老街特產</div>
+        <img src="lineqr.jpg" alt="LINE QR" style="width:108px;height:108px;border-radius:9px;object-fit:cover;display:block;margin:0 auto 7px;">
+        <div style="font-size:10px;color:var(--mid);margin-bottom:5px;">掃描加入LINE好友</div>
+        <div style="font-size:13px;font-weight:700;color:var(--dark);">📞 02-2664-7116</div>
       </div>
     </div>
-
   </aside>
 
 </div>
 
-<!-- MOBILE RIGHT CONTENT (shows below products on mobile) -->
-<div class="mobile-right">
-  <div class="right-section">
-    <div class="right-title">🔥 熱銷排行</div>
-    <div id="hotRankingMobile"></div>
+<!-- MOBILE RIGHT -->
+<div class="mob-right">
+  <div class="rs-sec"><div class="rs-title">🔥 熱銷排行</div><div id="hotRankMob"></div></div>
+  <div class="rs-sec">
+    <div class="rs-title">📢 最新公告</div>
+    <div class="ann-item"><div class="ann-tag">促銷</div><div class="ann-text">滿$2,600免運費！</div><div class="ann-date">2026/05/18</div></div>
+    <div class="ann-item"><div class="ann-tag">公告</div><div class="ann-text">端午節出貨時間調整</div><div class="ann-date">2026/05/01</div></div>
   </div>
-  <div class="right-section">
-    <div class="right-title">📢 最新公告</div>
-    <div class="announce-item">
-      <div class="announce-tag">促銷</div>
-      <div class="announce-text">滿$2,600免運費！限時優惠中</div>
-      <div class="announce-date">2026/05/18</div>
-    </div>
-    <div class="announce-item">
-      <div class="announce-tag">新品</div>
-      <div class="announce-text">自製青草茶上架，清涼消暑好選擇</div>
-      <div class="announce-date">2026/05/10</div>
-    </div>
-  </div>
-  <div class="right-section">
-    <div class="right-title">⭐ 顧客評價</div>
-    <div class="review-item">
-      <div class="review-stars">★★★★★</div>
-      <div class="review-text">「麻辣臭豆腐超好吃！湯汁濃郁，回購第三次了！」</div>
-      <div class="review-author">— 小芳 ❤️</div>
-    </div>
-    <div class="review-item">
-      <div class="review-stars">★★★★★</div>
-      <div class="review-text">「包裝很用心，冷藏配送新鮮到府，強力推薦！」</div>
-      <div class="review-author">— 阿明 👍</div>
-    </div>
-  </div>
-  <div class="right-section">
-    <div class="right-title">📱 聯絡我們</div>
+  <div class="rs-sec">
+    <div class="rs-title">📱 聯絡我們</div>
     <div style="text-align:center;">
-      <img src="lineqr.jpg" alt="LINE QR" style="width:120px;height:120px;border-radius:10px;object-fit:cover;display:block;margin:0 auto 8px;">
-      <div style="font-size:13px;color:var(--mid);margin-bottom:6px;">掃描加入LINE好友</div>
-      <div style="font-size:15px;font-weight:700;color:var(--dark);">📞 02-2664-7116</div>
+      <img src="lineqr.jpg" alt="LINE" style="width:100px;height:100px;border-radius:9px;object-fit:cover;display:block;margin:0 auto 7px;">
+      <div style="font-size:14px;font-weight:700;color:var(--dark);">📞 02-2664-7116</div>
     </div>
   </div>
 </div>
 
 <!-- FOOTER -->
-<footer class="site-footer">
-  <div class="footer-inner">
+<footer class="footer">
+  <div class="footer-in">
     <div>
-      <div class="footer-logo">源 春</div>
-      <div style="font-size:12px;color:rgba(255,255,255,0.7);margin-top:4px;letter-spacing:1px;">深坑老街特產 · 創立於1997</div>
+      <div class="flogo">源 春</div>
+      <div style="font-size:11px;color:rgba(255,255,255,.55);margin-top:3px;">深坑老街特產 · 創立於1997</div>
     </div>
-    <div class="footer-info">
+    <div class="finfo">
       <div>📍 新北市深坑區深坑老街</div>
       <div>📞 02-2664-7116</div>
       <div>🕘 平日 11:00–18:00（週二公休）</div>
       <div>🎉 假日/國定假日 11:00–19:30</div>
     </div>
-    <div class="footer-links">
-      <a href="#" onclick="showPage('about')">品牌故事</a>
-      <a href="#" onclick="showPage('faq')">常見問題</a>
-      <a href="#" onclick="showPage('member')">會員中心</a>
+    <div class="flinks">
+      <a href="#" onclick="showPage('about');return false">品牌故事</a>
+      <a href="#" onclick="showPage('faq');return false">常見問題</a>
+      <a href="#" onclick="showPage('member');return false">會員中心</a>
+      <a href="#" onclick="showPage('tracking');return false">訂單查詢</a>
     </div>
-    <div class="footer-copy">© 2026 深坑源春 版權所有</div>
+    <div class="fcopy">© 2026 深坑源春 版權所有</div>
   </div>
 </footer>
+
+<!-- MOBILE BOTTOM NAV -->
+<div class="mobnav" id="mobnav">
+  <div class="mobnav-item active" onclick="showPage('home');setMobNav(this)"><div class="mobnav-icon">🏠</div><div class="mobnav-label">首頁</div></div>
+  <div class="mobnav-item" onclick="showPage('products');setMobNav(this)"><div class="mobnav-icon">🛍️</div><div class="mobnav-label">商品</div></div>
+  <div class="mobnav-item" onclick="showPage('member');setMobNav(this)"><div class="mobnav-icon">👤</div><div class="mobnav-label">會員</div></div>
+  <div class="mobnav-item" onclick="toggleCart()"><div class="mobnav-icon">🛒<span id="mobCartBadge" style="font-size:9px;background:var(--primary);color:white;border-radius:50%;padding:0 3px;display:none;vertical-align:top;"></span></div><div class="mobnav-label">購物車</div></div>
+  <div class="mobnav-item" onclick="showPage('faq');setMobNav(this)"><div class="mobnav-icon">❓</div><div class="mobnav-label">說明</div></div>
+</div>
+
+<!-- CART -->
 <div class="overlay" id="cartOverlay" onclick="toggleCart()"></div>
-<div class="cart-drawer" id="cartDrawer">
-  <div class="cart-header">
-    <div class="cart-header-title">🛒 購物車</div>
-    <button class="cart-close" onclick="toggleCart()">✕</button>
-  </div>
-  <div class="cart-items" id="cartItems"></div>
-  <div class="cart-footer" id="cartFooter" style="display:none;">
-    <div class="cart-total">
-      <div class="cart-total-label">合計</div>
-      <div class="cart-total-price" id="cartTotalPrice">$0</div>
-    </div>
-    <button class="checkout-btn" onclick="checkout()">結帳</button>
+<div class="cdrawer" id="cdrawer">
+  <div class="ch"><div class="ch-title">🛒 購物車</div><button class="cclose" onclick="toggleCart()">✕</button></div>
+  <div class="citems" id="citems"></div>
+  <div class="cfooter" id="cfooter" style="display:none;">
+    <div class="ctotal"><div class="ctotal-label">合計</div><div class="ctotal-price" id="ctotalPrice">$0</div></div>
+    <button class="ckbtn" onclick="doCheckout()">前往結帳</button>
   </div>
 </div>
 
-<!-- LOGIN MODAL -->
+<!-- LOGIN -->
 <div class="modal-overlay" id="loginModal">
   <div class="modal">
-    <button class="modal-close" onclick="closeModal('loginModal')">✕</button>
-    <div class="modal-title">會員登入</div>
-    <div class="modal-sub">歡迎回來，請登入您的帳戶</div>
-    <div class="form-group">
-      <label class="form-label">手機號碼</label>
-      <input class="form-input" type="tel" id="loginPhone" placeholder="09xxxxxxxx">
-    </div>
-    <div class="form-group">
-      <label class="form-label">密碼</label>
-      <input class="form-input" type="password" id="loginPwd" placeholder="••••••••">
-    </div>
-    <button class="form-btn" onclick="login()">登入</button>
-    <div class="form-switch">
-      還沒有帳號？<a onclick="switchModal('loginModal','registerModal')">立即註冊</a>
-    </div>
+    <button class="mc" onclick="closeModal('loginModal')">✕</button>
+    <div class="mt">會員登入</div><div class="ms">歡迎回來，請登入您的帳戶</div>
+    <div class="fg"><label class="fl">手機號碼</label><input class="fi" type="tel" id="lPhone" placeholder="09xxxxxxxx"></div>
+    <div class="fg"><label class="fl">密碼</label><input class="fi" type="password" id="lPwd" placeholder="••••••••"></div>
+    <button class="fb" onclick="doLogin()">登入</button>
+    <div class="fsw">還沒有帳號？<a onclick="swModal('loginModal','registerModal')">立即註冊</a></div>
   </div>
 </div>
 
-<!-- REGISTER MODAL -->
+<!-- REGISTER -->
 <div class="modal-overlay" id="registerModal">
-  <div class="modal" style="max-height:90vh;overflow-y:auto;">
-    <button class="modal-close" onclick="closeModal('registerModal')">✕</button>
-    <div class="modal-title">新會員註冊</div>
-    <div class="modal-sub">加入源春，享受會員專屬優惠</div>
-    <div class="form-group">
-      <label class="form-label">姓名 *</label>
-      <input class="form-input" type="text" id="regName" placeholder="您的姓名">
+  <div class="modal">
+    <button class="mc" onclick="closeModal('registerModal')">✕</button>
+    <div class="mt">新會員註冊</div><div class="ms">加入源春，享受會員專屬優惠</div>
+    <div class="fg"><label class="fl">姓名 *</label><input class="fi" type="text" id="rName" placeholder="您的姓名"></div>
+    <div class="fg"><label class="fl">手機號碼 *</label><input class="fi" type="tel" id="rPhone" placeholder="09xxxxxxxx"></div>
+    <div class="fg"><label class="fl">電子信箱（選填）</label><input class="fi" type="email" id="rEmail" placeholder="your@email.com"></div>
+    <div class="fg"><label class="fl">密碼 * （至少8位）</label><input class="fi" type="password" id="rPwd" placeholder="••••••••"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px;">
+      <div class="fg"><label class="fl">性別</label><select class="fi" id="rGender"><option value="">請選擇</option><option>女</option><option>男</option><option>其他</option></select></div>
+      <div class="fg"><label class="fl">生日</label><input class="fi" type="date" id="rBirth"></div>
     </div>
-    <div class="form-group">
-      <label class="form-label">手機號碼 *</label>
-      <input class="form-input" type="tel" id="regPhone" placeholder="09xxxxxxxx">
-    </div>
-    <div class="form-group">
-      <label class="form-label">電子信箱（選填）</label>
-      <input class="form-input" type="email" id="regEmail" placeholder="your@email.com">
-    </div>
-    <div class="form-group">
-      <label class="form-label">密碼 *</label>
-      <input class="form-input" type="password" id="regPwd" placeholder="至少8個字元">
-    </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-      <div class="form-group">
-        <label class="form-label">性別</label>
-        <select class="form-input" id="regGender">
-          <option value="">請選擇</option>
-          <option value="女">女</option>
-          <option value="男">男</option>
-          <option value="其他">其他</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label class="form-label">生日</label>
-        <input class="form-input" type="date" id="regBirthday">
-      </div>
-    </div>
-    <div class="form-group">
-      <label class="form-label">收件地址</label>
-      <input class="form-input" type="text" id="regAddress" placeholder="縣市、鄉鎮、路名、號碼">
-    </div>
-    <button class="form-btn" onclick="register()">註冊</button>
-    <div class="form-switch">
-      已有帳號？<a onclick="switchModal('registerModal','loginModal')">立即登入</a>
-    </div>
+    <div class="fg"><label class="fl">收件地址</label><input class="fi" type="text" id="rAddr" placeholder="縣市、鄉鎮、路名、號碼"></div>
+    <button class="fb" onclick="doRegister()">註冊</button>
+    <div class="fsw">已有帳號？<a onclick="swModal('registerModal','loginModal')">立即登入</a></div>
   </div>
 </div>
 
-<!-- CHECKOUT MODAL -->
+<!-- CHECKOUT -->
 <div class="modal-overlay" id="checkoutModal">
-  <div class="modal" style="max-height:90vh;overflow-y:auto;">
-    <button class="modal-close" onclick="closeModal('checkoutModal')">✕</button>
-    <div class="modal-title">確認訂單</div>
-    <div class="modal-sub">請確認收件資訊</div>
+  <div class="modal">
+    <button class="mc" onclick="closeModal('checkoutModal')">✕</button>
+    <div class="mt">確認訂單</div><div class="ms">請填寫收件資訊</div>
+    <div class="fg"><label class="fl">收件人姓名 *</label><input class="fi" type="text" id="sName" placeholder="收件人"></div>
+    <div class="fg"><label class="fl">手機號碼 *</label><input class="fi" type="tel" id="sPhone" placeholder="09xxxxxxxx"></div>
+    <div class="fg"><label class="fl">收件地址 *</label><input class="fi" type="text" id="sAddr" placeholder="縣市、鄉鎮、路名、號碼"></div>
 
-    <div class="form-group">
-      <label class="form-label">收件人姓名 *</label>
-      <input class="form-input" type="text" id="shipName" placeholder="收件人姓名">
-    </div>
-    <div class="form-group">
-      <label class="form-label">手機號碼 *</label>
-      <input class="form-input" type="tel" id="shipPhone" placeholder="09xxxxxxxx">
-    </div>
-    <div class="form-group">
-      <label class="form-label">收件地址 *</label>
-      <input class="form-input" type="text" id="shipAddress" placeholder="縣市、鄉鎮、路名、號碼">
-    </div>
-    <div class="form-group">
-      <label class="form-label">付款方式 *</label>
-      <select class="form-input" id="paymentMethod" onchange="updatePaymentInfo()">
+    <!-- Payment -->
+    <div class="fg">
+      <label class="fl">付款方式 *</label>
+      <select class="fi" id="payMethod" onchange="onPayChange()">
         <option value="">請選擇付款方式</option>
         <option value="cod">貨到付款（+$30 手續費）</option>
         <option value="transfer">銀行匯款</option>
       </select>
     </div>
-
-    <!-- Bank transfer info -->
-    <div id="bankInfo" style="display:none;background:var(--accent-blue-light);border:1.5px solid var(--accent-blue);border-radius:12px;padding:14px;margin-bottom:16px;">
-      <div style="font-size:13px;font-weight:700;color:var(--dark);margin-bottom:8px;">🏦 匯款資訊</div>
-      <div style="font-size:13px;color:var(--dark);line-height:2;">
-        銀行：玉山銀行 (808)<br>
-        帳號：0123-456-789012<br>
-        戶名：源春食品有限公司
-      </div>
-      <div class="form-group" style="margin-top:12px;margin-bottom:0;">
-        <label class="form-label">匯款帳號後4碼 *</label>
-        <input class="form-input" type="text" id="transferCode" placeholder="請輸入匯款帳號後4碼" maxlength="4">
-      </div>
+    <div id="codBox" style="display:none;background:#fff8e1;border:1.5px solid var(--yellow);border-radius:11px;padding:11px;margin-bottom:11px;font-size:13px;color:var(--dark);line-height:1.8;">
+      🚚 貨到付款需加收 <strong>$30 手續費</strong>，請備妥現金。
+    </div>
+    <div id="bankBox" style="display:none;background:var(--blue-light);border:1.5px solid var(--blue);border-radius:11px;padding:11px;margin-bottom:11px;">
+      <div style="font-size:12px;font-weight:700;color:var(--dark);margin-bottom:7px;">🏦 匯款資訊</div>
+      <div style="font-size:12px;color:var(--dark);line-height:2;">銀行：玉山銀行 (808)<br>帳號：0123-456-789012<br>戶名：源春食品有限公司</div>
+      <div class="fg" style="margin-top:9px;margin-bottom:0;"><label class="fl">匯款帳號後4碼 *</label><input class="fi" type="text" id="tranCode" placeholder="後4碼" maxlength="4"></div>
     </div>
 
-    <!-- COD info -->
-    <div id="codInfo" style="display:none;background:#fff8e1;border:1.5px solid #f5c842;border-radius:12px;padding:14px;margin-bottom:16px;">
-      <div style="font-size:13px;color:var(--dark);line-height:1.8;">
-        🚚 貨到付款須支付 <strong>$30 手續費</strong><br>
-        請於收貨時以現金支付
+    <!-- Points -->
+    <div id="ptsBox" style="display:none;background:var(--yellow-light);border:1.5px solid var(--yellow);border-radius:11px;padding:13px;margin-bottom:11px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:7px;">
+        <div style="font-size:12px;font-weight:700;color:var(--dark);">⭐ 使用點數折抵</div>
+        <div style="font-size:11px;color:var(--mid);">可用：<span id="availPts">0</span> 點</div>
       </div>
+      <div style="display:flex;gap:7px;align-items:center;">
+        <input class="fi" type="number" id="usePts" placeholder="輸入點數（100的倍數）" min="0" step="100" oninput="recalc()" style="flex:1;">
+        <div style="font-size:13px;color:var(--primary);font-weight:700;white-space:nowrap;">折 <span id="ptsDisc">$0</span></div>
+      </div>
+      <div style="font-size:10px;color:var(--mid);margin-top:4px;">100點 = 折抵$50</div>
     </div>
 
-    <div class="form-group">
-      <label class="form-label">備註</label>
-      <input class="form-input" type="text" id="shipNote" placeholder="例：請勿放門口">
-    </div>
+    <div class="fg"><label class="fl">備註</label><input class="fi" type="text" id="sNote" placeholder="例：請勿放門口"></div>
 
-    <!-- Points Redemption -->
-    <div id="pointsRedemption" style="display:none;background:var(--accent-yellow-light);border:1.5px solid var(--accent-yellow);border-radius:12px;padding:14px;margin-bottom:16px;">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-        <div style="font-size:13px;font-weight:700;color:var(--dark);">⭐ 使用點數折抵</div>
-        <div style="font-size:12px;color:var(--mid);">可用點數：<span id="availablePoints">0</span> 點</div>
-      </div>
-      <div style="display:flex;gap:8px;align-items:center;">
-        <input class="form-input" type="number" id="usePoints" placeholder="輸入使用點數" min="0" step="100" oninput="updatePointsDiscount()" style="flex:1;">
-        <div style="font-size:13px;color:var(--primary);font-weight:700;white-space:nowrap;">折抵 <span id="pointsDiscount">$0</span></div>
-      </div>
-      <div style="font-size:11px;color:var(--mid);margin-top:6px;">每100點可折抵$50，請輸入100的倍數</div>
-    </div>
-
-    <!-- Order Summary -->
-    <div style="background:var(--cream);border-radius:12px;padding:16px;margin:16px 0;border:1px solid var(--light-tan);">
-      <div style="font-size:13px;font-weight:700;color:var(--mid);margin-bottom:10px;letter-spacing:1px;">訂單明細</div>
-      <div id="checkoutItems"></div>
-      <div style="border-top:1px dashed var(--light-tan);margin-top:10px;padding-top:10px;">
-        <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--mid);margin-bottom:6px;">
-          <span>小計</span><span id="checkoutSubtotal"></span>
-        </div>
-        <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--mid);margin-bottom:6px;">
-          <span>運費</span><span id="checkoutShipping"></span>
-        </div>
-        <div style="display:flex;justify-content:space-between;font-size:16px;font-weight:900;color:var(--primary);margin-top:6px;">
-          <span>總計</span><span id="checkoutTotal"></span>
-        </div>
-        <div id="checkoutFreeShipMsg" style="font-size:11px;color:#4a8c4a;margin-top:6px;display:none;">✓ 已享免運費優惠</div>
-        <div id="checkoutShipGapMsg" style="font-size:11px;color:var(--mid);margin-top:6px;display:none;"></div>
+    <!-- Summary -->
+    <div style="background:var(--cream);border-radius:11px;padding:13px;margin:11px 0;border:1px solid var(--light-tan);">
+      <div style="font-size:11px;font-weight:700;color:var(--mid);margin-bottom:7px;letter-spacing:1px;">訂單明細</div>
+      <div id="ckItems"></div>
+      <div style="border-top:1px dashed var(--light-tan);margin-top:7px;padding-top:7px;">
+        <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--mid);margin-bottom:3px;"><span>小計</span><span id="ckSub"></span></div>
+        <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--mid);margin-bottom:3px;"><span>運費</span><span id="ckShip"></span></div>
+        <div id="ckCodRow" style="display:none;justify-content:space-between;font-size:12px;color:var(--mid);margin-bottom:3px;"><span>手續費</span><span>+$30</span></div>
+        <div id="ckDiscRow" style="display:none;justify-content:space-between;font-size:12px;color:var(--primary);margin-bottom:3px;"><span>點數折抵</span><span id="ckDisc"></span></div>
+        <div style="display:flex;justify-content:space-between;font-size:15px;font-weight:900;color:var(--primary);margin-top:5px;"><span>總計</span><span id="ckTotal"></span></div>
+        <div id="freeMsg" style="font-size:10px;color:#4a8c4a;margin-top:3px;display:none;">✓ 已享免運費優惠</div>
+        <div id="gapMsg" style="font-size:10px;color:var(--mid);margin-top:3px;display:none;"></div>
       </div>
     </div>
-
-    <button class="form-btn" onclick="confirmOrder()">確認下單</button>
+    <button class="fb" onclick="doConfirm()">確認下單</button>
   </div>
 </div>
 
-<!-- PRODUCT DETAIL MODAL -->
-<div class="modal-overlay" id="productModal">
+<!-- ORDER SUCCESS -->
+<div class="modal-overlay" id="successModal">
+  <div class="modal" style="text-align:center;">
+    <div style="font-size:60px;margin-bottom:11px;">🎉</div>
+    <div class="mt" style="justify-content:center;margin-bottom:7px;">訂單成立！</div>
+    <div style="font-size:12px;color:var(--mid);margin-bottom:14px;">感謝您的訂購，我們將盡快為您處理出貨。</div>
+    <div style="background:var(--cream);border-radius:11px;padding:14px;margin-bottom:14px;text-align:left;">
+      <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px dashed var(--light-tan);font-size:12px;"><span style="color:var(--mid);">訂單編號</span><span id="sucId" style="font-weight:700;color:var(--primary);"></span></div>
+      <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px dashed var(--light-tan);font-size:12px;"><span style="color:var(--mid);">訂單金額</span><span id="sucTotal" style="font-weight:700;color:var(--dark);"></span></div>
+      <div style="display:flex;justify-content:space-between;padding:5px 0;font-size:12px;"><span style="color:var(--mid);">獲得點數</span><span id="sucPts" style="font-weight:700;color:var(--blue);"></span></div>
+    </div>
+    <button class="fb" onclick="closeModal('successModal');showPage('tracking')">查看訂單進度</button>
+    <button style="width:100%;padding:9px;background:none;border:none;color:var(--mid);font-size:12px;cursor:pointer;margin-top:7px;" onclick="closeModal('successModal')">繼續購物</button>
+  </div>
+</div>
+
+<!-- PRODUCT DETAIL -->
+<div class="modal-overlay" id="prodModal">
   <div class="modal">
-    <button class="modal-close" onclick="closeModal('productModal')">✕</button>
-    <img id="pmImg" class="product-modal-img" src="" alt="">
-    <div class="product-modal-name" id="pmName"></div>
-    <div class="product-modal-price" id="pmPrice"></div>
-    <div class="qty-row">
-      <div class="qty-label">數量</div>
-      <div class="qty-controls">
-        <button class="qty-ctrl-btn" onclick="changeModalQty(-1)">−</button>
-        <div class="qty-ctrl-num" id="pmQty">1</div>
-        <button class="qty-ctrl-btn" style="background:var(--primary);color:white;" onclick="changeModalQty(1)">＋</button>
+    <button class="mc" onclick="closeModal('prodModal')">✕</button>
+    <img id="pmImg" style="width:100%;border-radius:11px;margin-bottom:14px;object-fit:cover;max-height:210px;" src="" alt="">
+    <div id="pmName" style="font-size:19px;font-weight:900;color:var(--dark);letter-spacing:1px;margin-bottom:7px;"></div>
+    <div id="pmPrice" style="font-size:24px;font-weight:900;color:var(--primary);margin-bottom:14px;"></div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+      <div style="font-size:13px;font-weight:700;color:var(--mid);">數量</div>
+      <div style="display:flex;align-items:center;gap:11px;">
+        <button style="background:var(--light-tan);border:none;border-radius:50%;width:34px;height:34px;font-size:19px;cursor:pointer;color:var(--dark);font-weight:700;display:flex;align-items:center;justify-content:center;" onclick="chQty(-1)">−</button>
+        <div id="pmQty" style="font-size:19px;font-weight:900;min-width:30px;text-align:center;">1</div>
+        <button style="background:var(--primary);border:none;border-radius:50%;width:34px;height:34px;font-size:19px;cursor:pointer;color:white;font-weight:700;display:flex;align-items:center;justify-content:center;" onclick="chQty(1)">＋</button>
       </div>
     </div>
-    <button class="form-btn" onclick="addToCartFromModal()">加入購物車</button>
+    <button class="fb" onclick="addFromModal()">加入購物車</button>
   </div>
 </div>
 
@@ -1872,628 +685,411 @@ body {
 <div class="toast" id="toast"></div>
 
 <script>
-// ===== DATA =====
-const products = [
-  { id:1, name:'麻辣臭豆腐', price:140, category:'hot', img:'malatoufu.png', emoji:'🍲' },
-  { id:2, name:'清蒸臭豆腐', price:140, category:'hot', img:'steamtofu.jpg', emoji:'🥢' },
-  { id:3, name:'麻辣嫩鴨血', price:180, category:'hot', img:'maladuxue.png', emoji:'🫀' },
-  { id:4, name:'肥腸嫩鴨血', price:230, category:'hot', img:'feichangduxue.png', emoji:'🍜' },
-  { id:5, name:'滷桂竹筍', price:220, category:'hot', img:'zhusun.jpg', emoji:'🎋' },
-  { id:6, name:'滷紅燒嫩豆腐', price:130, category:'hot', img:'redtofu.jpg', emoji:'🟤' },
-  { id:7, name:'手工臭豆腐', price:80, category:'raw', img:'handmade.jpg', emoji:'🍶', desc:'6片裝' },
-  { id:8, name:'濃縮麻辣湯底', price:50, category:'raw', img:'soupbase.jpg', emoji:'🌶️', desc:'料理包' },
-  
+// DATA
+const products=[
+  {id:1,name:'麻辣臭豆腐',price:140,cat:'hot',img:'malatoufu.png',em:'🍲'},
+  {id:2,name:'清蒸臭豆腐',price:140,cat:'hot',img:'steamtofu.jpg',em:'🥢'},
+  {id:3,name:'麻辣嫩鴨血',price:180,cat:'hot',img:'maladuxue.png',em:'🫀'},
+  {id:4,name:'肥腸嫩鴨血',price:230,cat:'hot',img:'feichangduxue.png',em:'🍜'},
+  {id:5,name:'滷桂竹筍',price:220,cat:'hot',img:'zhusun.jpg',em:'🎋'},
+  {id:6,name:'滷紅燒嫩豆腐',price:130,cat:'hot',img:'redtofu.jpg',em:'🟤'},
+  {id:7,name:'手工臭豆腐',price:80,cat:'raw',img:'handmade.jpg',em:'🍶',desc:'6片裝'},
+  {id:8,name:'濃縮麻辣湯底',price:50,cat:'raw',img:'soupbase.jpg',em:'🌶️',desc:'料理包'},
 ];
 
-// ===== STATE =====
-let cart = [];
-let currentUser = null;
-let modalProduct = null;
-let modalQty = 1;
-let members = JSON.parse(localStorage.getItem('yc_members') || '[]');
-let orders = JSON.parse(localStorage.getItem('yc_orders') || '[]');
+// STATE
+let cart=[], user=null, mprod=null, mqty=1;
+let members=JSON.parse(localStorage.getItem('yc_m')||'[]');
+let orders=JSON.parse(localStorage.getItem('yc_o')||'[]');
 
-// ===== RENDER PRODUCTS =====
-function renderGrid(containerId, items) {
-  const el = document.getElementById(containerId);
-  if (!items.length) {
-    el.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--mid);">此分類暫無商品</div>';
-    return;
-  }
-  el.innerHTML = items.map(p => `
-    <div class="product-card" onclick="openProduct(${p.id})">
-      ${p.img
-        ? `<img class="product-img" src="${p.img}" alt="${p.name}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`
-        : ''}
-      <div class="product-img-placeholder" style="${p.img ? 'display:none' : ''}">${p.emoji}</div>
-      <div class="product-body">
-        <div class="product-name">${p.name}${p.desc ? `<br><span style="font-size:11px;color:var(--mid);font-weight:400;">${p.desc}</span>` : ''}</div>
-        <div class="product-price">$${p.price}</div>
-        <button class="product-add-btn" onclick="event.stopPropagation();quickAdd(${p.id})">加入購物車</button>
+// RENDER GRID
+function rGrid(id,items){
+  const el=document.getElementById(id);
+  if(!items.length){el.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:36px;color:var(--mid);">此分類暫無商品</div>';return;}
+  el.innerHTML=items.map(p=>`
+    <div class="pcard" onclick="openProd(${p.id})">
+      ${p.img?`<img class="pimg" src="${p.img}" alt="${p.name}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`:``}
+      <div class="pimg-ph" style="${p.img?'display:none':''}">${p.em}</div>
+      <div class="pbody">
+        <div class="pname">${p.name}${p.desc?`<br><span style="font-size:10px;color:var(--mid);font-weight:400;">${p.desc}</span>`:''}</div>
+        <div class="pprice">$${p.price}</div>
+        <button class="padd" onclick="event.stopPropagation();quickAdd(${p.id})">加入購物車</button>
       </div>
-    </div>
-  `).join('');
+    </div>`).join('');
 }
 
-function renderHome() { renderGrid('homeGrid', products); }
-function renderProducts(cat) {
-  const items = cat === 'all' ? products : products.filter(p => p.category === cat);
-  renderGrid('productsGrid', items);
-  const labels = { all:'所有商品', hot:'加熱直接吃', raw:'在家自己煮', fry:'在家自己炸' };
-  document.getElementById('productsTitle').textContent = labels[cat] || '所有商品';
-  document.getElementById('productsCount').textContent = `共 ${items.length} 項商品`;
-}
-
-// ===== PAGE NAV =====
-function showPage(page) {
-  ['home','products','member','about','faq'].forEach(p => {
-    document.getElementById('page-'+p).style.display = p === page ? 'block' : 'none';
+// PAGES
+function showPage(p){
+  ['home','products','member','tracking','about','faq'].forEach(x=>{
+    const el=document.getElementById('page-'+x);
+    if(el)el.style.display=x===p?'block':'none';
   });
-  document.querySelectorAll('.nav-menu a').forEach(a => a.classList.remove('active'));
-  if (page === 'home') renderHome();
-  if (page === 'products') renderProducts('all');
-  if (page === 'member') renderMember();
+  if(p==='home')rGrid('homeGrid',products);
+  if(p==='products')renderProducts('all');
+  if(p==='member')renderMember();
+}
+function go(p){showPage(p);closeMobMenu();}
+function filterCat(cat,btn){
+  document.querySelectorAll('.sb-item').forEach(i=>i.classList.remove('active'));
+  if(btn)btn.classList.add('active');
+  showPage('products');renderProducts(cat);
+}
+function homeCat(cat,btn){
+  document.querySelectorAll('#homeCats .cat-tab').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  rGrid('homeGrid',cat==='all'?products:products.filter(p=>p.cat===cat));
+}
+function prodCat(cat,btn){
+  document.querySelectorAll('#prodCats .cat-tab').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');renderProducts(cat);
+}
+function renderProducts(cat){
+  const items=cat==='all'?products:products.filter(p=>p.cat===cat);
+  rGrid('prodGrid',items);
+  const lbl={all:'所有商品',hot:'加熱直接吃',raw:'在家自己煮'};
+  document.getElementById('prodTitle').textContent=lbl[cat]||'所有商品';
+  document.getElementById('prodCount').textContent=`共 ${items.length} 項商品`;
 }
 
-function filterCategory(cat, btn) {
-  document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
-  if (btn) btn.classList.add('active');
-  showPage('products');
-  renderProducts(cat);
+// PRODUCT MODAL
+function openProd(id){
+  const p=products.find(x=>x.id===id);if(!p)return;
+  mprod=p;mqty=1;
+  document.getElementById('pmName').textContent=p.name;
+  document.getElementById('pmPrice').textContent='$'+p.price;
+  document.getElementById('pmQty').textContent=1;
+  const img=document.getElementById('pmImg');
+  if(p.img){img.src=p.img;img.style.display='block';}else{img.style.display='none';}
+  openModal('prodModal');
 }
+function chQty(d){mqty=Math.max(1,mqty+d);document.getElementById('pmQty').textContent=mqty;}
+function addFromModal(){if(!mprod)return;addCart(mprod,mqty);closeModal('prodModal');toast(`✓ 已加入購物車！`);}
+function quickAdd(id){const p=products.find(x=>x.id===id);if(p){addCart(p,1);toast(`✓ ${p.name} 已加入！`);}}
 
-// ===== PRODUCT MODAL =====
-function openProduct(id) {
-  const p = products.find(x => x.id === id);
-  if (!p) return;
-  modalProduct = p;
-  modalQty = 1;
-  document.getElementById('pmName').textContent = p.name;
-  document.getElementById('pmPrice').textContent = '$' + p.price;
-  document.getElementById('pmQty').textContent = 1;
-  const img = document.getElementById('pmImg');
-  if (p.img) { img.src = p.img; img.style.display = 'block'; }
-  else { img.style.display = 'none'; }
-  openModal('productModal');
+// CART
+function addCart(p,qty){const ex=cart.find(i=>i.id===p.id);if(ex)ex.qty+=qty;else cart.push({...p,qty});updCart();}
+function updCart(){
+  const tot=cart.reduce((s,i)=>s+i.qty,0);
+  const b=document.getElementById('cartBadge');
+  b.textContent=tot;b.style.display=tot>0?'flex':'none';
+  const mb=document.getElementById('mobCartBadge');
+  if(mb){mb.textContent=tot;mb.style.display=tot>0?'inline':'none';}
+  rCart();
 }
-
-function changeModalQty(d) {
-  modalQty = Math.max(1, modalQty + d);
-  document.getElementById('pmQty').textContent = modalQty;
-}
-
-function addToCartFromModal() {
-  if (!modalProduct) return;
-  addToCart(modalProduct, modalQty);
-  closeModal('productModal');
-  showToast(`✓ 已加入購物車！`);
-}
-
-function quickAdd(id) {
-  const p = products.find(x => x.id === id);
-  if (p) { addToCart(p, 1); showToast(`✓ ${p.name} 已加入購物車！`); }
-}
-
-// ===== CART =====
-function addToCart(product, qty) {
-  const ex = cart.find(i => i.id === product.id);
-  if (ex) ex.qty += qty;
-  else cart.push({ ...product, qty });
-  updateCartUI();
-}
-
-function toggleMobileMenu() {
-  const menu = document.getElementById('mobileMenu');
-  const overlay = document.getElementById('mobileMenuOverlay');
-  const isOpen = menu.classList.toggle('open');
-  overlay.style.display = isOpen ? 'block' : 'none';
-}
-
-function setMobileNav(el) {
-  document.querySelectorAll('.mobile-nav-item').forEach(i => i.classList.remove('active'));
-  el.classList.add('active');
-}
-
-function updateCartUI() {
-  const total = cart.reduce((s,i) => s+i.qty, 0);
-  // Desktop badge
-  const badge = document.getElementById('cartCount');
-  badge.textContent = total;
-  badge.style.display = total > 0 ? 'flex' : 'none';
-  // Mobile badge
-  const mobileBadge = document.getElementById('mobileCartCount');
-  if (mobileBadge) {
-    mobileBadge.textContent = total;
-    mobileBadge.style.display = total > 0 ? 'inline' : 'none';
+function rCart(){
+  const el=document.getElementById('citems'),ft=document.getElementById('cfooter');
+  if(!cart.length){
+    el.innerHTML='<div class="cempty"><div style="font-size:44px;margin-bottom:11px;">🛒</div><div>購物車是空的</div></div>';
+    ft.style.display='none';return;
   }
-  renderCartItems();
-}
-
-function renderCartItems() {
-  const el = document.getElementById('cartItems');
-  const footer = document.getElementById('cartFooter');
-  if (!cart.length) {
-    el.innerHTML = `<div class="cart-empty"><div class="cart-empty-icon">🛒</div><div class="cart-empty-text">購物車是空的</div></div>`;
-    footer.style.display = 'none';
-    return;
-  }
-  footer.style.display = 'block';
-  el.innerHTML = cart.map((item,i) => `
-    <div class="cart-item">
-      ${item.img
-        ? `<img class="cart-item-img" src="${item.img}" alt="${item.name}" onerror="this.outerHTML='<div class=cart-item-img style=display:flex;align-items:center;justify-content:center;font-size:24px>${item.emoji}</div>'">`
-        : `<div class="cart-item-img" style="display:flex;align-items:center;justify-content:center;font-size:24px;">${item.emoji}</div>`}
-      <div class="cart-item-info">
-        <div class="cart-item-name">${item.name}</div>
-        <div class="cart-item-price">$${item.price} × ${item.qty} = $${item.price * item.qty}</div>
+  ft.style.display='block';
+  el.innerHTML=cart.map((it,i)=>`
+    <div class="citem">
+      ${it.img?`<img class="citem-img" src="${it.img}" alt="${it.name}" onerror="this.style.display='none'">`:`<div class="citem-img" style="display:flex;align-items:center;justify-content:center;font-size:22px;">${it.em}</div>`}
+      <div class="citem-info"><div class="citem-name">${it.name}</div><div class="citem-price">$${it.price} × ${it.qty} = $${it.price*it.qty}</div></div>
+      <div class="citem-qty">
+        <button class="qbtn" onclick="updQty(${i},-1)">−</button>
+        <div class="qnum">${it.qty}</div>
+        <button class="qbtn" onclick="updQty(${i},1)">＋</button>
       </div>
-      <div class="cart-item-qty">
-        <button class="qty-btn" onclick="updateQty(${i},-1)">−</button>
-        <div class="qty-num">${item.qty}</div>
-        <button class="qty-btn" onclick="updateQty(${i},1)">＋</button>
-      </div>
-      <button class="cart-item-remove" onclick="removeItem(${i})">✕</button>
-    </div>
-  `).join('');
-  const sum = cart.reduce((s,i) => s+i.price*i.qty, 0);
-  document.getElementById('cartTotalPrice').textContent = '$' + sum;
+      <button class="cremove" onclick="rmItem(${i})">✕</button>
+    </div>`).join('');
+  document.getElementById('ctotalPrice').textContent='$'+cart.reduce((s,i)=>s+i.price*i.qty,0);
+}
+function updQty(i,d){cart[i].qty=Math.max(1,cart[i].qty+d);updCart();}
+function rmItem(i){cart.splice(i,1);updCart();}
+function toggleCart(){
+  const dr=document.getElementById('cdrawer'),ov=document.getElementById('cartOverlay');
+  const op=dr.classList.toggle('open');ov.classList.toggle('active',op);
 }
 
-function updateQty(i, d) {
-  cart[i].qty = Math.max(1, cart[i].qty + d);
-  updateCartUI();
+// CHECKOUT
+function getSub(){return cart.reduce((s,i)=>s+i.price*i.qty,0);}
+function getShip(sub){return sub>=2600?0:180;}
+
+function doCheckout(){
+  if(!user){toggleCart();toast('請先登入會員再結帳');setTimeout(()=>openModal('loginModal'),800);return;}
+  if(!cart.length)return;
+  document.getElementById('sName').value=user.name||'';
+  document.getElementById('sPhone').value=user.phone||'';
+  document.getElementById('sAddr').value=user.addr||'';
+  document.getElementById('payMethod').value='';
+  document.getElementById('codBox').style.display='none';
+  document.getElementById('bankBox').style.display='none';
+  document.getElementById('sNote').value='';
+  document.getElementById('usePts').value='';
+
+  const mi=members.findIndex(m=>m.phone===user.phone);
+  const pts=mi>=0?members[mi].points:(user.points||0);
+  document.getElementById('ptsBox').style.display=pts>=100?'block':'none';
+  document.getElementById('availPts').textContent=pts;
+
+  document.getElementById('ckItems').innerHTML=cart.map(i=>`
+    <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--dark);margin-bottom:3px;">
+      <span>${i.name} × ${i.qty}</span><span>$${i.price*i.qty}</span>
+    </div>`).join('');
+  recalc();
+  toggleCart();openModal('checkoutModal');
 }
 
-function removeItem(i) {
-  cart.splice(i, 1);
-  updateCartUI();
+function onPayChange(){
+  const m=document.getElementById('payMethod').value;
+  document.getElementById('codBox').style.display=m==='cod'?'block':'none';
+  document.getElementById('bankBox').style.display=m==='transfer'?'block':'none';
+  recalc();
 }
 
-function toggleCart() {
-  const drawer = document.getElementById('cartDrawer');
-  const overlay = document.getElementById('cartOverlay');
-  const open = drawer.classList.toggle('open');
-  overlay.classList.toggle('active', open);
+function recalc(){
+  const sub=getSub(),ship=getShip(sub);
+  const m=document.getElementById('payMethod')?.value||'';
+  const cod=m==='cod'?30:0;
+  const rawPts=parseInt(document.getElementById('usePts')?.value)||0;
+  const usedPts=Math.floor(rawPts/100)*100;
+  const disc=Math.floor(usedPts/100)*50;
+  const total=Math.max(0,sub+ship+cod-disc);
+
+  document.getElementById('ckSub').textContent='$'+sub;
+  document.getElementById('ckShip').textContent=ship===0?'免費':'$'+ship;
+  document.getElementById('ckTotal').textContent='$'+total;
+  document.getElementById('ptsDisc').textContent='$'+disc;
+
+  const cr=document.getElementById('ckCodRow');if(cr)cr.style.display=cod>0?'flex':'none';
+  const dr=document.getElementById('ckDiscRow');
+  if(dr){dr.style.display=disc>0?'flex':'none';document.getElementById('ckDisc').textContent='-$'+disc;}
+  document.getElementById('freeMsg').style.display=ship===0?'block':'none';
+  const gm=document.getElementById('gapMsg');
+  if(ship>0){gm.style.display='block';gm.textContent=`再買 $${2600-sub} 即可免運費！`;}else{gm.style.display='none';}
 }
 
-function checkout() {
-  if (!currentUser) {
-    toggleCart();
-    showToast('請先登入會員再結帳');
-    setTimeout(() => openModal('loginModal'), 800);
-    return;
-  }
-  if (!cart.length) return;
+function doConfirm(){
+  const sName=document.getElementById('sName').value.trim();
+  const sPhone=document.getElementById('sPhone').value.trim();
+  const sAddr=document.getElementById('sAddr').value.trim();
+  const pay=document.getElementById('payMethod').value;
+  const tc=document.getElementById('tranCode')?.value.trim()||'';
+  const note=document.getElementById('sNote').value.trim();
+  if(!sName||!sPhone||!sAddr){toast('請填寫收件資訊');return;}
+  if(!pay){toast('請選擇付款方式');return;}
+  if(pay==='transfer'&&tc.length!==4){toast('請填寫匯款帳號後4碼');return;}
 
-  // Pre-fill with member info
-  document.getElementById('shipName').value = currentUser.name || '';
-  document.getElementById('shipPhone').value = currentUser.phone || '';
-  document.getElementById('shipAddress').value = currentUser.address || '';
+  const sub=getSub(),ship=getShip(sub),cod=pay==='cod'?30:0;
+  const rawPts=parseInt(document.getElementById('usePts')?.value)||0;
+  const usedPts=Math.floor(rawPts/100)*100;
+  const disc=Math.floor(usedPts/100)*50;
+  const total=Math.max(0,sub+ship+cod-disc);
+  const earned=Math.floor(sub/100);
+  const payLabel=pay==='cod'?'貨到付款（含$30手續費）':`銀行匯款（末4碼：${tc}）`;
 
-  // Calculate shipping
-  const subtotal = cart.reduce((s,i) => s+i.price*i.qty, 0);
-  const shipping = subtotal >= 2600 ? 0 : 180;
-  const total = subtotal + shipping;
-
-  // Reset payment fields
-  document.getElementById('paymentMethod').value = '';
-  document.getElementById('bankInfo').style.display = 'none';
-  document.getElementById('codInfo').style.display = 'none';
-
-  // Render order summary
-  document.getElementById('checkoutItems').innerHTML = cart.map(i =>
-    `<div style="display:flex;justify-content:space-between;font-size:13px;color:var(--dark);margin-bottom:4px;">
-      <span>${i.name} × ${i.qty}</span>
-      <span>$${i.price * i.qty}</span>
-    </div>`
-  ).join('');
-  document.getElementById('checkoutSubtotal').textContent = `$${subtotal}`;
-  document.getElementById('checkoutShipping').textContent = shipping === 0 ? '免費' : `$${shipping}`;
-  document.getElementById('checkoutTotal').textContent = `$${total}`;
-
-  if (shipping === 0) {
-    document.getElementById('checkoutFreeShipMsg').style.display = 'block';
-    document.getElementById('checkoutShipGapMsg').style.display = 'none';
-  } else {
-    document.getElementById('checkoutFreeShipMsg').style.display = 'none';
-    const gap = 2600 - subtotal;
-    document.getElementById('checkoutShipGapMsg').style.display = 'block';
-    document.getElementById('checkoutShipGapMsg').textContent = `再買 $${gap} 即可免運費！`;
-  }
-
-  // Show points redemption if logged in
-  if (currentUser) {
-    const mi = members.findIndex(m => m.phone === currentUser.phone);
-    const pts = mi >= 0 ? members[mi].points : currentUser.points || 0;
-    document.getElementById('pointsRedemption').style.display = pts >= 100 ? 'block' : 'none';
-    document.getElementById('availablePoints').textContent = pts;
-    document.getElementById('usePoints').value = '';
-    document.getElementById('usePoints').max = pts;
-    document.getElementById('pointsDiscount').textContent = '$0';
-  }
-
-  toggleCart();
-  openModal('checkoutModal');
-}
-
-function updatePointsDiscount() {
-  const usePoints = parseInt(document.getElementById('usePoints').value) || 0;
-  const validPoints = Math.floor(usePoints / 100) * 100;
-  document.getElementById('usePoints').value = validPoints;
-  const discount = Math.floor(validPoints / 100) * 50;
-  document.getElementById('pointsDiscount').textContent = `$${discount}`;
-
-  const subtotal = cart.reduce((s,i) => s+i.price*i.qty, 0);
-  const shipping = subtotal >= 2600 ? 0 : 180;
-  const method = document.getElementById('paymentMethod').value;
-  const codFee = method === 'cod' ? 30 : 0;
-  const total = Math.max(0, subtotal + shipping + codFee - discount);
-  document.getElementById('checkoutTotal').textContent = `$${total}`;
-}
-
-function updatePaymentInfo() {
-  const method = document.getElementById('paymentMethod').value;
-  document.getElementById('bankInfo').style.display = method === 'transfer' ? 'block' : 'none';
-  document.getElementById('codInfo').style.display = method === 'cod' ? 'block' : 'none';
-
-  const subtotal = cart.reduce((s,i) => s+i.price*i.qty, 0);
-  const shipping = subtotal >= 2600 ? 0 : 180;
-  const codFee = method === 'cod' ? 30 : 0;
-  const usePoints = parseInt(document.getElementById('usePoints')?.value) || 0;
-  const discount = Math.floor(usePoints / 100) * 50;
-  const total = Math.max(0, subtotal + shipping + codFee - discount);
-  document.getElementById('checkoutTotal').textContent = `$${total}`;
-}
-
-function confirmOrder() {
-  const shipName = document.getElementById('shipName').value.trim();
-  const shipPhone = document.getElementById('shipPhone').value.trim();
-  const shipAddress = document.getElementById('shipAddress').value.trim();
-  const shipNote = document.getElementById('shipNote').value.trim();
-  const paymentMethod = document.getElementById('paymentMethod').value;
-  const transferCode = document.getElementById('transferCode').value.trim();
-
-  if (!shipName || !shipPhone || !shipAddress) { showToast('請填寫收件資訊'); return; }
-  if (!paymentMethod) { showToast('請選擇付款方式'); return; }
-  if (paymentMethod === 'transfer' && transferCode.length !== 4) { showToast('請填寫匯款帳號後4碼'); return; }
-
-  const subtotal = cart.reduce((s,i) => s+i.price*i.qty, 0);
-  const shipping = subtotal >= 2600 ? 0 : 180;
-  const codFee = paymentMethod === 'cod' ? 30 : 0;
-  const usePoints = parseInt(document.getElementById('usePoints')?.value) || 0;
-  const validPoints = Math.floor(usePoints / 100) * 100;
-  const discount = Math.floor(validPoints / 100) * 50;
-  const total = Math.max(0, subtotal + shipping + codFee - discount);
-  const pts = Math.floor(subtotal / 100);
-
-  const paymentLabel = paymentMethod === 'cod' ? '貨到付款（含$30手續費）' : `銀行匯款（末4碼：${transferCode}）`;
-
-  const order = {
-    id: 'YC' + Date.now(),
-    date: new Date().toLocaleDateString('zh-TW'),
-    items: cart.map(i => `${i.name}×${i.qty}`).join('、'),
-    subtotal, shipping, codFee, total,
-    shipName, shipPhone, shipAddress, shipNote,
-    paymentMethod, transferCode, paymentLabel,
-    status: '處理中'
+  const order={
+    id:'YC'+Date.now(),date:new Date().toLocaleDateString('zh-TW'),
+    items:cart.map(i=>`${i.name}×${i.qty}`).join('、'),
+    subtotal:sub,shipping:ship,codFee:cod,discount:disc,total,
+    sName,sPhone,sAddr,note,pay,payLabel,status:'處理中'
   };
-
   orders.unshift(order);
-  localStorage.setItem('yc_orders', JSON.stringify(orders));
+  localStorage.setItem('yc_o',JSON.stringify(orders));
 
-  // Add earned points, deduct used points
-  const mi = members.findIndex(m => m.phone === currentUser.phone);
-  if (mi >= 0) {
-    members[mi].points = members[mi].points - validPoints + pts;
-    localStorage.setItem('yc_members', JSON.stringify(members));
-    currentUser.points = members[mi].points;
-  }
+  const mi=members.findIndex(m=>m.phone===user.phone);
+  if(mi>=0){members[mi].points=members[mi].points-usedPts+earned;localStorage.setItem('yc_m',JSON.stringify(members));user.points=members[mi].points;}
 
-  sendOrderEmail(order);
-  cart = [];
-  updateCartUI();
-  closeModal('checkoutModal');
-  showToast(`✓ 訂單成立！獲得 ${pts} 點數`);
+  cart=[];updCart();closeModal('checkoutModal');
+  document.getElementById('sucId').textContent=order.id;
+  document.getElementById('sucTotal').textContent='$'+order.total;
+  document.getElementById('sucPts').textContent='+'+earned+' 點';
+  openModal('successModal');
 }
 
-// ===== EMAILJS ORDER NOTIFICATION =====
-function sendOrderEmail(order) {
-  // EmailJS setup — replace with your own Service ID, Template ID, Public Key
-  const SERVICE_ID = 'YOUR_SERVICE_ID';
-  const TEMPLATE_ID = 'YOUR_TEMPLATE_ID';
-  const PUBLIC_KEY = 'YOUR_PUBLIC_KEY';
-
-  const templateParams = {
-    to_name: order.shipName,
-    to_email: currentUser.email,
-    order_id: order.id,
-    order_date: order.date,
-    order_items: order.items,
-    order_subtotal: `$${order.subtotal}`,
-    order_shipping: order.shipping === 0 ? '免費' : `$${order.shipping}`,
-    order_total: `$${order.total}`,
-    ship_address: order.shipAddress,
-    ship_phone: order.shipPhone,
-    ship_note: order.shipNote || '無',
-  };
-
-  if (typeof emailjs !== 'undefined' && SERVICE_ID !== 'YOUR_SERVICE_ID') {
-    emailjs.send(SERVICE_ID, TEMPLATE_ID, templateParams, PUBLIC_KEY)
-      .then(() => console.log('訂單確認信已寄出'))
-      .catch(err => console.error('Email發送失敗:', err));
-  }
-}
-
-// ===== AUTH =====
-function login() {
-  const phone = document.getElementById('loginPhone').value.trim();
-  const pwd = document.getElementById('loginPwd').value;
-  if (!phone || !pwd) { showToast('請填寫所有欄位'); return; }
-  const member = members.find(m => m.phone === phone && m.password === pwd);
-  if (!member) { showToast('手機號碼或密碼錯誤'); return; }
-  currentUser = { ...member };
-  closeModal('loginModal');
-  updateAuthUI();
-  showToast(`歡迎回來，${currentUser.name}！`);
-}
-
-function register() {
-  const name = document.getElementById('regName').value.trim();
-  const phone = document.getElementById('regPhone').value.trim();
-  const email = document.getElementById('regEmail').value.trim();
-  const pwd = document.getElementById('regPwd').value;
-  const gender = document.getElementById('regGender').value;
-  const birthday = document.getElementById('regBirthday').value;
-  const address = document.getElementById('regAddress').value.trim();
-
-  if (!name || !phone || !pwd) { showToast('請填寫所有必填欄位（*）'); return; }
-  if (pwd.length < 8) { showToast('密碼至少需要8個字元'); return; }
-  if (members.find(m => m.phone === phone)) { showToast('此手機號碼已被註冊'); return; }
-
-  const newMember = {
-    name, phone, email, password: pwd,
-    gender, birthday, address,
-    points: 100,
-    joined: new Date().toLocaleDateString('zh-TW')
-  };
-  members.push(newMember);
-  localStorage.setItem('yc_members', JSON.stringify(members));
-  currentUser = { ...newMember };
-  closeModal('registerModal');
-  updateAuthUI();
-  showToast(`🎉 註冊成功！送您 100 點歡迎禮`);
-}
-
-function logout() {
-  currentUser = null;
-  updateAuthUI();
-  showPage('home');
-  showToast('已成功登出');
-}
-
-function updateAuthUI() {
-  const guest = document.getElementById('navGuest');
-  const user = document.getElementById('navUser');
-  if (currentUser) {
-    guest.style.display = 'none';
-    user.style.display = 'flex';
-    document.getElementById('navUsername').textContent = currentUser.name;
-  } else {
-    guest.style.display = 'flex';
-    user.style.display = 'none';
-  }
-}
-
-// ===== MEMBER PAGE =====
-function renderMember() {
-  const el = document.getElementById('memberContent');
-  if (!currentUser) {
-    el.innerHTML = `
-      <div style="text-align:center;padding:60px 20px;">
-        <div style="font-size:48px;margin-bottom:16px;">👤</div>
-        <div style="font-size:16px;font-weight:700;color:var(--dark);margin-bottom:8px;">請先登入</div>
-        <div style="font-size:13px;color:var(--mid);margin-bottom:20px;">登入後可查看會員資訊、點數與訂單</div>
-        <button class="form-btn" style="max-width:200px;margin:0 auto;" onclick="openModal('loginModal')">立即登入</button>
-      </div>`;
+// TRACKING
+function doTrack(){
+  const id=document.getElementById('trackId').value.trim();
+  const el=document.getElementById('trackResult');
+  if(!id){toast('請輸入訂單編號');return;}
+  const o=orders.find(x=>x.id===id);
+  if(!o){
+    el.innerHTML=`<div style="text-align:center;padding:36px;color:var(--mid);"><div style="font-size:38px;margin-bottom:10px;">🔍</div><div style="font-size:14px;font-weight:700;">找不到此訂單</div><div style="font-size:12px;margin-top:7px;">請確認訂單編號是否正確</div></div>`;
     return;
   }
-  const userOrders = orders;
-  const mi = members.findIndex(m => m.phone === currentUser.phone);
-  const pts = mi >= 0 ? members[mi].points : currentUser.points;
-  el.innerHTML = `
-    <div class="member-panel">
-      <div class="member-greeting">👋 您好，${currentUser.name}</div>
-      <div style="font-size:13px;color:var(--mid);margin-bottom:16px;line-height:1.8;">
-        📱 ${currentUser.phone}
-        ${currentUser.email ? `<br>📧 ${currentUser.email}` : ''}
-        ${currentUser.gender ? `<br>👤 ${currentUser.gender}` : ''}
-        ${currentUser.birthday ? `<br>🎂 ${currentUser.birthday}` : ''}
-        ${currentUser.address ? `<br>📍 ${currentUser.address}` : ''}
+  const steps=['訂單確認','備貨中','出貨中','已送達'];
+  el.innerHTML=`
+    <div style="background:var(--warm-white);border-radius:14px;padding:18px;border:1.5px solid rgba(106,174,214,.2);">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+        <div style="font-size:14px;font-weight:900;color:var(--dark);">${o.id}</div>
+        <div style="background:rgba(74,140,74,.1);color:#4a8c4a;border:1px solid rgba(74,140,74,.3);border-radius:18px;padding:2px 11px;font-size:12px;font-weight:700;">${o.status}</div>
       </div>
-      <div class="member-stats">
-        <div class="stat-box">
-          <div class="stat-value">${pts}</div>
-          <div class="stat-label">累積點數</div>
+      <div style="font-size:12px;color:var(--mid);line-height:2.2;">
+        📅 訂購日期：${o.date}<br>🛒 商品：${o.items}<br>💳 付款：${o.payLabel||o.pay}<br>📍 地址：${o.sAddr||'-'}<br>📱 電話：${o.sPhone||'-'}
+      </div>
+      <div style="border-top:1px solid var(--light-tan);margin-top:13px;padding-top:13px;display:flex;justify-content:space-between;">
+        <div style="font-size:13px;font-weight:700;color:var(--dark);">訂單金額</div>
+        <div style="font-size:19px;font-weight:900;color:var(--primary);">$${o.total}</div>
+      </div>
+      <div style="background:var(--cream);border-radius:9px;padding:13px;margin-top:11px;">
+        <div style="font-size:11px;font-weight:700;color:var(--mid);margin-bottom:9px;">📦 出貨進度</div>
+        <div style="display:flex;align-items:flex-start;">
+          ${steps.map((s,i)=>`
+            <div style="flex:1;text-align:center;">
+              <div style="width:26px;height:26px;border-radius:50%;background:${i===0?'var(--primary)':'var(--light-tan)'};color:${i===0?'white':'var(--mid)'};font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;margin:0 auto 5px;">${i+1}</div>
+              <div style="font-size:9px;color:${i===0?'var(--primary)':'var(--mid)'};">${s}</div>
+            </div>
+            ${i<3?`<div style="flex:none;width:16px;height:2px;background:${i===0?'var(--primary)':'var(--light-tan)'};margin-top:12px;"></div>`:''}`).join('')}
         </div>
-        <div class="stat-box">
-          <div class="stat-value">${userOrders.length}</div>
-          <div class="stat-label">訂單數量</div>
-        </div>
-        <div class="stat-box">
-          <div class="stat-value">${Math.floor(pts/100)*50}</div>
-          <div class="stat-label">可折抵金額</div>
-        </div>
+      </div>
+    </div>`;
+}
+
+// AUTH
+function doLogin(){
+  const phone=document.getElementById('lPhone').value.trim();
+  const pwd=document.getElementById('lPwd').value;
+  if(!phone||!pwd){toast('請填寫所有欄位');return;}
+  const m=members.find(m=>m.phone===phone&&m.password===pwd);
+  if(!m){toast('手機號碼或密碼錯誤');return;}
+  user={...m};closeModal('loginModal');updAuth();toast(`歡迎回來，${user.name}！`);
+}
+function doRegister(){
+  const name=document.getElementById('rName').value.trim();
+  const phone=document.getElementById('rPhone').value.trim();
+  const email=document.getElementById('rEmail').value.trim();
+  const pwd=document.getElementById('rPwd').value;
+  const gender=document.getElementById('rGender').value;
+  const birth=document.getElementById('rBirth').value;
+  const addr=document.getElementById('rAddr').value.trim();
+  if(!name||!phone||!pwd){toast('請填寫必填欄位（*）');return;}
+  if(pwd.length<8){toast('密碼至少需要8個字元');return;}
+  if(members.find(m=>m.phone===phone)){toast('此手機號碼已被註冊');return;}
+  const m={name,phone,email,password:pwd,gender,birth,addr,points:100,joined:new Date().toLocaleDateString('zh-TW')};
+  members.push(m);localStorage.setItem('yc_m',JSON.stringify(members));
+  user={...m};closeModal('registerModal');updAuth();toast(`🎉 註冊成功！送您 100 點歡迎禮`);
+}
+function doLogout(){user=null;updAuth();showPage('home');toast('已成功登出');}
+function updAuth(){
+  const g=document.getElementById('navGuest'),u=document.getElementById('navUser');
+  if(user){g.style.display='none';u.style.display='flex';document.getElementById('navName').textContent=user.name;}
+  else{g.style.display='flex';u.style.display='none';}
+}
+
+// MEMBER
+function renderMember(){
+  const el=document.getElementById('memberContent');
+  if(!user){
+    el.innerHTML=`<div style="text-align:center;padding:55px 18px;">
+      <div style="font-size:44px;margin-bottom:14px;">👤</div>
+      <div style="font-size:15px;font-weight:700;color:var(--dark);margin-bottom:7px;">請先登入</div>
+      <div style="font-size:12px;color:var(--mid);margin-bottom:18px;">登入後可查看會員資訊、點數與訂單</div>
+      <button class="fb" style="max-width:190px;margin:0 auto;" onclick="openModal('loginModal')">立即登入</button></div>`;
+    return;
+  }
+  const mi=members.findIndex(m=>m.phone===user.phone);
+  const pts=mi>=0?members[mi].points:(user.points||0);
+  el.innerHTML=`
+    <div class="mpanel">
+      <div class="mgreet">👋 您好，${user.name}</div>
+      <div style="font-size:12px;color:var(--mid);margin-bottom:13px;line-height:2;">
+        📱 ${user.phone}
+        ${user.email?`<br>📧 ${user.email}`:''}
+        ${user.gender?`<br>👤 ${user.gender}`:''}
+        ${user.birth?`<br>🎂 ${user.birth}`:''}
+        ${user.addr?`<br>📍 ${user.addr}`:''}
+      </div>
+      <div class="mstats">
+        <div class="sbox"><div class="sval">${pts}</div><div class="slbl">累積點數</div></div>
+        <div class="sbox"><div class="sval">${orders.length}</div><div class="slbl">訂單數量</div></div>
+        <div class="sbox"><div class="sval">${Math.floor(pts/100)*50}</div><div class="slbl">可折抵</div></div>
       </div>
     </div>
-
-    <div class="points-bar" onclick="showToast('每消費$100獲得1點，累積100點可折抵$50')">
-      <div>
-        <div class="points-label">⭐ 我的點數</div>
-        <div style="font-size:11px;opacity:0.8;margin-top:2px;">每消費$100獲得1點</div>
-      </div>
-      <div class="points-value">${pts} 點</div>
+    <div class="ptsbar" onclick="toast('每消費$100獲得1點，累積100點可折抵$50')">
+      <div><div class="pts-lbl">⭐ 我的點數</div><div style="font-size:10px;opacity:.8;margin-top:2px;">每消費$100獲得1點</div></div>
+      <div class="pts-val">${pts} 點</div>
     </div>
-
     <!-- 點數紀錄 -->
-    <div style="background:var(--warm-white);border:1.5px solid rgba(106,174,214,0.2);border-radius:14px;padding:16px;margin-bottom:16px;">
-      <div style="font-size:14px;font-weight:700;color:var(--dark);letter-spacing:1px;margin-bottom:12px;">⭐ 點數紀錄</div>
-      ${userOrders.length ? userOrders.map(o => `
-        <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px dashed var(--light-tan);font-size:13px;">
-          <div>
-            <div style="font-weight:600;color:var(--dark);">${o.date} 訂單</div>
-            <div style="color:var(--mid);font-size:11px;">消費 $${o.subtotal || o.total}</div>
-          </div>
-          <div style="color:var(--primary);font-weight:700;">+${Math.floor((o.subtotal || o.total)/100)} 點</div>
-        </div>
-      `).join('') : '<div style="text-align:center;padding:20px;color:var(--mid);font-size:13px;">尚無點數紀錄</div>'}
-      <div style="display:flex;justify-content:space-between;padding-top:10px;font-size:14px;font-weight:700;">
-        <span style="color:var(--dark);">目前總點數</span>
-        <span style="color:var(--primary);">${pts} 點</span>
+    <div style="background:var(--warm-white);border:1.5px solid rgba(106,174,214,.12);border-radius:13px;padding:14px;margin-bottom:14px;">
+      <div style="font-size:13px;font-weight:700;color:var(--dark);margin-bottom:11px;">⭐ 點數紀錄</div>
+      <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px dashed var(--light-tan);font-size:12px;"><span style="color:var(--mid);">註冊禮</span><span style="color:var(--primary);font-weight:700;">+100 點</span></div>
+      ${orders.map(o=>`
+        <div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px dashed var(--light-tan);">
+          <div><div style="font-size:12px;font-weight:600;color:var(--dark);">${o.date} 訂單</div><div style="font-size:10px;color:var(--mid);">消費 $${o.subtotal||o.total}</div></div>
+          <div style="color:var(--primary);font-weight:700;font-size:12px;">+${Math.floor((o.subtotal||o.total)/100)} 點</div>
+        </div>`).join('')}
+      <div style="display:flex;justify-content:space-between;padding-top:9px;font-size:13px;font-weight:700;">
+        <span style="color:var(--dark);">目前總點數</span><span style="color:var(--primary);">${pts} 點</span>
       </div>
     </div>
-
     <!-- 訂單紀錄 -->
-    <div style="font-size:14px;font-weight:700;color:var(--dark);letter-spacing:1px;margin-bottom:12px;">📦 訂單紀錄</div>
-    <div class="order-list">
-      ${userOrders.length ? userOrders.map(o => `
-        <div class="order-item">
-          <div class="order-info">
-            <div class="order-id">${o.id}</div>
-            <div class="order-date">${o.date}</div>
-            <div class="order-items-list">${o.items}</div>
-            <div style="font-size:11px;color:var(--mid);margin-top:2px;">💳 ${o.paymentLabel || '未知'}</div>
-            <div style="font-size:11px;color:var(--mid);">📍 ${o.shipAddress || '-'}</div>
-          </div>
-          <div class="order-right">
-            <div class="order-total">$${o.total}</div>
-            <div style="font-size:11px;color:var(--mid);margin-top:2px;">運費: ${o.shipping === 0 ? '免費' : '$'+(o.shipping||180)}</div>
-            <div class="order-status">${o.status}</div>
-          </div>
+    <div style="font-size:13px;font-weight:700;color:var(--dark);letter-spacing:1px;margin-bottom:11px;">📦 訂單紀錄</div>
+    ${orders.length?orders.map(o=>`
+      <div class="oitem">
+        <div>
+          <div class="oid">${o.id}</div>
+          <div class="odate">${o.date}</div>
+          <div class="oitems">${o.items}</div>
+          <div style="font-size:10px;color:var(--mid);margin-top:2px;">💳 ${o.payLabel||o.pay||'-'}</div>
+          <div style="font-size:10px;color:var(--mid);">📍 ${o.sAddr||'-'}</div>
         </div>
-      `).join('') : '<div style="text-align:center;padding:30px;color:var(--mid);font-size:13px;">尚無訂單紀錄</div>'}
-    </div>
+        <div style="text-align:right;">
+          <div class="ototal">$${o.total}</div>
+          <div style="font-size:10px;color:var(--mid);margin-top:2px;">運費: ${o.shipping===0?'免費':'$'+(o.shipping||180)}</div>
+          <div class="ostatus">${o.status}</div>
+          <button onclick="document.getElementById('trackId').value='${o.id}';showPage('tracking');doTrack();" style="margin-top:5px;background:none;border:1px solid var(--blue);border-radius:7px;padding:2px 7px;font-size:10px;color:var(--blue);cursor:pointer;">查詢進度</button>
+        </div>
+      </div>`).join(''):'<div style="text-align:center;padding:26px;color:var(--mid);font-size:12px;">尚無訂單紀錄</div>'}
   `;
 }
 
-// ===== MODALS =====
-function openModal(id) {
-  document.getElementById(id).classList.add('active');
-}
-function closeModal(id) {
-  document.getElementById(id).classList.remove('active');
-}
-function switchModal(from, to) {
-  closeModal(from);
-  setTimeout(() => openModal(to), 200);
+// HOT RANKING
+function renderHot(){
+  const html=products.slice(0,5).map((p,i)=>`
+    <div class="rank-item" onclick="openProd(${p.id})">
+      <div class="rnum ${i<3?'top':''}">${i+1}</div>
+      <div class="rname">${p.name}</div>
+      <div class="rprice">$${p.price}</div>
+    </div>`).join('');
+  ['hotRank','hotRankMob'].forEach(id=>{const el=document.getElementById(id);if(el)el.innerHTML=html;});
 }
 
-// close modal on overlay click
-document.querySelectorAll('.modal-overlay').forEach(el => {
-  el.addEventListener('click', e => { if (e.target === el) el.classList.remove('active'); });
+// MODALS
+function openModal(id){document.getElementById(id).classList.add('active');}
+function closeModal(id){document.getElementById(id).classList.remove('active');}
+function swModal(a,b){closeModal(a);setTimeout(()=>openModal(b),180);}
+document.querySelectorAll('.modal-overlay').forEach(el=>{
+  el.addEventListener('click',e=>{if(e.target===el)el.classList.remove('active');});
 });
 
-// ===== TOAST =====
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.style.display = 'block';
-  clearTimeout(t._timer);
-  t._timer = setTimeout(() => { t.style.display = 'none'; }, 2500);
+// TOAST
+function toast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.style.display='block';
+  clearTimeout(t._t);t._t=setTimeout(()=>{t.style.display='none';},2400);
 }
 
-function homeCatFilter(cat, btn) {
-  document.querySelectorAll('#homeCatBar .cat-tab').forEach(t => t.classList.remove('active'));
-  btn.classList.add('active');
-  const items = cat === 'all' ? products : products.filter(p => p.category === cat);
-  renderGrid('homeGrid', items);
+// MOBILE
+function openMobMenu(){document.getElementById('mmenu').classList.add('open');document.getElementById('mobOverlay').style.display='block';}
+function closeMobMenu(){document.getElementById('mmenu').classList.remove('open');document.getElementById('mobOverlay').style.display='none';}
+function setMobNav(el){document.querySelectorAll('.mobnav-item').forEach(i=>i.classList.remove('active'));el.classList.add('active');}
+
+// CAROUSEL
+let ci=0;const ct=10;let ctimer;
+function cMove(d){ci=(ci+d+ct)%ct;updC();resetCTimer();}
+function cGo(i){ci=i;updC();resetCTimer();}
+function updC(){
+  document.getElementById('cTrack').style.transform=`translateX(-${ci*100}%)`;
+  document.querySelectorAll('.c-dot').forEach((d,i)=>d.classList.toggle('active',i===ci));
 }
-
-function renderHotRanking() {
-  const hot = products.slice(0, 5);
-  const html = hot.map((p, i) => `
-    <div class="hot-rank-item" onclick="openProduct(${p.id})">
-      <div class="rank-num ${i < 3 ? 'top' : ''}">${i+1}</div>
-      <div class="rank-name">${p.name}</div>
-      <div class="rank-price">$${p.price}</div>
-    </div>
-  `).join('');
-  const el = document.getElementById('hotRanking');
-  if (el) el.innerHTML = html;
-  const elM = document.getElementById('hotRankingMobile');
-  if (elM) elM.innerHTML = html;
-}
-
-function showMemberOrders() {
-  showPage('member');
-  setTimeout(() => {
-    const el = document.getElementById('memberContent');
-    if (el) el.scrollIntoView({ behavior: 'smooth' });
-  }, 100);
-}
-
-function showMemberPoints() {
-  showPage('member');
-  setTimeout(() => {
-    const el = document.getElementById('memberContent');
-    if (el) el.scrollIntoView({ behavior: 'smooth' });
-  }, 100);
-}
-
-function prodCatFilter(cat, btn) {
-  document.querySelectorAll('#productsCatBar .cat-tab').forEach(t => t.classList.remove('active'));
-  btn.classList.add('active');
-  const items = cat === 'all' ? products : products.filter(p => p.category === cat);
-  renderGrid('productsGrid', items);
-  const labels = { all:'所有商品', hot:'加熱直接吃', raw:'在家自己煮', fry:'在家自己炸' };
-  document.getElementById('productsTitle').textContent = labels[cat] || '所有商品';
-  document.getElementById('productsCount').textContent = `共 ${items.length} 項商品`;
-}
-
-// ===== CAROUSEL =====
-let carouselIndex = 0;
-const carouselTotal = 12;
-let carouselTimer;
-
-function carouselMove(dir) {
-  carouselIndex = (carouselIndex + dir + carouselTotal) % carouselTotal;
-  updateCarousel();
-  resetCarouselTimer();
-}
-
-function carouselGoTo(i) {
-  carouselIndex = i;
-  updateCarousel();
-  resetCarouselTimer();
-}
-
-function updateCarousel() {
-  document.getElementById('carouselTrack').style.transform = `translateX(-${carouselIndex * 100}%)`;
-  document.querySelectorAll('.carousel-dot').forEach((d, i) => {
-    d.classList.toggle('active', i === carouselIndex);
-  });
-}
-
-function resetCarouselTimer() {
-  clearInterval(carouselTimer);
-  carouselTimer = setInterval(() => carouselMove(1), 4000);
-}
-
-function initCarousel() {
-  const dots = document.getElementById('carouselDots');
-  for (let i = 0; i < carouselTotal; i++) {
-    const d = document.createElement('button');
-    d.className = 'carousel-dot' + (i === 0 ? ' active' : '');
-    d.onclick = () => carouselGoTo(i);
-    dots.appendChild(d);
+function resetCTimer(){clearInterval(ctimer);ctimer=setInterval(()=>cMove(1),4000);}
+function initC(){
+  const dots=document.getElementById('cDots');
+  for(let i=0;i<ct;i++){
+    const d=document.createElement('button');
+    d.className='c-dot'+(i===0?' active':'');
+    d.onclick=()=>cGo(i);dots.appendChild(d);
   }
-  resetCarouselTimer();
+  resetCTimer();
 }
 
-// ===== INIT =====
-renderHome();
-renderCartItems();
-initCarousel();
-renderHotRanking();
+// INIT
+rGrid('homeGrid',products);
+rCart();
+renderHot();
+initC();
 </script>
 </body>
 </html>
