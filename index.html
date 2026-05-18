@@ -732,8 +732,9 @@ body {
   border-radius: 20px;
   overflow: hidden;
   margin-bottom: 28px;
-  height: 360px;
+  height: 320px;
   box-shadow: 0 8px 32px var(--shadow);
+  background: #f5f0ea;
 }
 
 .carousel-track {
@@ -754,18 +755,19 @@ body {
   height: 100%;
   object-fit: cover;
   display: block;
+  background: #f5f0ea;
 }
 
 .carousel-overlay {
   position: absolute;
   bottom: 0; left: 0; right: 0;
-  background: linear-gradient(transparent, rgba(58,42,30,0.75));
-  padding: 32px 28px 24px;
+  background: linear-gradient(transparent, rgba(58,42,30,0.65));
+  padding: 28px 28px 20px;
   color: white;
 }
 
 .carousel-name {
-  font-size: 26px;
+  font-size: 22px;
   font-weight: 900;
   letter-spacing: 2px;
   margin-bottom: 4px;
@@ -773,20 +775,20 @@ body {
 }
 
 .carousel-price {
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 700;
   color: #ffd6e0;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
 }
 
 .carousel-btn {
-  padding: 8px 20px;
+  padding: 7px 18px;
   background: var(--primary);
   color: white;
   border: none;
   border-radius: 20px;
   font-family: 'Noto Serif TC', serif;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 700;
   cursor: pointer;
   letter-spacing: 1px;
@@ -959,23 +961,7 @@ body {
       <div class="carousel" id="carousel">
         <div class="carousel-track" id="carouselTrack">
           <div class="carousel-slide">
-            <img src="malatoufu.png" alt="麻辣臭豆腐" onerror="this.style.display='none'">
-            <div class="carousel-overlay">
-              <div class="carousel-name">麻辣臭豆腐</div>
-              <div class="carousel-price">$140</div>
-              <button class="carousel-btn" onclick="quickAdd(1)">加入購物車</button>
-            </div>
-          </div>
-          <div class="carousel-slide">
-            <img src="steamtofu.jpg" alt="清蒸臭豆腐" onerror="this.style.display='none'">
-            <div class="carousel-overlay">
-              <div class="carousel-name">清蒸臭豆腐</div>
-              <div class="carousel-price">$140</div>
-              <button class="carousel-btn" onclick="quickAdd(2)">加入購物車</button>
-            </div>
-          </div>
-          <div class="carousel-slide">
-            <img src="maladuxue.png" alt="麻辣嫩鴨血" onerror="this.style.display='none'">
+            <img src="slide1.jpg" alt="鴨血">
             <div class="carousel-overlay">
               <div class="carousel-name">麻辣嫩鴨血</div>
               <div class="carousel-price">$180</div>
@@ -983,15 +969,67 @@ body {
             </div>
           </div>
           <div class="carousel-slide">
-            <img src="feichangduxue.png" alt="肥腸嫩鴨血" onerror="this.style.display='none'">
+            <img src="slide2.jpg" alt="源春配送">
             <div class="carousel-overlay">
-              <div class="carousel-name">肥腸嫩鴨血</div>
-              <div class="carousel-price">$230</div>
-              <button class="carousel-btn" onclick="quickAdd(4)">加入購物車</button>
+              <div class="carousel-name">源春 · 創立於1997</div>
+              <div class="carousel-price">深坑老街特產</div>
             </div>
           </div>
           <div class="carousel-slide">
-            <img src="zhusun.jpg" alt="滷桂竹筍" onerror="this.style.display='none'">
+            <img src="slide3.jpg" alt="自製青草茶">
+            <div class="carousel-overlay">
+              <div class="carousel-name">源春自製青草茶</div>
+              <div class="carousel-price">清涼降火 · 無添加</div>
+            </div>
+          </div>
+          <div class="carousel-slide">
+            <img src="slide4.jpg" alt="配送中">
+            <div class="carousel-overlay">
+              <div class="carousel-name">黑貓冷藏配送</div>
+              <div class="carousel-price">滿$2,600免運費</div>
+            </div>
+          </div>
+          <div class="carousel-slide">
+            <img src="slide5.jpg" alt="保鮮配送">
+            <div class="carousel-overlay">
+              <div class="carousel-name">冷藏保鮮到府</div>
+              <div class="carousel-price">安心新鮮配送</div>
+            </div>
+          </div>
+          <div class="carousel-slide">
+            <img src="slide6.jpg" alt="臭豆腐">
+            <div class="carousel-overlay">
+              <div class="carousel-name">麻辣臭豆腐</div>
+              <div class="carousel-price">$140</div>
+              <button class="carousel-btn" onclick="quickAdd(1)">加入購物車</button>
+            </div>
+          </div>
+          <div class="carousel-slide">
+            <img src="malatoufu.png" alt="麻辣臭豆腐">
+            <div class="carousel-overlay">
+              <div class="carousel-name">麻辣臭豆腐</div>
+              <div class="carousel-price">$140</div>
+              <button class="carousel-btn" onclick="quickAdd(1)">加入購物車</button>
+            </div>
+          </div>
+          <div class="carousel-slide">
+            <img src="steamtofu.jpg" alt="清蒸臭豆腐">
+            <div class="carousel-overlay">
+              <div class="carousel-name">清蒸臭豆腐</div>
+              <div class="carousel-price">$140</div>
+              <button class="carousel-btn" onclick="quickAdd(2)">加入購物車</button>
+            </div>
+          </div>
+          <div class="carousel-slide">
+            <img src="maladuxue.png" alt="麻辣嫩鴨血">
+            <div class="carousel-overlay">
+              <div class="carousel-name">麻辣嫩鴨血</div>
+              <div class="carousel-price">$180</div>
+              <button class="carousel-btn" onclick="quickAdd(3)">加入購物車</button>
+            </div>
+          </div>
+          <div class="carousel-slide">
+            <img src="zhusun.jpg" alt="滷桂竹筍">
             <div class="carousel-overlay">
               <div class="carousel-name">滷桂竹筍</div>
               <div class="carousel-price">$220</div>
@@ -999,11 +1037,18 @@ body {
             </div>
           </div>
           <div class="carousel-slide">
-            <img src="redtofu.jpg" alt="滷紅燒嫩豆腐" onerror="this.style.display='none'">
+            <img src="redtofu.jpg" alt="滷紅燒嫩豆腐">
             <div class="carousel-overlay">
               <div class="carousel-name">滷紅燒嫩豆腐</div>
               <div class="carousel-price">$130</div>
               <button class="carousel-btn" onclick="quickAdd(6)">加入購物車</button>
+            </div>
+          </div>
+          <div class="carousel-slide">
+            <img src="logo1.png" alt="深坑源春">
+            <div class="carousel-overlay">
+              <div class="carousel-name">深坑源春</div>
+              <div class="carousel-price">麻辣臭豆腐 · 嫩鴨血</div>
             </div>
           </div>
         </div>
@@ -1535,7 +1580,7 @@ function prodCatFilter(cat, btn) {
 
 // ===== CAROUSEL =====
 let carouselIndex = 0;
-const carouselTotal = 6;
+const carouselTotal = 12;
 let carouselTimer;
 
 function carouselMove(dir) {
