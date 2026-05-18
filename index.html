@@ -727,7 +727,155 @@ body {
 .points-label { font-size: 12px; letter-spacing: 1px; opacity: 0.9; }
 .points-value { font-size: 20px; font-weight: 900; }
 
-/* ===== CAROUSEL ===== */
+/* ===== LAYOUT ===== */
+.layout {
+  display: flex;
+  margin-top: var(--nav-h);
+  min-height: calc(100vh - var(--nav-h));
+}
+
+/* ===== RIGHT SIDEBAR ===== */
+.right-sidebar {
+  width: 220px;
+  flex-shrink: 0;
+  background: var(--warm-white);
+  border-left: 1.5px solid var(--light-tan);
+  padding: 20px 14px;
+  position: sticky;
+  top: var(--nav-h);
+  height: calc(100vh - var(--nav-h));
+  overflow-y: auto;
+}
+
+.right-section {
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--light-tan);
+}
+.right-section:last-child { border-bottom: none; }
+
+.right-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--mid);
+  letter-spacing: 1px;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+
+.hot-rank-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 0;
+  border-bottom: 1px dashed var(--light-tan);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.hot-rank-item:last-child { border-bottom: none; }
+.hot-rank-item:hover { opacity: 0.7; }
+.rank-num {
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: white;
+  font-size: 10px;
+  font-weight: 900;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.rank-num.top { background: #f5c842; color: var(--dark); }
+.rank-name { font-size: 12px; font-weight: 600; color: var(--dark); flex: 1; }
+.rank-price { font-size: 11px; color: var(--primary); font-weight: 700; }
+
+.announce-item {
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px dashed var(--light-tan);
+}
+.announce-item:last-child { border-bottom: none; margin-bottom: 0; }
+.announce-tag {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: 4px;
+  background: var(--primary-light);
+  color: var(--primary);
+  margin-bottom: 4px;
+}
+.announce-text { font-size: 12px; color: var(--dark); line-height: 1.5; }
+.announce-date { font-size: 10px; color: var(--mid); margin-top: 3px; }
+
+.review-item {
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px dashed var(--light-tan);
+}
+.review-item:last-child { border-bottom: none; margin-bottom: 0; }
+.review-stars { color: #f5c842; font-size: 11px; margin-bottom: 3px; }
+.review-text { font-size: 11px; color: var(--dark); line-height: 1.5; font-style: italic; }
+.review-author { font-size: 10px; color: var(--mid); margin-top: 3px; text-align: right; }
+
+/* ===== MEMBER ILLUSTRATION ===== */
+.member-banner {
+  background: linear-gradient(135deg, #ffd6e0, #fff3b0, #d0eaff);
+  border-radius: 16px;
+  padding: 20px 24px;
+  margin-bottom: 24px;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  border: 1.5px solid rgba(255,255,255,0.8);
+  box-shadow: 0 4px 16px rgba(232,117,138,0.1);
+}
+.member-step {
+  flex: 1;
+  text-align: center;
+}
+.member-step-icon { font-size: 28px; margin-bottom: 6px; }
+.member-step-title { font-size: 12px; font-weight: 700; color: var(--dark); margin-bottom: 3px; }
+.member-step-desc { font-size: 10px; color: var(--mid); line-height: 1.4; }
+.member-step-arrow { font-size: 18px; color: var(--primary); flex-shrink: 0; }
+
+/* ===== FOOTER ===== */
+.site-footer {
+  background: linear-gradient(135deg, #3a2a1e, #5a3a28);
+  color: white;
+  padding: 32px 0 20px;
+  margin-top: 0;
+}
+.footer-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 32px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 24px;
+  align-items: start;
+}
+.footer-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: #ffd6e0;
+  letter-spacing: 4px;
+}
+.footer-info { font-size: 13px; line-height: 2; opacity: 0.85; }
+.footer-links { display: flex; flex-direction: column; gap: 8px; }
+.footer-links a { color: rgba(255,255,255,0.8); text-decoration: none; font-size: 13px; transition: color 0.2s; }
+.footer-links a:hover { color: #ffd6e0; }
+.footer-copy {
+  grid-column: 1/-1;
+  text-align: center;
+  font-size: 11px;
+  opacity: 0.5;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  margin-top: 8px;
+}
+
+/* ===== CAROUSEL FIX ===== */
 .carousel {
   position: relative;
   border-radius: 20px;
@@ -874,12 +1022,17 @@ body {
 }
 
 /* ===== RESPONSIVE ===== */
+@media (max-width: 1100px) {
+  .right-sidebar { display: none; }
+}
 @media (max-width: 768px) {
   .sidebar { display: none; }
   .nav-menu { display: none; }
-  .main { padding: 16px; }
+  .main { padding: 12px; }
   .product-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
-  .cart-drawer { width: 100%; right: -100%; }
+  .carousel { height: 200px; }
+  .member-banner { flex-wrap: wrap; }
+  .footer-inner { grid-template-columns: 1fr; }
 }
 </style>
 </head>
@@ -912,21 +1065,18 @@ body {
 <!-- LAYOUT -->
 <div class="layout">
 
-  <!-- SIDEBAR -->
+  <!-- LEFT SIDEBAR -->
   <aside class="sidebar">
     <div class="sidebar-section">
       <div class="sidebar-title">商品分類</div>
-      <div class="sidebar-item active" onclick="filterCategory('all')">
+      <div class="sidebar-item active" onclick="filterCategory('all',this)">
         <span class="icon">🏠</span> 全部商品
       </div>
-      <div class="sidebar-item" onclick="filterCategory('hot')">
+      <div class="sidebar-item" onclick="filterCategory('hot',this)">
         <span class="icon">🍲</span> 加熱直接吃
       </div>
-      <div class="sidebar-item" onclick="filterCategory('raw')">
+      <div class="sidebar-item" onclick="filterCategory('raw',this)">
         <span class="icon">🥩</span> 在家自己煮
-      </div>
-      <div class="sidebar-item" onclick="filterCategory('fry')">
-        <span class="icon">
       </div>
     </div>
     <div class="sidebar-section">
@@ -934,16 +1084,16 @@ body {
       <div class="sidebar-item" onclick="showPage('member')">
         <span class="icon">👤</span> 我的帳戶
       </div>
-      <div class="sidebar-item" onclick="showPage('orders')">
+      <div class="sidebar-item" onclick="showMemberOrders()">
         <span class="icon">📦</span> 訂單紀錄
       </div>
-      <div class="sidebar-item" onclick="showPage('points')">
+      <div class="sidebar-item" onclick="showMemberPoints()">
         <span class="icon">⭐</span> 點數紀錄
       </div>
     </div>
     <div class="sidebar-section">
       <div class="sidebar-title">配送資訊</div>
-      <div style="font-size:12px;color:var(--mid);line-height:1.8;padding:4px 0;">
+      <div style="font-size:13px;color:var(--mid);line-height:2;padding:4px 0;">
         🐱 黑貓冷藏配送<br>
         📦 滿$2,600免運費<br>
         🌡️ 熟食冷藏7天<br>
@@ -958,7 +1108,7 @@ body {
     <!-- HOME PAGE -->
     <div id="page-home">
 
-      <!-- CAROUSEL -->
+      <!-- CAROUSEL - full width stretch -->
       <div class="carousel" id="carousel">
         <div class="carousel-track" id="carouselTrack">
           <div class="carousel-slide">
@@ -1062,6 +1212,33 @@ body {
         <div class="carousel-dots" id="carouselDots"></div>
       </div>
 
+      <!-- Member System Illustration -->
+      <div class="member-banner">
+        <div class="member-step">
+          <div class="member-step-icon">📝</div>
+          <div class="member-step-title">免費註冊</div>
+          <div class="member-step-desc">手機號碼快速加入</div>
+        </div>
+        <div class="member-step-arrow">→</div>
+        <div class="member-step">
+          <div class="member-step-icon">🛒</div>
+          <div class="member-step-title">下單購物</div>
+          <div class="member-step-desc">每$100賺1點</div>
+        </div>
+        <div class="member-step-arrow">→</div>
+        <div class="member-step">
+          <div class="member-step-icon">⭐</div>
+          <div class="member-step-title">累積點數</div>
+          <div class="member-step-desc">100點折$50</div>
+        </div>
+        <div class="member-step-arrow">→</div>
+        <div class="member-step">
+          <div class="member-step-icon">🎁</div>
+          <div class="member-step-title">專屬優惠</div>
+          <div class="member-step-desc">生日禮・限定活動</div>
+        </div>
+      </div>
+
       <div class="page-header">
         <div class="page-title">精選商品</div>
         <div class="page-sub">嚴選深坑老街道地好味道</div>
@@ -1141,9 +1318,91 @@ body {
     </div>
 
   </main>
+
+  <!-- RIGHT SIDEBAR -->
+  <aside class="right-sidebar">
+
+    <!-- 熱銷排行 -->
+    <div class="right-section">
+      <div class="right-title">🔥 熱銷排行</div>
+      <div id="hotRanking"></div>
+    </div>
+
+    <!-- 最新公告 -->
+    <div class="right-section">
+      <div class="right-title">📢 最新公告</div>
+      <div class="announce-item">
+        <div class="announce-tag">促銷</div>
+        <div class="announce-text">滿$2,600免運費！限時優惠中</div>
+        <div class="announce-date">2026/05/18</div>
+      </div>
+      <div class="announce-item">
+        <div class="announce-tag">新品</div>
+        <div class="announce-text">自製青草茶上架，清涼消暑好選擇</div>
+        <div class="announce-date">2026/05/10</div>
+      </div>
+      <div class="announce-item">
+        <div class="announce-tag">公告</div>
+        <div class="announce-text">端午節前後出貨時間調整，敬請見諒</div>
+        <div class="announce-date">2026/05/01</div>
+      </div>
+    </div>
+
+    <!-- 顧客評價 -->
+    <div class="right-section">
+      <div class="right-title">⭐ 顧客評價</div>
+      <div class="review-item">
+        <div class="review-stars">★★★★★</div>
+        <div class="review-text">「麻辣臭豆腐超好吃！湯汁濃郁，回購第三次了！」</div>
+        <div class="review-author">— 小芳 ❤️</div>
+      </div>
+      <div class="review-item">
+        <div class="review-stars">★★★★★</div>
+        <div class="review-text">「包裝很用心，冷藏配送新鮮到府，強力推薦！」</div>
+        <div class="review-author">— 阿明 👍</div>
+      </div>
+      <div class="review-item">
+        <div class="review-stars">★★★★☆</div>
+        <div class="review-text">「鴨血滑嫩，口感很好，家人都很喜歡！」</div>
+        <div class="review-author">— 台北 林小姐</div>
+      </div>
+    </div>
+
+    <!-- LINE QR + 聯絡 -->
+    <div class="right-section">
+      <div class="right-title">📱 聯絡我們</div>
+      <div style="text-align:center;">
+        <img src="lineqr.jpg" alt="LINE QR" style="width:120px;height:120px;border-radius:10px;object-fit:cover;margin-bottom:10px;display:block;margin-left:auto;margin-right:auto;">
+        <div style="font-size:12px;color:var(--mid);margin-bottom:8px;">掃描加入LINE好友</div>
+        <div style="font-size:14px;font-weight:700;color:var(--dark);">📞 02-2664-7116</div>
+        <div style="font-size:12px;color:var(--mid);margin-top:4px;">深坑老街特產</div>
+      </div>
+    </div>
+
+  </aside>
+
 </div>
 
-<!-- CART DRAWER -->
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div>
+      <div class="footer-logo">源 春</div>
+      <div style="font-size:12px;color:rgba(255,255,255,0.7);margin-top:4px;letter-spacing:1px;">深坑老街特產 · 創立於1997</div>
+    </div>
+    <div class="footer-info">
+      <div>📍 新北市深坑區深坑老街</div>
+      <div>📞 02-2664-7116</div>
+      <div>🕘 週一至週日 09:00 – 18:00</div>
+    </div>
+    <div class="footer-links">
+      <a href="#" onclick="showPage('about')">品牌故事</a>
+      <a href="#" onclick="showPage('faq')">常見問題</a>
+      <a href="#" onclick="showPage('member')">會員中心</a>
+    </div>
+    <div class="footer-copy">© 2026 深坑源春 版權所有</div>
+  </div>
+</footer>
 <div class="overlay" id="cartOverlay" onclick="toggleCart()"></div>
 <div class="cart-drawer" id="cartDrawer">
   <div class="cart-header">
@@ -1393,9 +1652,9 @@ function showPage(page) {
   if (page === 'member') renderMember();
 }
 
-function filterCategory(cat) {
+function filterCategory(cat, btn) {
   document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
-  event.currentTarget.classList.add('active');
+  if (btn) btn.classList.add('active');
   showPage('products');
   renderProducts(cat);
 }
@@ -1713,13 +1972,75 @@ function renderMember() {
     <div class="member-panel">
       <div class="member-greeting">👋 您好，${currentUser.name}</div>
       <div style="font-size:13px;color:var(--mid);margin-bottom:16px;line-height:1.8;">
-        📧 ${currentUser.email}<br>
         📱 ${currentUser.phone}
+        ${currentUser.email ? `<br>📧 ${currentUser.email}` : ''}
         ${currentUser.gender ? `<br>👤 ${currentUser.gender}` : ''}
         ${currentUser.birthday ? `<br>🎂 ${currentUser.birthday}` : ''}
         ${currentUser.address ? `<br>📍 ${currentUser.address}` : ''}
       </div>
       <div class="member-stats">
+        <div class="stat-box">
+          <div class="stat-value">${pts}</div>
+          <div class="stat-label">累積點數</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-value">${userOrders.length}</div>
+          <div class="stat-label">訂單數量</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-value">${Math.floor(pts/100)*50}</div>
+          <div class="stat-label">可折抵金額</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="points-bar" onclick="showToast('每消費$100獲得1點，累積100點可折抵$50')">
+      <div>
+        <div class="points-label">⭐ 我的點數</div>
+        <div style="font-size:11px;opacity:0.8;margin-top:2px;">每消費$100獲得1點</div>
+      </div>
+      <div class="points-value">${pts} 點</div>
+    </div>
+
+    <!-- 點數紀錄 -->
+    <div style="background:var(--warm-white);border:1.5px solid rgba(106,174,214,0.2);border-radius:14px;padding:16px;margin-bottom:16px;">
+      <div style="font-size:14px;font-weight:700;color:var(--dark);letter-spacing:1px;margin-bottom:12px;">⭐ 點數紀錄</div>
+      ${userOrders.length ? userOrders.map(o => `
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px dashed var(--light-tan);font-size:13px;">
+          <div>
+            <div style="font-weight:600;color:var(--dark);">${o.date} 訂單</div>
+            <div style="color:var(--mid);font-size:11px;">消費 $${o.subtotal || o.total}</div>
+          </div>
+          <div style="color:var(--primary);font-weight:700;">+${Math.floor((o.subtotal || o.total)/100)} 點</div>
+        </div>
+      `).join('') : '<div style="text-align:center;padding:20px;color:var(--mid);font-size:13px;">尚無點數紀錄</div>'}
+      <div style="display:flex;justify-content:space-between;padding-top:10px;font-size:14px;font-weight:700;">
+        <span style="color:var(--dark);">目前總點數</span>
+        <span style="color:var(--primary);">${pts} 點</span>
+      </div>
+    </div>
+
+    <!-- 訂單紀錄 -->
+    <div style="font-size:14px;font-weight:700;color:var(--dark);letter-spacing:1px;margin-bottom:12px;">📦 訂單紀錄</div>
+    <div class="order-list">
+      ${userOrders.length ? userOrders.map(o => `
+        <div class="order-item">
+          <div class="order-info">
+            <div class="order-id">${o.id}</div>
+            <div class="order-date">${o.date}</div>
+            <div class="order-items-list">${o.items}</div>
+            <div style="font-size:11px;color:var(--mid);margin-top:2px;">💳 ${o.paymentLabel || '未知'}</div>
+            <div style="font-size:11px;color:var(--mid);">📍 ${o.shipAddress || '-'}</div>
+          </div>
+          <div class="order-right">
+            <div class="order-total">$${o.total}</div>
+            <div style="font-size:11px;color:var(--mid);margin-top:2px;">運費: ${o.shipping === 0 ? '免費' : '$'+(o.shipping||180)}</div>
+            <div class="order-status">${o.status}</div>
+          </div>
+        </div>
+      `).join('') : '<div style="text-align:center;padding:30px;color:var(--mid);font-size:13px;">尚無訂單紀錄</div>'}
+    </div>
+  `;
         <div class="stat-box">
           <div class="stat-value">${pts}</div>
           <div class="stat-label">累積點數</div>
@@ -1795,6 +2116,35 @@ function homeCatFilter(cat, btn) {
   renderGrid('homeGrid', items);
 }
 
+function renderHotRanking() {
+  const hot = products.slice(0, 5);
+  const el = document.getElementById('hotRanking');
+  if (!el) return;
+  el.innerHTML = hot.map((p, i) => `
+    <div class="hot-rank-item" onclick="openProduct(${p.id})">
+      <div class="rank-num ${i < 3 ? 'top' : ''}">${i+1}</div>
+      <div class="rank-name">${p.name}</div>
+      <div class="rank-price">$${p.price}</div>
+    </div>
+  `).join('');
+}
+
+function showMemberOrders() {
+  showPage('member');
+  setTimeout(() => {
+    const el = document.getElementById('memberContent');
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
+  }, 100);
+}
+
+function showMemberPoints() {
+  showPage('member');
+  setTimeout(() => {
+    const el = document.getElementById('memberContent');
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
+  }, 100);
+}
+
 function prodCatFilter(cat, btn) {
   document.querySelectorAll('#productsCatBar .cat-tab').forEach(t => t.classList.remove('active'));
   btn.classList.add('active');
@@ -1849,6 +2199,7 @@ function initCarousel() {
 renderHome();
 renderCartItems();
 initCarousel();
+renderHotRanking();
 </script>
 </body>
 </html>
