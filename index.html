@@ -57,9 +57,9 @@ body{font-family:'Noto Serif TC',serif;background:var(--cream);color:var(--dark)
 
 /* CAROUSEL */
 .carousel{position:relative;border-radius:18px;overflow:hidden;margin-bottom:18px;height:340px;box-shadow:0 6px 28px var(--shadow);background:#2a1a0e;}
-.c-track{display:flex;height:100%;transition:transform .5s cubic-bezier(.4,0,.2,1);}
-.c-slide{min-width:100%;height:100%;position:relative;flex-shrink:0;}
-.c-slide img{width:100%;height:100%;object-fit:cover;display:block;}
+.c-track{display:flex;height:100%;width:100%;transition:transform .5s cubic-bezier(.4,0,.2,1);will-change:transform;}
+.c-slide{min-width:100%;width:100%;height:100%;position:relative;flex-shrink:0;overflow:hidden;}
+.c-slide img{width:100%;height:100%;object-fit:cover;display:block;position:absolute;top:0;left:0;}
 .c-overlay{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(30,10,0,.72));padding:24px 22px 18px;color:white;}
 .c-name{font-size:21px;font-weight:900;letter-spacing:2px;margin-bottom:4px;text-shadow:0 2px 8px rgba(0,0,0,.3);}
 .c-price{font-size:16px;font-weight:700;color:#ffd6e0;margin-bottom:10px;}
@@ -560,7 +560,7 @@ body{font-family:'Noto Serif TC',serif;background:var(--cream);color:var(--dark)
   <div class="modal">
     <button class="mc" onclick="closeModal('loginModal')">✕</button>
     <div class="mt">會員登入</div><div class="ms">歡迎回來，請登入您的帳戶</div>
-    <div class="fg"><label class="fl">手機號碼</label><input class="fi" type="tel" id="lPhone" placeholder="09xxxxxxxx"></div>
+    <div class="fg"><label class="fl">手機號碼</label><input class="fi" type="text" inputmode="numeric" autocomplete="tel" id="lPhone" placeholder="09xxxxxxxx"></div>
     <div class="fg"><label class="fl">密碼</label><input class="fi" type="password" id="lPwd" placeholder="••••••••"></div>
     <button class="fb" onclick="doLogin()">登入</button>
     <div class="fsw">還沒有帳號？<a onclick="swModal('loginModal','registerModal')">立即註冊</a></div>
@@ -573,7 +573,7 @@ body{font-family:'Noto Serif TC',serif;background:var(--cream);color:var(--dark)
     <button class="mc" onclick="closeModal('registerModal')">✕</button>
     <div class="mt">新會員註冊</div><div class="ms">加入源春，享受會員專屬優惠</div>
     <div class="fg"><label class="fl">姓名 *</label><input class="fi" type="text" id="rName" placeholder="您的姓名"></div>
-    <div class="fg"><label class="fl">手機號碼 *</label><input class="fi" type="tel" id="rPhone" placeholder="09xxxxxxxx"></div>
+    <div class="fg"><label class="fl">手機號碼 *</label><input class="fi" type="text" inputmode="numeric" autocomplete="tel" id="rPhone" placeholder="09xxxxxxxx"></div>
     <div class="fg"><label class="fl">電子信箱（選填）</label><input class="fi" type="email" id="rEmail" placeholder="your@email.com"></div>
     <div class="fg"><label class="fl">密碼 * （至少8位）</label><input class="fi" type="password" id="rPwd" placeholder="••••••••"></div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px;">
@@ -592,7 +592,7 @@ body{font-family:'Noto Serif TC',serif;background:var(--cream);color:var(--dark)
     <button class="mc" onclick="closeModal('checkoutModal')">✕</button>
     <div class="mt">確認訂單</div><div class="ms">請填寫收件資訊</div>
     <div class="fg"><label class="fl">收件人姓名 *</label><input class="fi" type="text" id="sName" placeholder="收件人"></div>
-    <div class="fg"><label class="fl">手機號碼 *</label><input class="fi" type="tel" id="sPhone" placeholder="09xxxxxxxx"></div>
+    <div class="fg"><label class="fl">手機號碼 *</label><input class="fi" type="text" inputmode="numeric" autocomplete="tel" id="sPhone" placeholder="09xxxxxxxx"></div>
     <div class="fg"><label class="fl">收件地址 *</label><input class="fi" type="text" id="sAddr" placeholder="縣市、鄉鎮、路名、號碼"></div>
 
     <!-- Payment -->
@@ -939,7 +939,7 @@ function doTrack(){
 
 // AUTH
 function doLogin(){
-  const phone=document.getElementById('lPhone').value.trim();
+  const phone=document.getElementById('lPhone').value.trim().replace(/[\s\-()]/g,'');
   const pwd=document.getElementById('lPwd').value;
   if(!phone||!pwd){toast('請填寫所有欄位');return;}
   const m=members.find(m=>m.phone===phone&&m.password===pwd);
@@ -948,13 +948,14 @@ function doLogin(){
 }
 function doRegister(){
   const name=document.getElementById('rName').value.trim();
-  const phone=document.getElementById('rPhone').value.trim();
+  const phone=document.getElementById('rPhone').value.trim().replace(/[\s\-()]/g,'');
   const email=document.getElementById('rEmail').value.trim();
   const pwd=document.getElementById('rPwd').value;
   const gender=document.getElementById('rGender').value;
   const birth=document.getElementById('rBirth').value;
   const addr=document.getElementById('rAddr').value.trim();
   if(!name||!phone||!pwd){toast('請填寫必填欄位（*）');return;}
+  if(!/^(09\d{8}|\+886\d{9})$/.test(phone)){toast('請輸入正確的手機號碼格式（如 0912345678）');return;}
   if(pwd.length<8){toast('密碼至少需要8個字元');return;}
   if(members.find(m=>m.phone===phone)){toast('此手機號碼已被註冊');return;}
   const m={name,phone,email,password:pwd,gender,birth,addr,points:100,joined:new Date().toLocaleDateString('zh-TW')};
