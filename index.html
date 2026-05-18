@@ -1167,8 +1167,8 @@ body {
     <div class="modal-title">會員登入</div>
     <div class="modal-sub">歡迎回來，請登入您的帳戶</div>
     <div class="form-group">
-      <label class="form-label">電子信箱</label>
-      <input class="form-input" type="email" id="loginEmail" placeholder="your@email.com">
+      <label class="form-label">手機號碼</label>
+      <input class="form-input" type="tel" id="loginPhone" placeholder="09xxxxxxxx">
     </div>
     <div class="form-group">
       <label class="form-label">密碼</label>
@@ -1192,12 +1192,12 @@ body {
       <input class="form-input" type="text" id="regName" placeholder="您的姓名">
     </div>
     <div class="form-group">
-      <label class="form-label">電子信箱 *</label>
-      <input class="form-input" type="email" id="regEmail" placeholder="your@email.com">
-    </div>
-    <div class="form-group">
       <label class="form-label">手機號碼 *</label>
       <input class="form-input" type="tel" id="regPhone" placeholder="09xxxxxxxx">
+    </div>
+    <div class="form-group">
+      <label class="form-label">電子信箱（選填）</label>
+      <input class="form-input" type="email" id="regEmail" placeholder="your@email.com">
     </div>
     <div class="form-group">
       <label class="form-label">密碼 *</label>
@@ -1248,6 +1248,37 @@ body {
       <label class="form-label">收件地址 *</label>
       <input class="form-input" type="text" id="shipAddress" placeholder="縣市、鄉鎮、路名、號碼">
     </div>
+    <div class="form-group">
+      <label class="form-label">付款方式 *</label>
+      <select class="form-input" id="paymentMethod" onchange="updatePaymentInfo()">
+        <option value="">請選擇付款方式</option>
+        <option value="cod">貨到付款（+$30 手續費）</option>
+        <option value="transfer">銀行匯款</option>
+      </select>
+    </div>
+
+    <!-- Bank transfer info -->
+    <div id="bankInfo" style="display:none;background:var(--accent-blue-light);border:1.5px solid var(--accent-blue);border-radius:12px;padding:14px;margin-bottom:16px;">
+      <div style="font-size:13px;font-weight:700;color:var(--dark);margin-bottom:8px;">🏦 匯款資訊</div>
+      <div style="font-size:13px;color:var(--dark);line-height:2;">
+        銀行：玉山銀行 (808)<br>
+        帳號：0123-456-789012<br>
+        戶名：源春食品有限公司
+      </div>
+      <div class="form-group" style="margin-top:12px;margin-bottom:0;">
+        <label class="form-label">匯款帳號後4碼 *</label>
+        <input class="form-input" type="text" id="transferCode" placeholder="請輸入匯款帳號後4碼" maxlength="4">
+      </div>
+    </div>
+
+    <!-- COD info -->
+    <div id="codInfo" style="display:none;background:#fff8e1;border:1.5px solid #f5c842;border-radius:12px;padding:14px;margin-bottom:16px;">
+      <div style="font-size:13px;color:var(--dark);line-height:1.8;">
+        🚚 貨到付款須支付 <strong>$30 手續費</strong><br>
+        請於收貨時以現金支付
+      </div>
+    </div>
+
     <div class="form-group">
       <label class="form-label">備註</label>
       <input class="form-input" type="text" id="shipNote" placeholder="例：請勿放門口">
@@ -1480,8 +1511,13 @@ function checkout() {
 
   // Calculate shipping
   const subtotal = cart.reduce((s,i) => s+i.price*i.qty, 0);
-  const shipping = subtotal >= 2600 ? 0 : 150;
+  const shipping = subtotal >= 2600 ? 0 : 180;
   const total = subtotal + shipping;
+
+  // Reset payment fields
+  document.getElementById('paymentMethod').value = '';
+  document.getElementById('bankInfo').style.display = 'none';
+  document.getElementById('codInfo').style.display = 'none';
 
   // Render order summary
   document.getElementById('checkoutItems').innerHTML = cart.map(i =>
@@ -1508,27 +1544,46 @@ function checkout() {
   openModal('checkoutModal');
 }
 
+function updatePaymentInfo() {
+  const method = document.getElementById('paymentMethod').value;
+  document.getElementById('bankInfo').style.display = method === 'transfer' ? 'block' : 'none';
+  document.getElementById('codInfo').style.display = method === 'cod' ? 'block' : 'none';
+
+  // Update total with COD fee
+  const subtotal = cart.reduce((s,i) => s+i.price*i.qty, 0);
+  const shipping = subtotal >= 2600 ? 0 : 180;
+  const codFee = method === 'cod' ? 30 : 0;
+  const total = subtotal + shipping + codFee;
+  document.getElementById('checkoutTotal').textContent = `$${total}`;
+}
+
 function confirmOrder() {
   const shipName = document.getElementById('shipName').value.trim();
   const shipPhone = document.getElementById('shipPhone').value.trim();
   const shipAddress = document.getElementById('shipAddress').value.trim();
   const shipNote = document.getElementById('shipNote').value.trim();
+  const paymentMethod = document.getElementById('paymentMethod').value;
+  const transferCode = document.getElementById('transferCode').value.trim();
 
-  if (!shipName || !shipPhone || !shipAddress) {
-    showToast('請填寫所有必填欄位'); return;
-  }
+  if (!shipName || !shipPhone || !shipAddress) { showToast('請填寫收件資訊'); return; }
+  if (!paymentMethod) { showToast('請選擇付款方式'); return; }
+  if (paymentMethod === 'transfer' && transferCode.length !== 4) { showToast('請填寫匯款帳號後4碼'); return; }
 
   const subtotal = cart.reduce((s,i) => s+i.price*i.qty, 0);
-  const shipping = subtotal >= 2600 ? 0 : 150;
-  const total = subtotal + shipping;
+  const shipping = subtotal >= 2600 ? 0 : 180;
+  const codFee = paymentMethod === 'cod' ? 30 : 0;
+  const total = subtotal + shipping + codFee;
   const pts = Math.floor(subtotal / 100);
+
+  const paymentLabel = paymentMethod === 'cod' ? '貨到付款（含$30手續費）' : `銀行匯款（末4碼：${transferCode}）`;
 
   const order = {
     id: 'YC' + Date.now(),
     date: new Date().toLocaleDateString('zh-TW'),
     items: cart.map(i => `${i.name}×${i.qty}`).join('、'),
-    subtotal, shipping, total,
+    subtotal, shipping, codFee, total,
     shipName, shipPhone, shipAddress, shipNote,
+    paymentMethod, transferCode, paymentLabel,
     status: '處理中'
   };
 
@@ -1536,20 +1591,18 @@ function confirmOrder() {
   localStorage.setItem('yc_orders', JSON.stringify(orders));
 
   // Add points
-  const mi = members.findIndex(m => m.email === currentUser.email);
+  const mi = members.findIndex(m => m.phone === currentUser.phone);
   if (mi >= 0) {
     members[mi].points += pts;
     localStorage.setItem('yc_members', JSON.stringify(members));
     currentUser.points += pts;
   }
 
-  // Send email notification via EmailJS
   sendOrderEmail(order);
-
   cart = [];
   updateCartUI();
   closeModal('checkoutModal');
-  showToast(`✓ 訂單成立！獲得 ${pts} 點數，確認信已寄出`);
+  showToast(`✓ 訂單成立！獲得 ${pts} 點數`);
 }
 
 // ===== EMAILJS ORDER NOTIFICATION =====
@@ -1582,11 +1635,11 @@ function sendOrderEmail(order) {
 
 // ===== AUTH =====
 function login() {
-  const email = document.getElementById('loginEmail').value.trim();
+  const phone = document.getElementById('loginPhone').value.trim();
   const pwd = document.getElementById('loginPwd').value;
-  if (!email || !pwd) { showToast('請填寫所有欄位'); return; }
-  const member = members.find(m => m.email === email && m.password === pwd);
-  if (!member) { showToast('帳號或密碼錯誤'); return; }
+  if (!phone || !pwd) { showToast('請填寫所有欄位'); return; }
+  const member = members.find(m => m.phone === phone && m.password === pwd);
+  if (!member) { showToast('手機號碼或密碼錯誤'); return; }
   currentUser = { ...member };
   closeModal('loginModal');
   updateAuthUI();
@@ -1595,19 +1648,19 @@ function login() {
 
 function register() {
   const name = document.getElementById('regName').value.trim();
-  const email = document.getElementById('regEmail').value.trim();
   const phone = document.getElementById('regPhone').value.trim();
+  const email = document.getElementById('regEmail').value.trim();
   const pwd = document.getElementById('regPwd').value;
   const gender = document.getElementById('regGender').value;
   const birthday = document.getElementById('regBirthday').value;
   const address = document.getElementById('regAddress').value.trim();
 
-  if (!name || !email || !phone || !pwd) { showToast('請填寫所有必填欄位（*）'); return; }
+  if (!name || !phone || !pwd) { showToast('請填寫所有必填欄位（*）'); return; }
   if (pwd.length < 8) { showToast('密碼至少需要8個字元'); return; }
-  if (members.find(m => m.email === email)) { showToast('此信箱已被註冊'); return; }
+  if (members.find(m => m.phone === phone)) { showToast('此手機號碼已被註冊'); return; }
 
   const newMember = {
-    name, email, phone, password: pwd,
+    name, phone, email, password: pwd,
     gender, birthday, address,
     points: 100,
     joined: new Date().toLocaleDateString('zh-TW')
@@ -1696,6 +1749,7 @@ function renderMember() {
             <div class="order-id">${o.id}</div>
             <div class="order-date">${o.date}</div>
             <div class="order-items-list">${o.items}</div>
+            <div style="font-size:11px;color:var(--mid);margin-top:2px;">💳 ${o.paymentLabel || o.paymentMethod || '未知'}</div>
           </div>
           <div class="order-right">
             <div class="order-total">$${o.total}</div>
