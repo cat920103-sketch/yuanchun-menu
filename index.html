@@ -1025,18 +1025,137 @@ body {
 @media (max-width: 1100px) {
   .right-sidebar { display: none; }
 }
+
 @media (max-width: 768px) {
+  /* Hide desktop elements */
   .sidebar { display: none; }
   .nav-menu { display: none; }
-  .main { padding: 12px; }
-  .product-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
-  .carousel { height: 200px; }
-  .member-banner { flex-wrap: wrap; }
-  .footer-inner { grid-template-columns: 1fr; }
+  .right-sidebar { display: none; }
+
+  /* Nav */
+  .nav { padding: 0 12px; gap: 8px; height: 56px; }
+  :root { --nav-h: 56px; }
+  .nav-logo img { height: 36px; }
+  .nav-btn { padding: 6px 10px; font-size: 11px; }
+  .cart-btn { width: 36px; height: 36px; font-size: 16px; }
+
+  /* Layout */
+  .layout { flex-direction: column; }
+  .main { padding: 10px; max-width: 100%; }
+
+  /* Carousel */
+  .carousel { height: 220px; border-radius: 12px; }
+  .carousel-name { font-size: 18px; }
+  .carousel-price { font-size: 15px; margin-bottom: 8px; }
+  .carousel-arrow { width: 32px; height: 32px; font-size: 20px; }
+  .carousel-arrow.left { left: 8px; }
+  .carousel-arrow.right { right: 8px; }
+
+  /* Member banner */
+  .member-banner {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding: 14px 12px;
+    gap: 6px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .member-banner::-webkit-scrollbar { display: none; }
+  .member-step { min-width: 70px; }
+  .member-step-icon { font-size: 22px; }
+  .member-step-title { font-size: 11px; }
+  .member-step-desc { font-size: 9px; }
+  .member-step-arrow { font-size: 14px; }
+
+  /* Category tabs */
+  .cat-bar { flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; padding-bottom: 4px; }
+  .cat-bar::-webkit-scrollbar { display: none; }
+  .cat-tab { font-size: 12px; padding: 6px 12px; white-space: nowrap; }
+
+  /* Product grid */
+  .product-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  .product-name { font-size: 12px; }
+  .product-price { font-size: 16px; }
+  .product-add-btn { font-size: 11px; padding: 6px; }
+
+  /* Page header */
+  .page-title { font-size: 18px; }
+
+  /* Cart drawer */
+  .cart-drawer { width: 100%; right: -100%; }
+
+  /* Modals */
+  .modal { padding: 20px 16px; border-radius: 16px; }
+  .modal-title { font-size: 18px; }
+
+  /* Footer */
+  .footer-inner { grid-template-columns: 1fr; gap: 16px; padding: 0 16px; text-align: center; }
+  .footer-links { align-items: center; flex-direction: row; justify-content: center; flex-wrap: wrap; gap: 16px; }
+
+  /* Bottom mobile nav */
+  .mobile-nav {
+    display: flex !important;
+  }
+}
+
+/* Mobile bottom navigation */
+.mobile-nav {
+  display: none;
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  background: var(--warm-white);
+  border-top: 1.5px solid var(--light-tan);
+  z-index: 1000;
+  padding: 8px 0 max(8px, env(safe-area-inset-bottom));
+  box-shadow: 0 -2px 12px var(--shadow);
+}
+.mobile-nav-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  cursor: pointer;
+  padding: 4px 0;
+  transition: all 0.2s;
+}
+.mobile-nav-item:hover { opacity: 0.7; }
+.mobile-nav-icon { font-size: 20px; }
+.mobile-nav-label { font-size: 10px; font-weight: 600; color: var(--mid); letter-spacing: 0.5px; }
+.mobile-nav-item.active .mobile-nav-label { color: var(--primary); }
+
+/* Add padding for mobile nav */
+@media (max-width: 768px) {
+  body { padding-bottom: 65px; }
+  .site-footer { margin-bottom: 0; }
 }
 </style>
 </head>
 <body>
+
+<!-- MOBILE BOTTOM NAV -->
+<div class="mobile-nav" id="mobileNav">
+  <div class="mobile-nav-item active" onclick="showPage('home');setMobileNav(this)">
+    <div class="mobile-nav-icon">🏠</div>
+    <div class="mobile-nav-label">首頁</div>
+  </div>
+  <div class="mobile-nav-item" onclick="showPage('products');setMobileNav(this)">
+    <div class="mobile-nav-icon">🛍️</div>
+    <div class="mobile-nav-label">商品</div>
+  </div>
+  <div class="mobile-nav-item" onclick="showPage('member');setMobileNav(this)">
+    <div class="mobile-nav-icon">👤</div>
+    <div class="mobile-nav-label">會員</div>
+  </div>
+  <div class="mobile-nav-item" onclick="toggleCart()">
+    <div class="mobile-nav-icon">🛒<span id="mobileCartCount" style="font-size:10px;background:var(--primary);color:white;border-radius:50%;padding:0 4px;display:none;"></span></div>
+    <div class="mobile-nav-label">購物車</div>
+  </div>
+  <div class="mobile-nav-item" onclick="showPage('faq');setMobileNav(this)">
+    <div class="mobile-nav-icon">❓</div>
+    <div class="mobile-nav-label">說明</div>
+  </div>
+</div>
 
 <!-- TOP NAV -->
 <nav class="nav">
@@ -1699,11 +1818,23 @@ function addToCart(product, qty) {
   updateCartUI();
 }
 
+function setMobileNav(el) {
+  document.querySelectorAll('.mobile-nav-item').forEach(i => i.classList.remove('active'));
+  el.classList.add('active');
+}
+
 function updateCartUI() {
   const total = cart.reduce((s,i) => s+i.qty, 0);
-  const el = document.getElementById('cartCount');
-  el.textContent = total;
-  el.style.display = total > 0 ? 'flex' : 'none';
+  // Desktop badge
+  const badge = document.getElementById('cartCount');
+  badge.textContent = total;
+  badge.style.display = total > 0 ? 'flex' : 'none';
+  // Mobile badge
+  const mobileBadge = document.getElementById('mobileCartCount');
+  if (mobileBadge) {
+    mobileBadge.textContent = total;
+    mobileBadge.style.display = total > 0 ? 'inline' : 'none';
+  }
   renderCartItems();
 }
 
