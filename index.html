@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>源春 · 深坑老街特產</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@300;400;600;700;900&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <style>
 :root {
   --primary: #e8758a;
@@ -1182,30 +1183,96 @@ body {
 
 <!-- REGISTER MODAL -->
 <div class="modal-overlay" id="registerModal">
-  <div class="modal">
+  <div class="modal" style="max-height:90vh;overflow-y:auto;">
     <button class="modal-close" onclick="closeModal('registerModal')">✕</button>
     <div class="modal-title">新會員註冊</div>
     <div class="modal-sub">加入源春，享受會員專屬優惠</div>
     <div class="form-group">
-      <label class="form-label">姓名</label>
+      <label class="form-label">姓名 *</label>
       <input class="form-input" type="text" id="regName" placeholder="您的姓名">
     </div>
     <div class="form-group">
-      <label class="form-label">電子信箱</label>
+      <label class="form-label">電子信箱 *</label>
       <input class="form-input" type="email" id="regEmail" placeholder="your@email.com">
     </div>
     <div class="form-group">
-      <label class="form-label">手機號碼</label>
+      <label class="form-label">手機號碼 *</label>
       <input class="form-input" type="tel" id="regPhone" placeholder="09xxxxxxxx">
     </div>
     <div class="form-group">
-      <label class="form-label">密碼</label>
+      <label class="form-label">密碼 *</label>
       <input class="form-input" type="password" id="regPwd" placeholder="至少8個字元">
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+      <div class="form-group">
+        <label class="form-label">性別</label>
+        <select class="form-input" id="regGender">
+          <option value="">請選擇</option>
+          <option value="女">女</option>
+          <option value="男">男</option>
+          <option value="其他">其他</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">生日</label>
+        <input class="form-input" type="date" id="regBirthday">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">收件地址</label>
+      <input class="form-input" type="text" id="regAddress" placeholder="縣市、鄉鎮、路名、號碼">
     </div>
     <button class="form-btn" onclick="register()">註冊</button>
     <div class="form-switch">
       已有帳號？<a onclick="switchModal('registerModal','loginModal')">立即登入</a>
     </div>
+  </div>
+</div>
+
+<!-- CHECKOUT MODAL -->
+<div class="modal-overlay" id="checkoutModal">
+  <div class="modal" style="max-height:90vh;overflow-y:auto;">
+    <button class="modal-close" onclick="closeModal('checkoutModal')">✕</button>
+    <div class="modal-title">確認訂單</div>
+    <div class="modal-sub">請確認收件資訊</div>
+
+    <div class="form-group">
+      <label class="form-label">收件人姓名 *</label>
+      <input class="form-input" type="text" id="shipName" placeholder="收件人姓名">
+    </div>
+    <div class="form-group">
+      <label class="form-label">手機號碼 *</label>
+      <input class="form-input" type="tel" id="shipPhone" placeholder="09xxxxxxxx">
+    </div>
+    <div class="form-group">
+      <label class="form-label">收件地址 *</label>
+      <input class="form-input" type="text" id="shipAddress" placeholder="縣市、鄉鎮、路名、號碼">
+    </div>
+    <div class="form-group">
+      <label class="form-label">備註</label>
+      <input class="form-input" type="text" id="shipNote" placeholder="例：請勿放門口">
+    </div>
+
+    <!-- Order Summary -->
+    <div style="background:var(--cream);border-radius:12px;padding:16px;margin:16px 0;border:1px solid var(--light-tan);">
+      <div style="font-size:13px;font-weight:700;color:var(--mid);margin-bottom:10px;letter-spacing:1px;">訂單明細</div>
+      <div id="checkoutItems"></div>
+      <div style="border-top:1px dashed var(--light-tan);margin-top:10px;padding-top:10px;">
+        <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--mid);margin-bottom:6px;">
+          <span>小計</span><span id="checkoutSubtotal"></span>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--mid);margin-bottom:6px;">
+          <span>運費</span><span id="checkoutShipping"></span>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:16px;font-weight:900;color:var(--primary);margin-top:6px;">
+          <span>總計</span><span id="checkoutTotal"></span>
+        </div>
+        <div id="checkoutFreeShipMsg" style="font-size:11px;color:#4a8c4a;margin-top:6px;display:none;">✓ 已享免運費優惠</div>
+        <div id="checkoutShipGapMsg" style="font-size:11px;color:var(--mid);margin-top:6px;display:none;"></div>
+      </div>
+    </div>
+
+    <button class="form-btn" onclick="confirmOrder()">確認下單</button>
   </div>
 </div>
 
@@ -1405,24 +1472,112 @@ function checkout() {
     return;
   }
   if (!cart.length) return;
-  const total = cart.reduce((s,i) => s+i.price*i.qty, 0);
-  const pts = Math.floor(total/100);
+
+  // Pre-fill with member info
+  document.getElementById('shipName').value = currentUser.name || '';
+  document.getElementById('shipPhone').value = currentUser.phone || '';
+  document.getElementById('shipAddress').value = currentUser.address || '';
+
+  // Calculate shipping
+  const subtotal = cart.reduce((s,i) => s+i.price*i.qty, 0);
+  const shipping = subtotal >= 2600 ? 0 : 150;
+  const total = subtotal + shipping;
+
+  // Render order summary
+  document.getElementById('checkoutItems').innerHTML = cart.map(i =>
+    `<div style="display:flex;justify-content:space-between;font-size:13px;color:var(--dark);margin-bottom:4px;">
+      <span>${i.name} × ${i.qty}</span>
+      <span>$${i.price * i.qty}</span>
+    </div>`
+  ).join('');
+  document.getElementById('checkoutSubtotal').textContent = `$${subtotal}`;
+  document.getElementById('checkoutShipping').textContent = shipping === 0 ? '免費' : `$${shipping}`;
+  document.getElementById('checkoutTotal').textContent = `$${total}`;
+
+  if (shipping === 0) {
+    document.getElementById('checkoutFreeShipMsg').style.display = 'block';
+    document.getElementById('checkoutShipGapMsg').style.display = 'none';
+  } else {
+    document.getElementById('checkoutFreeShipMsg').style.display = 'none';
+    const gap = 2600 - subtotal;
+    document.getElementById('checkoutShipGapMsg').style.display = 'block';
+    document.getElementById('checkoutShipGapMsg').textContent = `再買 $${gap} 即可免運費！`;
+  }
+
+  toggleCart();
+  openModal('checkoutModal');
+}
+
+function confirmOrder() {
+  const shipName = document.getElementById('shipName').value.trim();
+  const shipPhone = document.getElementById('shipPhone').value.trim();
+  const shipAddress = document.getElementById('shipAddress').value.trim();
+  const shipNote = document.getElementById('shipNote').value.trim();
+
+  if (!shipName || !shipPhone || !shipAddress) {
+    showToast('請填寫所有必填欄位'); return;
+  }
+
+  const subtotal = cart.reduce((s,i) => s+i.price*i.qty, 0);
+  const shipping = subtotal >= 2600 ? 0 : 150;
+  const total = subtotal + shipping;
+  const pts = Math.floor(subtotal / 100);
+
   const order = {
     id: 'YC' + Date.now(),
     date: new Date().toLocaleDateString('zh-TW'),
     items: cart.map(i => `${i.name}×${i.qty}`).join('、'),
-    total,
+    subtotal, shipping, total,
+    shipName, shipPhone, shipAddress, shipNote,
     status: '處理中'
   };
+
   orders.unshift(order);
   localStorage.setItem('yc_orders', JSON.stringify(orders));
-  // add points
+
+  // Add points
   const mi = members.findIndex(m => m.email === currentUser.email);
-  if (mi >= 0) { members[mi].points += pts; localStorage.setItem('yc_members', JSON.stringify(members)); currentUser.points += pts; }
+  if (mi >= 0) {
+    members[mi].points += pts;
+    localStorage.setItem('yc_members', JSON.stringify(members));
+    currentUser.points += pts;
+  }
+
+  // Send email notification via EmailJS
+  sendOrderEmail(order);
+
   cart = [];
   updateCartUI();
-  toggleCart();
-  showToast(`✓ 訂單成立！獲得 ${pts} 點數`);
+  closeModal('checkoutModal');
+  showToast(`✓ 訂單成立！獲得 ${pts} 點數，確認信已寄出`);
+}
+
+// ===== EMAILJS ORDER NOTIFICATION =====
+function sendOrderEmail(order) {
+  // EmailJS setup — replace with your own Service ID, Template ID, Public Key
+  const SERVICE_ID = 'YOUR_SERVICE_ID';
+  const TEMPLATE_ID = 'YOUR_TEMPLATE_ID';
+  const PUBLIC_KEY = 'YOUR_PUBLIC_KEY';
+
+  const templateParams = {
+    to_name: order.shipName,
+    to_email: currentUser.email,
+    order_id: order.id,
+    order_date: order.date,
+    order_items: order.items,
+    order_subtotal: `$${order.subtotal}`,
+    order_shipping: order.shipping === 0 ? '免費' : `$${order.shipping}`,
+    order_total: `$${order.total}`,
+    ship_address: order.shipAddress,
+    ship_phone: order.shipPhone,
+    ship_note: order.shipNote || '無',
+  };
+
+  if (typeof emailjs !== 'undefined' && SERVICE_ID !== 'YOUR_SERVICE_ID') {
+    emailjs.send(SERVICE_ID, TEMPLATE_ID, templateParams, PUBLIC_KEY)
+      .then(() => console.log('訂單確認信已寄出'))
+      .catch(err => console.error('Email發送失敗:', err));
+  }
 }
 
 // ===== AUTH =====
@@ -1443,10 +1598,20 @@ function register() {
   const email = document.getElementById('regEmail').value.trim();
   const phone = document.getElementById('regPhone').value.trim();
   const pwd = document.getElementById('regPwd').value;
-  if (!name || !email || !phone || !pwd) { showToast('請填寫所有欄位'); return; }
+  const gender = document.getElementById('regGender').value;
+  const birthday = document.getElementById('regBirthday').value;
+  const address = document.getElementById('regAddress').value.trim();
+
+  if (!name || !email || !phone || !pwd) { showToast('請填寫所有必填欄位（*）'); return; }
   if (pwd.length < 8) { showToast('密碼至少需要8個字元'); return; }
   if (members.find(m => m.email === email)) { showToast('此信箱已被註冊'); return; }
-  const newMember = { name, email, phone, password: pwd, points: 100, joined: new Date().toLocaleDateString('zh-TW') };
+
+  const newMember = {
+    name, email, phone, password: pwd,
+    gender, birthday, address,
+    points: 100,
+    joined: new Date().toLocaleDateString('zh-TW')
+  };
   members.push(newMember);
   localStorage.setItem('yc_members', JSON.stringify(members));
   currentUser = { ...newMember };
@@ -1494,6 +1659,13 @@ function renderMember() {
   el.innerHTML = `
     <div class="member-panel">
       <div class="member-greeting">👋 您好，${currentUser.name}</div>
+      <div style="font-size:13px;color:var(--mid);margin-bottom:16px;line-height:1.8;">
+        📧 ${currentUser.email}<br>
+        📱 ${currentUser.phone}
+        ${currentUser.gender ? `<br>👤 ${currentUser.gender}` : ''}
+        ${currentUser.birthday ? `<br>🎂 ${currentUser.birthday}` : ''}
+        ${currentUser.address ? `<br>📍 ${currentUser.address}` : ''}
+      </div>
       <div class="member-stats">
         <div class="stat-box">
           <div class="stat-value">${pts}</div>
@@ -1527,6 +1699,7 @@ function renderMember() {
           </div>
           <div class="order-right">
             <div class="order-total">$${o.total}</div>
+            <div style="font-size:11px;color:var(--mid);margin-top:2px;">運費: ${o.shipping === 0 ? '免費' : '$'+o.shipping}</div>
             <div class="order-status">${o.status}</div>
           </div>
         </div>
