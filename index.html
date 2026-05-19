@@ -333,7 +333,7 @@ body{font-family:'Noto Serif TC',serif;background:var(--cream);color:var(--dark)
 <!-- MARQUEE -->
 <div class="mq">
   <div class="mq-text">
-    🎉 註冊會員即送100點數！&nbsp;&nbsp;&nbsp;⭐ 每週二、六、日限定優惠活動！&nbsp;&nbsp;&nbsp;📦 滿$2,600免運費！&nbsp;&nbsp;&nbsp;🏢 歡迎公司團購，量大優惠！&nbsp;&nbsp;&nbsp;🎉 註冊會員即送100點數！&nbsp;&nbsp;&nbsp;⭐ 每週二、六、日限定優惠活動！&nbsp;&nbsp;&nbsp;📦 滿$2,600免運費！&nbsp;&nbsp;&nbsp;🏢 歡迎公司團購，量大優惠！
+    🎉 註冊會員即送100點數！&nbsp;&nbsp;&nbsp;🚫 週二、週六、週日不出貨，請提前下單！&nbsp;&nbsp;&nbsp;📦 滿$2,600免運費！&nbsp;&nbsp;&nbsp;🏢 歡迎公司團購，量大優惠！&nbsp;&nbsp;&nbsp;🕘 出貨時間：週一、三、四、五&nbsp;&nbsp;&nbsp;🎉 註冊會員即送100點數！&nbsp;&nbsp;&nbsp;🚫 週二、週六、週日不出貨，請提前下單！&nbsp;&nbsp;&nbsp;📦 滿$2,600免運費！&nbsp;&nbsp;&nbsp;🏢 歡迎公司團購，量大優惠！
   </div>
 </div>
 
@@ -436,10 +436,62 @@ body{font-family:'Noto Serif TC',serif;background:var(--cream);color:var(--dark)
     <!-- ABOUT -->
     <div id="page-about" style="display:none;">
       <div class="ph"><div class="ph-title">品牌故事</div></div>
-      <div style="background:var(--warm-white);border-radius:14px;padding:26px;border:1.5px solid rgba(106,174,214,.2);line-height:2;font-size:14px;color:var(--mid);">
-        <p style="margin-bottom:14px;">源春深坑老街特產，傳承深坑古法製作臭豆腐的技藝，嚴選新鮮食材，不添加任何防腐劑。</p>
-        <p style="margin-bottom:14px;">我們的臭豆腐採用獨家配方，細心醃製自然發酵，豆香濃郁，口感細緻滑順。</p>
-        <p>深坑老街是台灣著名的臭豆腐聖地，源春在此扎根多年，堅持傳統工藝。</p>
+
+      <!-- Hero image banner -->
+      <div style="position:relative;border-radius:16px;overflow:hidden;margin-bottom:18px;height:200px;background:linear-gradient(135deg,#3a2a1e,#7a4a2e);">
+        <img src="slide2.jpg" alt="源春深坑" style="width:100%;height:100%;object-fit:cover;opacity:0.7;" onerror="this.style.display='none'">
+        <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;color:white;text-align:center;padding:20px;">
+          <div style="font-size:28px;font-weight:900;letter-spacing:4px;text-shadow:0 2px 8px rgba(0,0,0,.4);">源 春</div>
+          <div style="font-size:14px;opacity:0.9;margin-top:6px;letter-spacing:2px;">深坑老街特產 · 創立於1997</div>
+        </div>
+      </div>
+
+      <!-- Story text -->
+      <div style="background:var(--warm-white);border-radius:14px;padding:22px;border:1.5px solid rgba(106,174,214,.2);line-height:2;font-size:14px;color:var(--mid);margin-bottom:16px;">
+        <div style="font-size:16px;font-weight:900;color:var(--dark);margin-bottom:12px;letter-spacing:1px;">🏠 我們的故事</div>
+        <p style="margin-bottom:12px;">源春深坑老街特產，傳承深坑古法製作臭豆腐的技藝，嚴選新鮮食材，不添加任何防腐劑，堅持讓每一口都是真實的好味道。</p>
+        <p style="margin-bottom:12px;">我們的臭豆腐採用獨家配方，細心醃製自然發酵7天以上，豆香濃郁，口感細緻滑順，入口即化。搭配自製麻辣湯底，層次豐富，回味無窮。</p>
+        <p>深坑老街是台灣著名的臭豆腐聖地，源春在此扎根近三十年，堅持傳統工藝，一道一道用心製作，只為讓您吃到最道地的深坑味。</p>
+      </div>
+
+      <!-- Feature cards -->
+      <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:16px;">
+        <div style="background:var(--warm-white);border-radius:12px;padding:16px;border:1.5px solid rgba(232,117,138,.15);text-align:center;">
+          <div style="font-size:32px;margin-bottom:8px;">🌿</div>
+          <div style="font-size:13px;font-weight:700;color:var(--dark);margin-bottom:4px;">無防腐劑</div>
+          <div style="font-size:11px;color:var(--mid);line-height:1.6;">天然食材，不添加人工防腐劑，吃得安心</div>
+        </div>
+        <div style="background:var(--warm-white);border-radius:12px;padding:16px;border:1.5px solid rgba(245,200,66,.3);text-align:center;">
+          <div style="font-size:32px;margin-bottom:8px;">🤲</div>
+          <div style="font-size:13px;font-weight:700;color:var(--dark);margin-bottom:4px;">純手工製作</div>
+          <div style="font-size:11px;color:var(--mid);line-height:1.6;">每日現做，手工壓製，保留最佳口感</div>
+        </div>
+        <div style="background:var(--warm-white);border-radius:12px;padding:16px;border:1.5px solid rgba(106,174,214,.2);text-align:center;">
+          <div style="font-size:32px;margin-bottom:8px;">⏳</div>
+          <div style="font-size:13px;font-weight:700;color:var(--dark);margin-bottom:4px;">古法發酵</div>
+          <div style="font-size:11px;color:var(--mid);line-height:1.6;">發酵7天以上，自然熟成，豆香濃郁</div>
+        </div>
+        <div style="background:var(--warm-white);border-radius:12px;padding:16px;border:1.5px solid rgba(74,140,74,.15);text-align:center;">
+          <div style="font-size:32px;margin-bottom:8px;">🐱</div>
+          <div style="font-size:13px;font-weight:700;color:var(--dark);margin-bottom:4px;">冷藏配送</div>
+          <div style="font-size:11px;color:var(--mid);line-height:1.6;">黑貓冷藏宅配，新鮮直送到您手中</div>
+        </div>
+      </div>
+
+      <!-- Product gallery -->
+      <div style="background:var(--warm-white);border-radius:14px;padding:18px;border:1.5px solid rgba(106,174,214,.2);">
+        <div style="font-size:14px;font-weight:700;color:var(--dark);margin-bottom:12px;letter-spacing:1px;">📸 招牌商品</div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;">
+          <div style="border-radius:10px;overflow:hidden;aspect-ratio:1;background:var(--light-tan);">
+            <img src="malatoufu.png" style="width:100%;height:100%;object-fit:cover;" onerror="this.parentElement.innerHTML='<div style='display:flex;align-items:center;justify-content:center;height:100%;font-size:28px;'>🍲</div>'">
+          </div>
+          <div style="border-radius:10px;overflow:hidden;aspect-ratio:1;background:var(--light-tan);">
+            <img src="maladuxue.png" style="width:100%;height:100%;object-fit:cover;" onerror="this.parentElement.innerHTML='<div style='display:flex;align-items:center;justify-content:center;height:100%;font-size:28px;'>🫀</div>'">
+          </div>
+          <div style="border-radius:10px;overflow:hidden;aspect-ratio:1;background:var(--light-tan);">
+            <img src="redtofu.jpg" style="width:100%;height:100%;object-fit:cover;" onerror="this.parentElement.innerHTML='<div style='display:flex;align-items:center;justify-content:center;height:100%;font-size:28px;'>🟤</div>'">
+          </div>
+        </div>
       </div>
     </div>
 
@@ -502,6 +554,12 @@ body{font-family:'Noto Serif TC',serif;background:var(--cream);color:var(--dark)
     <div class="rs-title">📢 最新公告</div>
     <div class="ann-item"><div class="ann-tag">促銷</div><div class="ann-text">滿$2,600免運費！</div><div class="ann-date">2026/05/18</div></div>
     <div class="ann-item"><div class="ann-tag">公告</div><div class="ann-text">端午節出貨時間調整</div><div class="ann-date">2026/05/01</div></div>
+  </div>
+  <div class="rs-sec">
+    <div class="rs-title">⭐ 顧客評價</div>
+    <div class="rev-item"><div class="rev-stars">★★★★★</div><div class="rev-text">「麻辣臭豆腐超好吃！回購第三次了！」</div><div class="rev-author">— 小芳 ❤️</div></div>
+    <div class="rev-item"><div class="rev-stars">★★★★★</div><div class="rev-text">「冷藏新鮮配送，強力推薦！」</div><div class="rev-author">— 阿明 👍</div></div>
+    <div class="rev-item"><div class="rev-stars">★★★★☆</div><div class="rev-text">「鴨血滑嫩，家人都喜歡！」</div><div class="rev-author">— 台北 林小姐</div></div>
   </div>
   <div class="rs-sec">
     <div class="rs-title">📱 聯絡我們</div>
@@ -910,29 +968,52 @@ function doTrack(){
     return;
   }
   const steps=['訂單確認','備貨中','出貨中','已送達'];
+  const stepIcons=['✅','📦','🚚','🎉'];
+  const stepIdx = steps.indexOf(o.status) >= 0 ? steps.indexOf(o.status) : 0;
   el.innerHTML=`
-    <div style="background:var(--warm-white);border-radius:14px;padding:18px;border:1.5px solid rgba(106,174,214,.2);">
+    <div style="background:var(--warm-white);border-radius:14px;padding:20px;border:1.5px solid rgba(106,174,214,.2);">
+      <!-- Header -->
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
         <div style="font-size:14px;font-weight:900;color:var(--dark);">${o.id}</div>
-        <div style="background:rgba(74,140,74,.1);color:#4a8c4a;border:1px solid rgba(74,140,74,.3);border-radius:18px;padding:2px 11px;font-size:12px;font-weight:700;">${o.status}</div>
+        <div style="background:rgba(74,140,74,.1);color:#4a8c4a;border:1px solid rgba(74,140,74,.3);border-radius:18px;padding:3px 12px;font-size:12px;font-weight:700;">${o.status}</div>
       </div>
-      <div style="font-size:12px;color:var(--mid);line-height:2.2;">
-        📅 訂購日期：${o.date}<br>🛒 商品：${o.items}<br>💳 付款：${o.payLabel||o.pay}<br>📍 地址：${o.sAddr||'-'}<br>📱 電話：${o.sPhone||'-'}
-      </div>
-      <div style="border-top:1px solid var(--light-tan);margin-top:13px;padding-top:13px;display:flex;justify-content:space-between;">
-        <div style="font-size:13px;font-weight:700;color:var(--dark);">訂單金額</div>
-        <div style="font-size:19px;font-weight:900;color:var(--primary);">$${o.total}</div>
-      </div>
-      <div style="background:var(--cream);border-radius:9px;padding:13px;margin-top:11px;">
-        <div style="font-size:11px;font-weight:700;color:var(--mid);margin-bottom:9px;">📦 出貨進度</div>
-        <div style="display:flex;align-items:flex-start;">
+
+      <!-- Progress bar FIRST -->
+      <div style="background:var(--cream);border-radius:12px;padding:16px 12px;margin-bottom:16px;border:1px solid var(--light-tan);">
+        <div style="font-size:12px;font-weight:700;color:var(--dark);margin-bottom:14px;letter-spacing:1px;">📦 出貨進度</div>
+        <!-- Step circles connected by lines -->
+        <div style="display:flex;align-items:center;justify-content:space-between;position:relative;">
           ${steps.map((s,i)=>`
-            <div style="flex:1;text-align:center;">
-              <div style="width:26px;height:26px;border-radius:50%;background:${i===0?'var(--primary)':'var(--light-tan)'};color:${i===0?'white':'var(--mid)'};font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;margin:0 auto 5px;">${i+1}</div>
-              <div style="font-size:9px;color:${i===0?'var(--primary)':'var(--mid)'};">${s}</div>
+            <div style="display:flex;flex-direction:column;align-items:center;flex:1;position:relative;z-index:1;">
+              <div style="width:36px;height:36px;border-radius:50%;
+                background:${i<=stepIdx?'var(--primary)':'var(--light-tan)'};
+                color:${i<=stepIdx?'white':'var(--mid)'};
+                font-size:15px;display:flex;align-items:center;justify-content:center;
+                border:3px solid ${i<=stepIdx?'var(--primary-dark)':'#ddd'};
+                box-shadow:${i===stepIdx?'0 0 0 4px rgba(232,117,138,.2)':'none'};
+                transition:all .3s;">
+                ${i<=stepIdx?stepIcons[i]:`<span style='font-size:11px;font-weight:700;'>${i+1}</span>`}
+              </div>
+              <div style="font-size:10px;color:${i<=stepIdx?'var(--primary)':'var(--mid)'};font-weight:${i===stepIdx?'700':'400'};margin-top:6px;text-align:center;white-space:nowrap;">${s}</div>
             </div>
-            ${i<3?`<div style="flex:none;width:16px;height:2px;background:${i===0?'var(--primary)':'var(--light-tan)'};margin-top:12px;"></div>`:''}`).join('')}
+            ${i<3?`<div style="flex:1;height:3px;background:${i<stepIdx?'var(--primary)':'var(--light-tan)'};margin-bottom:16px;border-radius:2px;"></div>`:''}`
+          ).join('')}
         </div>
+      </div>
+
+      <!-- Order details -->
+      <div style="font-size:12px;color:var(--mid);line-height:2.2;background:var(--cream);border-radius:10px;padding:12px 14px;border:1px solid var(--light-tan);margin-bottom:12px;">
+        📅 訂購日期：${o.date}<br>
+        🛒 商品：${o.items}<br>
+        💳 付款：${o.payLabel||o.pay}<br>
+        📍 地址：${o.sAddr||'-'}<br>
+        📱 電話：${o.sPhone||'-'}
+      </div>
+
+      <!-- Total -->
+      <div style="display:flex;justify-content:space-between;align-items:center;background:linear-gradient(135deg,rgba(232,117,138,.08),rgba(106,174,214,.08));border-radius:10px;padding:12px 16px;border:1px solid var(--light-tan);">
+        <div style="font-size:13px;font-weight:700;color:var(--dark);">訂單金額</div>
+        <div style="font-size:20px;font-weight:900;color:var(--primary);">$${o.total}</div>
       </div>
     </div>`;
 }
