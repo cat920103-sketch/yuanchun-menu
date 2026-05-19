@@ -4,6 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>源春 · 深坑老街特產</title>
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@300;400;600;700;900&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -743,6 +746,50 @@ body{font-family:'Noto Serif TC',serif;background:var(--cream);color:var(--dark)
 <div class="toast" id="toast"></div>
 
 <script>
+// ── FIREBASE CONFIG ──────────────────────────────────────────────────────────
+const firebaseConfig = {
+  apiKey: "AIzaSyCNyh2JCdHx0ocou57VJ-rYCV-reojzFMA",
+  authDomain: "yuanchun-store.firebaseapp.com",
+  databaseURL: "https://yuanchun-store-default-rtdb.firebaseio.com",
+  projectId: "yuanchun-store",
+  storageBucket: "yuanchun-store.firebasestorage.app",
+  messagingSenderId: "903737640766",
+  appId: "1:903737640766:web:0d600a08d480a394178e6f"
+};
+
+// Init Firebase
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+
+// Firebase helpers
+function fbSaveOrder(order) {
+  return db.ref('orders/' + order.id).set(order);
+}
+function fbSaveMembers(membersArr) {
+  // Save as object keyed by phone
+  const obj = {};
+  membersArr.forEach(m => { obj[m.phone.replace(/[.#$\[\]]/g,'')] = m; });
+  return db.ref('members').set(obj);
+}
+function fbLoadOrders(cb) {
+  db.ref('orders').on('value', snap => {
+    const data = snap.val();
+    orders = data ? Object.values(data).sort((a,b) => (b.id||'').localeCompare(a.id||'')) : [];
+    cb && cb(orders);
+  });
+}
+function fbLoadMembers(cb) {
+  db.ref('members').on('value', snap => {
+    const data = snap.val();
+    members = data ? Object.values(data) : [];
+    cb && cb(members);
+  });
+}
+function fbUpdateMember(phone, updates) {
+  const key = phone.replace(/[.#$\[\]]/g,'');
+  return db.ref('members/' + key).update(updates);
+}
+
 // DATA
 const products=[
   {id:1,name:'麻辣臭豆腐',price:140,cat:'hot',img:'malatoufu.png',em:'🍲'},
@@ -757,8 +804,8 @@ const products=[
 
 // STATE
 let cart=[], user=null, mprod=null, mqty=1;
-let members=JSON.parse(localStorage.getItem('yc_m')||'[]');
-let orders=JSON.parse(localStorage.getItem('yc_o')||'[]');
+let members=[];
+let orders=[];
 
 // RENDER GRID
 function rGrid(id,items){
@@ -944,11 +991,17 @@ function doConfirm(){
     subtotal:sub,shipping:ship,codFee:cod,discount:disc,total,
     sName,sPhone,sAddr,note,pay,payLabel,status:'處理中'
   };
-  orders.unshift(order);
-  localStorage.setItem('yc_o',JSON.stringify(orders));
+  // Save order to Firebase
+  fbSaveOrder(order).catch(e => console.error('Order save error:', e));
 
+  // Update member points in Firebase
   const mi=members.findIndex(m=>m.phone===user.phone);
-  if(mi>=0){members[mi].points=members[mi].points-usedPts+earned;localStorage.setItem('yc_m',JSON.stringify(members));user.points=members[mi].points;}
+  if(mi>=0){
+    const newPts = members[mi].points - usedPts + earned;
+    members[mi].points = newPts;
+    user.points = newPts;
+    fbUpdateMember(user.phone, {points: newPts}).catch(e => console.error('Points update error:', e));
+  }
 
   cart=[];updCart();closeModal('checkoutModal');
   document.getElementById('sucId').textContent=order.id;
@@ -1040,7 +1093,9 @@ function doRegister(){
   if(pwd.length<8){toast('密碼至少需要8個字元');return;}
   if(members.find(m=>m.phone===phone)){toast('此手機號碼已被註冊');return;}
   const m={name,phone,email,password:pwd,gender,birth,addr,points:100,joined:new Date().toLocaleDateString('zh-TW')};
-  members.push(m);localStorage.setItem('yc_m',JSON.stringify(members));
+  members.push(m);
+  // Save to Firebase
+  fbUpdateMember(m.phone, m).catch(e => console.error('Register save error:', e));
   user={...m};closeModal('registerModal');updAuth();toast(`🎉 註冊成功！送您 100 點歡迎禮`);
 }
 function doLogout(){user=null;updAuth();showPage('home');toast('已成功登出');}
@@ -1172,6 +1227,9 @@ rGrid('homeGrid',products);
 rCart();
 renderHot();
 initC();
+// Load live data from Firebase
+fbLoadOrders(() => { if(user) renderMember(); });
+fbLoadMembers(() => { if(user) renderMember(); });
 </script>
 </body>
 </html>
