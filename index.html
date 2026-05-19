@@ -3,750 +3,346 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>源春 · 深坑老街特產</title>
+<title>源春 · 後台管理系統</title>
 <!-- Firebase SDK -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@300;400;600;700;900&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700;900&display=swap" rel="stylesheet">
 <style>
 :root {
   --primary:#e8758a; --primary-dark:#d4607a; --primary-light:#fce8ed;
-  --yellow:#f5c842; --yellow-light:#fef8e1;
+  --green:#4a8c4a; --green-light:rgba(74,140,74,.1);
   --blue:#6aaed6; --blue-light:#e3f2fb;
-  --cream:#fdf8f2; --warm-white:#fffcf7;
-  --dark:#3a2a1e; --mid:#8a6a58; --light-tan:#f0e6d8;
-  --shadow:rgba(58,42,30,0.10);
-  --nav-h:64px; --mq-h:34px;
+  --yellow:#f5c842; --yellow-light:#fef8e1;
+  --orange:#e07b39; --orange-light:#fef0e6;
+  --red:#d44040; --red-light:#fce8e8;
+  --dark:#1a1a2e; --mid:#5a6070; --light:#f4f6fa;
+  --white:#ffffff; --border:#e8ecf0;
+  --shadow:rgba(26,26,46,.08);
 }
 *{margin:0;padding:0;box-sizing:border-box;}
-body{font-family:'Noto Serif TC',serif;background:var(--cream);color:var(--dark);min-height:100vh;font-size:15px;}
+body{font-family:'Noto Serif TC',serif;background:var(--light);color:var(--dark);min-height:100vh;}
 
-/* NAV */
-.nav{position:fixed;top:0;left:0;right:0;height:var(--nav-h);background:var(--warm-white);border-bottom:1.5px solid var(--light-tan);display:flex;align-items:center;padding:0 20px;z-index:1000;box-shadow:0 2px 12px var(--shadow);gap:14px;}
-.ham{display:none;background:none;border:none;font-size:22px;cursor:pointer;color:var(--dark);padding:4px 8px;border-radius:8px;flex-shrink:0;}
-.ham:hover{background:var(--light-tan);}
-.logo{font-family:'Playfair Display','Noto Serif TC',serif;font-size:24px;font-weight:700;color:var(--primary);letter-spacing:4px;cursor:pointer;white-space:nowrap;flex-shrink:0;display:flex;align-items:center;}
-.logo img{height:48px;object-fit:contain;}
-.nav-menu{display:flex;gap:4px;list-style:none;flex:1;justify-content:center;}
-.nav-menu a{text-decoration:none;color:var(--mid);font-size:13px;font-weight:600;letter-spacing:1px;padding:6px 10px;border-radius:8px;transition:all .2s;white-space:nowrap;}
-.nav-menu a:hover,.nav-menu a.active{background:var(--light-tan);color:var(--primary);}
-.nav-actions{display:flex;align-items:center;gap:8px;flex-shrink:0;}
-.nbtn{display:flex;align-items:center;gap:5px;padding:6px 12px;border-radius:10px;border:1.5px solid var(--light-tan);background:var(--warm-white);font-family:'Noto Serif TC',serif;font-size:12px;font-weight:700;color:var(--mid);cursor:pointer;transition:all .2s;white-space:nowrap;}
-.nbtn:hover{background:var(--light-tan);color:var(--primary);}
-.nbtn.p{background:var(--primary);color:white;border-color:var(--primary);}
-.nbtn.p:hover{background:var(--primary-dark);}
-.cart-btn{position:relative;background:var(--warm-white);border:1.5px solid var(--light-tan);border-radius:50%;width:40px;height:40px;display:flex;align-items:center;justify-content:center;font-size:18px;cursor:pointer;transition:all .2s;}
-.cart-btn:hover{background:var(--light-tan);}
-.cart-badge{position:absolute;top:-4px;right:-4px;background:var(--primary);color:white;font-size:9px;font-weight:900;border-radius:50%;width:16px;height:16px;display:none;align-items:center;justify-content:center;}
+/* LOGIN */
+.login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#1a1a2e,#3a2a5e,#2a1a3e);padding:20px;}
+.login-box{background:var(--white);border-radius:20px;padding:40px;width:100%;max-width:380px;box-shadow:0 20px 60px rgba(0,0,0,.3);}
+.login-logo{text-align:center;margin-bottom:28px;}
+.login-logo-icon{font-size:48px;margin-bottom:10px;}
+.login-title{font-size:22px;font-weight:900;color:var(--dark);letter-spacing:2px;}
+.login-sub{font-size:12px;color:var(--mid);margin-top:4px;letter-spacing:1px;}
+.lg{margin-bottom:16px;}
+.ll{display:block;font-size:11px;font-weight:700;color:var(--mid);letter-spacing:1px;margin-bottom:6px;text-transform:uppercase;}
+.li{width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:10px;font-family:'Noto Serif TC',serif;font-size:14px;color:var(--dark);background:#fafafa;outline:none;transition:border-color .2s;}
+.li:focus{border-color:var(--blue);background:var(--white);}
+.lb{width:100%;padding:13px;background:linear-gradient(135deg,#1a1a2e,#3a2a5e);color:white;border:none;border-radius:12px;font-family:'Noto Serif TC',serif;font-size:15px;font-weight:700;cursor:pointer;letter-spacing:2px;margin-top:6px;transition:all .2s;}
+.lb:hover{opacity:.9;transform:translateY(-1px);}
+.login-err{color:var(--red);font-size:12px;text-align:center;margin-top:10px;display:none;}
+.login-hint{font-size:11px;color:var(--mid);text-align:center;margin-top:14px;line-height:1.8;opacity:.7;}
 
-/* MARQUEE */
-.mq{position:fixed;top:var(--nav-h);left:0;right:0;height:var(--mq-h);background:linear-gradient(135deg,#ffd6e0,#fff3b0,#d0eaff);overflow:hidden;white-space:nowrap;z-index:999;border-bottom:1px solid rgba(232,117,138,.2);display:flex;align-items:center;}
-.mq-text{display:inline-block;animation:mq 30s linear infinite;font-size:13px;font-weight:600;color:var(--dark);padding-right:80px;}
-@keyframes mq{from{transform:translateX(100vw)}to{transform:translateX(-100%)}}
+/* ADMIN LAYOUT */
+.admin{display:none;min-height:100vh;flex-direction:column;}
+.admin.active{display:flex;}
 
-/* LAYOUT */
-.layout{display:flex;margin-top:calc(var(--nav-h) + var(--mq-h));min-height:calc(100vh - var(--nav-h) - var(--mq-h));}
+/* TOP NAV */
+.topnav{background:linear-gradient(135deg,#1a1a2e,#3a2a5e);color:white;padding:0 24px;height:60px;display:flex;align-items:center;gap:16px;box-shadow:0 2px 12px rgba(0,0,0,.3);position:sticky;top:0;z-index:100;}
+.topnav-logo{font-size:18px;font-weight:900;letter-spacing:3px;color:#ffd6e0;flex-shrink:0;}
+.topnav-badge{font-size:10px;background:rgba(255,255,255,.15);padding:2px 8px;border-radius:10px;letter-spacing:1px;}
+.topnav-right{margin-left:auto;display:flex;align-items:center;gap:12px;}
+.topnav-time{font-size:11px;opacity:.6;letter-spacing:1px;}
+.logout-btn{padding:6px 14px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:8px;color:white;font-family:'Noto Serif TC',serif;font-size:12px;cursor:pointer;transition:all .2s;}
+.logout-btn:hover{background:rgba(255,255,255,.2);}
 
-/* LEFT SIDEBAR */
-.lsb{width:220px;flex-shrink:0;background:var(--warm-white);border-right:1.5px solid var(--light-tan);padding:20px 14px;position:sticky;top:calc(var(--nav-h)+var(--mq-h));height:calc(100vh - var(--nav-h) - var(--mq-h));overflow-y:auto;}
-.sb-sec{margin-bottom:20px;}
-.sb-ttl{font-size:10px;font-weight:700;color:var(--mid);letter-spacing:2px;text-transform:uppercase;padding-bottom:7px;border-bottom:1.5px solid var(--light-tan);margin-bottom:7px;}
-.sb-item{display:flex;align-items:center;gap:8px;padding:9px 12px;border-radius:10px;cursor:pointer;transition:all .2s;font-size:13px;font-weight:600;color:var(--dark);margin-bottom:2px;}
-.sb-item:hover{background:var(--light-tan);color:var(--primary);}
-.sb-item.active{background:rgba(232,117,138,.1);color:var(--primary);}
+/* BODY LAYOUT */
+.admin-body{display:flex;flex:1;overflow:hidden;}
 
-/* MAIN */
-.main{flex:1;padding:22px;overflow:hidden;max-width:900px;}
+/* SIDEBAR */
+.asidebar{width:220px;background:var(--white);border-right:1.5px solid var(--border);flex-shrink:0;padding:20px 12px;display:flex;flex-direction:column;gap:4px;}
+.aside-section{font-size:10px;font-weight:700;color:var(--mid);letter-spacing:2px;text-transform:uppercase;padding:14px 10px 6px;margin-top:4px;}
+.aside-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;cursor:pointer;font-size:13px;font-weight:600;color:var(--mid);transition:all .2s;}
+.aside-item:hover{background:var(--light);color:var(--dark);}
+.aside-item.active{background:var(--primary-light);color:var(--primary);}
+.aside-badge{margin-left:auto;background:var(--primary);color:white;font-size:9px;font-weight:700;border-radius:10px;padding:1px 7px;}
 
-/* CAROUSEL */
-.carousel{position:relative;border-radius:18px;overflow:hidden;margin-bottom:18px;height:340px;box-shadow:0 6px 28px var(--shadow);background:#2a1a0e;}
-.c-track{display:flex;height:100%;width:100%;transition:transform .5s cubic-bezier(.4,0,.2,1);will-change:transform;}
-.c-slide{min-width:100%;width:100%;height:100%;position:relative;flex-shrink:0;overflow:hidden;}
-.c-slide img{width:100%;height:100%;object-fit:cover;display:block;position:absolute;top:0;left:0;}
-.c-overlay{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(30,10,0,.72));padding:24px 22px 18px;color:white;}
-.c-name{font-size:21px;font-weight:900;letter-spacing:2px;margin-bottom:4px;text-shadow:0 2px 8px rgba(0,0,0,.3);}
-.c-price{font-size:16px;font-weight:700;color:#ffd6e0;margin-bottom:10px;}
-.c-btn{padding:6px 16px;background:var(--primary);color:white;border:none;border-radius:20px;font-family:'Noto Serif TC',serif;font-size:13px;font-weight:700;cursor:pointer;}
-.c-btn:hover{background:var(--primary-dark);}
-.c-arr{position:absolute;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.85);border:none;border-radius:50%;width:42px;height:42px;font-size:26px;cursor:pointer;color:var(--dark);display:flex;align-items:center;justify-content:center;box-shadow:0 2px 10px rgba(0,0,0,.15);transition:all .2s;z-index:10;}
-.c-arr:hover{background:white;transform:translateY(-50%) scale(1.1);}
-.c-arr.l{left:14px;}.c-arr.r{right:14px;}
-.c-dots{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);display:flex;gap:6px;z-index:10;}
-.c-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.45);border:none;cursor:pointer;transition:all .3s;padding:0;}
-.c-dot.active{background:white;transform:scale(1.3);}
-
-/* MEMBER BANNER */
-.mbanner{background:linear-gradient(135deg,#ffd6e0,#fff3b0,#d0eaff);border-radius:14px;padding:16px 18px;margin-bottom:18px;display:flex;gap:8px;align-items:center;border:1.5px solid rgba(255,255,255,.8);box-shadow:0 3px 14px rgba(232,117,138,.1);}
-.mstep{flex:1;text-align:center;}
-.mstep-icon{font-size:24px;margin-bottom:5px;}
-.mstep-title{font-size:11px;font-weight:700;color:var(--dark);margin-bottom:2px;}
-.mstep-desc{font-size:9px;color:var(--mid);line-height:1.4;}
-.mstep-arrow{font-size:16px;color:var(--primary);flex-shrink:0;}
-
-/* CAT TABS */
-.cat-bar{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;}
-.cat-tab{padding:7px 15px;border-radius:20px;border:1.5px solid var(--light-tan);background:var(--warm-white);font-family:'Noto Serif TC',serif;font-size:13px;font-weight:700;color:var(--mid);cursor:pointer;transition:all .2s;white-space:nowrap;}
-.cat-tab:hover{background:var(--light-tan);color:var(--primary);}
-.cat-tab.active{background:var(--primary);color:white;border-color:var(--primary);box-shadow:0 3px 10px rgba(232,117,138,.3);}
-
-/* PRODUCT GRID */
-.pgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
-.pcard{background:var(--warm-white);border-radius:14px;overflow:hidden;border:1.5px solid rgba(106,174,214,.2);box-shadow:0 2px 10px var(--shadow);transition:all .25s;cursor:pointer;}
-.pcard:hover{transform:translateY(-4px);box-shadow:0 8px 22px var(--shadow);}
-.pimg{width:100%;height:160px;object-fit:cover;display:block;background:var(--light-tan);}
-.pimg-ph{width:100%;height:160px;background:linear-gradient(135deg,var(--light-tan),#e8d0b0);display:flex;align-items:center;justify-content:center;font-size:40px;}
-.pbody{padding:11px;}
-.pname{font-size:13px;font-weight:700;color:var(--dark);line-height:1.4;margin-bottom:5px;}
-.pprice{font-size:17px;font-weight:900;color:var(--primary);}
-.padd{width:100%;margin-top:9px;padding:7px;background:var(--primary);color:white;border:none;border-radius:8px;font-family:'Noto Serif TC',serif;font-size:12px;font-weight:700;cursor:pointer;letter-spacing:1px;transition:all .2s;}
-.padd:hover{background:var(--primary-dark);}
+/* MAIN CONTENT */
+.acontent{flex:1;overflow-y:auto;padding:24px;}
 
 /* PAGE HEADER */
-.ph{margin-bottom:18px;}
-.ph-title{font-size:21px;font-weight:900;color:var(--dark);letter-spacing:2px;display:flex;align-items:center;gap:10px;}
-.ph-title::after{content:'';flex:1;height:2px;background:linear-gradient(90deg,var(--primary),transparent);}
-.ph-sub{font-size:13px;color:var(--mid);margin-top:5px;letter-spacing:1px;}
+.apage-title{font-size:20px;font-weight:900;color:var(--dark);letter-spacing:1px;margin-bottom:4px;}
+.apage-sub{font-size:12px;color:var(--mid);margin-bottom:22px;letter-spacing:1px;}
 
-/* RIGHT SIDEBAR */
-.rsb{width:210px;flex-shrink:0;background:var(--warm-white);border-left:1.5px solid var(--light-tan);padding:18px 13px;position:sticky;top:calc(var(--nav-h)+var(--mq-h));height:calc(100vh - var(--nav-h) - var(--mq-h));overflow-y:auto;}
-.rs-sec{margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid var(--light-tan);}
-.rs-sec:last-child{border-bottom:none;}
-.rs-title{font-size:10px;font-weight:700;color:var(--mid);letter-spacing:1px;margin-bottom:9px;text-transform:uppercase;}
-.rank-item{display:flex;align-items:center;gap:7px;padding:5px 0;border-bottom:1px dashed var(--light-tan);cursor:pointer;}
-.rank-item:last-child{border-bottom:none;}
-.rank-item:hover{opacity:.7;}
-.rnum{width:20px;height:20px;border-radius:50%;background:var(--primary);color:white;font-size:10px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.rnum.top{background:var(--yellow);color:var(--dark);}
-.rname{font-size:12px;font-weight:600;color:var(--dark);flex:1;}
-.rprice{font-size:11px;color:var(--primary);font-weight:700;}
-.ann-item{margin-bottom:9px;padding-bottom:9px;border-bottom:1px dashed var(--light-tan);}
-.ann-item:last-child{border-bottom:none;margin-bottom:0;}
-.ann-tag{display:inline-block;font-size:9px;font-weight:700;padding:1px 5px;border-radius:4px;background:var(--primary-light);color:var(--primary);margin-bottom:3px;}
-.ann-text{font-size:11px;color:var(--dark);line-height:1.5;}
-.ann-date{font-size:9px;color:var(--mid);margin-top:2px;}
-.rev-item{margin-bottom:9px;padding-bottom:9px;border-bottom:1px dashed var(--light-tan);}
-.rev-item:last-child{border-bottom:none;margin-bottom:0;}
-.rev-stars{color:var(--yellow);font-size:10px;margin-bottom:2px;}
-.rev-text{font-size:10px;color:var(--dark);line-height:1.5;font-style:italic;}
-.rev-author{font-size:9px;color:var(--mid);margin-top:2px;text-align:right;}
+/* STAT CARDS */
+.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px;}
+.stat-card{background:var(--white);border-radius:14px;padding:18px;border:1.5px solid var(--border);box-shadow:0 2px 10px var(--shadow);}
+.stat-icon{font-size:28px;margin-bottom:10px;}
+.stat-val{font-size:26px;font-weight:900;color:var(--dark);}
+.stat-lbl{font-size:11px;color:var(--mid);margin-top:3px;letter-spacing:1px;}
+.stat-change{font-size:10px;margin-top:6px;font-weight:700;}
+.stat-change.up{color:var(--green);}
+.stat-change.down{color:var(--red);}
 
-/* MODAL */
-.modal-overlay{display:none;position:fixed;inset:0;background:rgba(30,10,0,.6);z-index:2000;align-items:center;justify-content:center;padding:14px;}
-.modal-overlay.active{display:flex;}
-.modal{background:var(--cream);border-radius:18px;padding:26px;width:100%;max-width:420px;position:relative;box-shadow:0 18px 55px rgba(30,10,0,.3);animation:min .3s ease;max-height:92vh;overflow-y:auto;}
-@keyframes min{from{opacity:0;transform:scale(.95) translateY(10px)}to{opacity:1;transform:scale(1) translateY(0)}}
-.mc{position:absolute;top:14px;right:14px;background:var(--light-tan);border:none;border-radius:50%;width:30px;height:30px;font-size:15px;cursor:pointer;color:var(--mid);display:flex;align-items:center;justify-content:center;}
-.mt{font-size:19px;font-weight:900;color:var(--dark);letter-spacing:2px;margin-bottom:3px;}
-.ms{font-size:12px;color:var(--mid);margin-bottom:18px;}
-.fg{margin-bottom:13px;}
-.fl{display:block;font-size:11px;font-weight:700;color:var(--mid);letter-spacing:1px;margin-bottom:5px;}
-.fi{width:100%;padding:9px 13px;border:1.5px solid var(--light-tan);border-radius:10px;font-family:'Noto Serif TC',serif;font-size:13px;color:var(--dark);background:var(--warm-white);outline:none;transition:border-color .2s;}
-.fi:focus{border-color:var(--blue);}
-.fb{width:100%;padding:12px;background:var(--primary);color:white;border:none;border-radius:12px;font-family:'Noto Serif TC',serif;font-size:14px;font-weight:900;cursor:pointer;letter-spacing:2px;margin-top:7px;transition:all .2s;box-shadow:0 4px 14px rgba(232,117,138,.3);}
-.fb:hover{background:var(--primary-dark);}
-.fsw{text-align:center;margin-top:13px;font-size:12px;color:var(--mid);}
-.fsw a{color:var(--primary);font-weight:700;cursor:pointer;}
+/* TABLE */
+.table-wrap{background:var(--white);border-radius:14px;border:1.5px solid var(--border);box-shadow:0 2px 10px var(--shadow);overflow:hidden;margin-bottom:20px;}
+.table-header{padding:16px 20px;border-bottom:1.5px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:12px;}
+.table-title{font-size:15px;font-weight:700;color:var(--dark);}
+.search-input{padding:8px 14px;border:1.5px solid var(--border);border-radius:8px;font-family:'Noto Serif TC',serif;font-size:13px;color:var(--dark);outline:none;width:200px;transition:border-color .2s;}
+.search-input:focus{border-color:var(--blue);}
+.filter-btn{padding:7px 14px;border:1.5px solid var(--border);border-radius:8px;background:var(--white);font-family:'Noto Serif TC',serif;font-size:12px;font-weight:600;color:var(--mid);cursor:pointer;transition:all .2s;}
+.filter-btn:hover,.filter-btn.active{background:var(--primary);color:white;border-color:var(--primary);}
+table{width:100%;border-collapse:collapse;}
+th{text-align:left;font-size:11px;font-weight:700;color:var(--mid);letter-spacing:1px;text-transform:uppercase;padding:12px 16px;border-bottom:1.5px solid var(--border);background:#fafafa;}
+td{padding:12px 16px;border-bottom:1px solid var(--border);font-size:13px;color:var(--dark);vertical-align:middle;}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:#fafbfc;}
 
-/* CART */
-.overlay{display:none;position:fixed;inset:0;background:rgba(30,10,0,.5);z-index:1999;}
-.overlay.active{display:block;}
-.cdrawer{position:fixed;top:0;right:-400px;width:380px;height:100vh;background:var(--cream);z-index:2000;box-shadow:-4px 0 18px var(--shadow);transition:right .35s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;}
-.cdrawer.open{right:0;}
-.ch{padding:18px 22px;background:linear-gradient(135deg,#ffd6e0,#d0eaff);color:var(--dark);display:flex;justify-content:space-between;align-items:center;}
-.ch-title{font-size:17px;font-weight:900;letter-spacing:2px;}
-.cclose{background:rgba(255,255,255,.6);border:none;border-radius:50%;width:30px;height:30px;color:var(--dark);font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
-.citems{flex:1;overflow-y:auto;padding:14px;}
-.cempty{text-align:center;padding:55px 20px;color:var(--mid);}
-.citem{display:flex;align-items:center;gap:10px;padding:11px;background:var(--warm-white);border-radius:11px;border:1px solid rgba(106,174,214,.2);margin-bottom:7px;}
-.citem-img{width:52px;height:52px;border-radius:8px;object-fit:cover;flex-shrink:0;background:var(--light-tan);}
-.citem-info{flex:1;}
-.citem-name{font-size:13px;font-weight:700;color:var(--dark);}
-.citem-price{font-size:11px;color:var(--mid);margin-top:2px;}
-.citem-qty{display:flex;align-items:center;gap:7px;}
-.qbtn{background:var(--light-tan);border:none;border-radius:50%;width:24px;height:24px;font-size:13px;cursor:pointer;color:var(--dark);display:flex;align-items:center;justify-content:center;}
-.qnum{font-size:13px;font-weight:700;color:var(--dark);min-width:18px;text-align:center;}
-.cremove{background:none;border:none;color:var(--mid);cursor:pointer;font-size:15px;padding:3px;}
-.cfooter{padding:14px 22px;border-top:1.5px solid var(--light-tan);background:var(--warm-white);}
-.ctotal{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
-.ctotal-label{font-size:14px;font-weight:700;color:var(--dark);}
-.ctotal-price{font-size:22px;font-weight:900;color:var(--primary);}
-.ckbtn{width:100%;padding:13px;background:var(--primary);color:white;border:none;border-radius:12px;font-family:'Noto Serif TC',serif;font-size:14px;font-weight:900;cursor:pointer;letter-spacing:2px;box-shadow:0 4px 14px rgba(232,117,138,.3);transition:all .2s;}
-.ckbtn:hover{background:var(--primary-dark);}
+/* STATUS BADGE */
+.sbadge{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;}
+.sbadge.s0{background:var(--yellow-light);color:#9a7a00;border:1px solid var(--yellow);}
+.sbadge.s1{background:var(--blue-light);color:#1a6a9a;border:1px solid var(--blue);}
+.sbadge.s2{background:var(--orange-light);color:#9a4a00;border:1px solid var(--orange);}
+.sbadge.s3{background:var(--green-light);color:var(--green);border:1px solid rgba(74,140,74,.3);}
 
-/* MEMBER PAGE */
-.mpanel{background:var(--warm-white);border:1.5px solid rgba(106,174,214,.2);border-radius:14px;padding:18px;margin-bottom:14px;}
-.mgreet{font-size:15px;font-weight:900;color:var(--dark);letter-spacing:1px;margin-bottom:11px;}
-.mstats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
-.sbox{background:var(--cream);border-radius:10px;padding:11px;text-align:center;border:1px solid var(--light-tan);}
-.sval{font-size:20px;font-weight:900;color:var(--primary);}
-.slbl{font-size:10px;color:var(--mid);margin-top:2px;letter-spacing:1px;}
-.ptsbar{background:linear-gradient(135deg,#c9973a,#e07b39);border-radius:11px;padding:11px 15px;display:flex;justify-content:space-between;align-items:center;color:white;margin-bottom:14px;cursor:pointer;}
-.pts-lbl{font-size:11px;letter-spacing:1px;opacity:.9;}
-.pts-val{font-size:19px;font-weight:900;}
-.oitem{display:flex;justify-content:space-between;align-items:flex-start;background:var(--warm-white);border:1.5px solid rgba(106,174,214,.12);border-radius:11px;padding:13px 15px;margin-bottom:7px;}
-.oid{font-size:11px;font-weight:700;color:var(--mid);letter-spacing:1px;}
-.odate{font-size:10px;color:var(--mid);margin-top:2px;}
-.oitems{font-size:11px;color:var(--dark);margin-top:3px;}
-.ototal{font-size:15px;font-weight:900;color:var(--primary);}
-.ostatus{display:inline-block;font-size:9px;font-weight:700;padding:2px 7px;border-radius:20px;margin-top:3px;background:rgba(74,140,74,.1);color:#4a8c4a;border:1px solid rgba(74,140,74,.3);}
+/* ACTION BUTTONS */
+.act-btn{padding:5px 12px;border-radius:7px;border:1.5px solid var(--border);background:var(--white);font-family:'Noto Serif TC',serif;font-size:11px;font-weight:600;cursor:pointer;transition:all .2s;color:var(--mid);}
+.act-btn:hover{border-color:var(--blue);color:var(--blue);}
+.act-btn.danger{border-color:var(--red);color:var(--red);}
+.act-btn.danger:hover{background:var(--red);color:white;}
+.act-btn.primary{background:var(--primary);color:white;border-color:var(--primary);}
+.act-btn.primary:hover{background:var(--primary-dark);}
+
+/* ORDER DETAIL PANEL */
+.detail-panel{position:fixed;top:0;right:-500px;width:480px;height:100vh;background:var(--white);box-shadow:-4px 0 20px rgba(0,0,0,.15);z-index:200;transition:right .35s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;overflow:hidden;}
+.detail-panel.open{right:0;}
+.dp-header{padding:20px 22px;background:linear-gradient(135deg,#1a1a2e,#3a2a5e);color:white;display:flex;justify-content:space-between;align-items:center;flex-shrink:0;}
+.dp-title{font-size:16px;font-weight:700;letter-spacing:2px;}
+.dp-close{background:rgba(255,255,255,.15);border:none;border-radius:50%;width:30px;height:30px;color:white;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.dp-body{flex:1;overflow-y:auto;padding:22px;}
+.dp-section{margin-bottom:20px;}
+.dp-section-title{font-size:11px;font-weight:700;color:var(--mid);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;padding-bottom:8px;border-bottom:1.5px solid var(--border);}
+.dp-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px dashed var(--border);font-size:13px;}
+.dp-row:last-child{border-bottom:none;}
+.dp-label{color:var(--mid);}
+.dp-val{font-weight:600;color:var(--dark);text-align:right;max-width:60%;}
+.status-select{width:100%;padding:10px 13px;border:1.5px solid var(--border);border-radius:10px;font-family:'Noto Serif TC',serif;font-size:14px;color:var(--dark);background:var(--white);outline:none;cursor:pointer;}
+.status-select:focus{border-color:var(--blue);}
+.save-btn{width:100%;padding:13px;background:linear-gradient(135deg,#1a1a2e,#3a2a5e);color:white;border:none;border-radius:12px;font-family:'Noto Serif TC',serif;font-size:14px;font-weight:700;cursor:pointer;letter-spacing:2px;margin-top:6px;transition:all .2s;}
+.save-btn:hover{opacity:.9;}
+
+/* PROGRESS STEPS in detail panel */
+.progress-steps{display:flex;align-items:center;margin:12px 0;}
+.pstep{display:flex;flex-direction:column;align-items:center;flex:1;}
+.pstep-circle{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;border:2.5px solid var(--border);background:var(--light);color:var(--mid);}
+.pstep-circle.done{background:var(--primary);border-color:var(--primary-dark);color:white;}
+.pstep-circle.current{background:var(--primary);border-color:var(--primary-dark);color:white;box-shadow:0 0 0 4px var(--primary-light);}
+.pstep-label{font-size:9px;color:var(--mid);margin-top:5px;text-align:center;}
+.pstep-label.done,.pstep-label.current{color:var(--primary);font-weight:700;}
+.pstep-line{flex:1;height:3px;background:var(--border);margin-bottom:14px;border-radius:2px;}
+.pstep-line.done{background:var(--primary);}
+
+/* OVERLAY */
+.panel-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:199;}
+.panel-overlay.active{display:block;}
 
 /* TOAST */
-.toast{display:none;position:fixed;top:76px;left:50%;transform:translateX(-50%);background:var(--dark);color:white;padding:9px 22px;border-radius:22px;font-size:13px;font-weight:700;letter-spacing:1px;z-index:9999;white-space:nowrap;box-shadow:0 4px 14px rgba(30,10,0,.3);}
+.atoast{display:none;position:fixed;top:20px;right:24px;background:var(--dark);color:white;padding:10px 22px;border-radius:12px;font-size:13px;font-weight:600;z-index:9999;box-shadow:0 4px 16px rgba(0,0,0,.3);letter-spacing:.5px;}
 
-/* FOOTER */
-.footer{background:linear-gradient(135deg,#3a2a1e,#5a3a28);color:white;padding:26px 0 14px;}
-.footer-in{max-width:1100px;margin:0 auto;padding:0 28px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:22px;align-items:start;}
-.flogo{font-family:'Playfair Display',serif;font-size:24px;font-weight:700;color:#ffd6e0;letter-spacing:4px;}
-.finfo{font-size:12px;line-height:2.2;opacity:.82;}
-.flinks{display:flex;flex-direction:column;gap:7px;}
-.flinks a{color:rgba(255,255,255,.78);text-decoration:none;font-size:12px;transition:color .2s;}
-.flinks a:hover{color:#ffd6e0;}
-.fcopy{grid-column:1/-1;text-align:center;font-size:10px;opacity:.45;padding-top:14px;border-top:1px solid rgba(255,255,255,.1);margin-top:6px;}
+/* MEMBER CARD */
+.member-card{background:var(--white);border:1.5px solid var(--border);border-radius:12px;padding:16px;display:flex;align-items:center;gap:14px;transition:all .2s;}
+.member-card:hover{border-color:var(--blue);box-shadow:0 2px 12px var(--shadow);}
+.member-avatar{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--primary-light),var(--blue-light));display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+.member-info{flex:1;}
+.member-name{font-size:14px;font-weight:700;color:var(--dark);}
+.member-phone{font-size:12px;color:var(--mid);margin-top:2px;}
+.member-pts{font-size:12px;color:var(--primary);font-weight:700;margin-top:2px;}
+.member-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;}
 
-/* MOBILE MENU */
-.mmenu{position:fixed;top:0;left:-290px;width:290px;height:100vh;background:var(--cream);z-index:3000;transition:left .35s cubic-bezier(.4,0,.2,1);box-shadow:4px 0 18px var(--shadow);overflow-y:auto;padding-bottom:40px;}
-.mmenu.open{left:0;}
-.mmenu-hd{background:linear-gradient(135deg,#ffd6e0,#d0eaff);padding:18px 15px;display:flex;justify-content:space-between;align-items:center;}
-.mmenu-title{font-size:17px;font-weight:900;color:var(--dark);letter-spacing:2px;}
-.mmenu-close{background:rgba(255,255,255,.6);border:none;border-radius:50%;width:28px;height:28px;font-size:15px;cursor:pointer;color:var(--dark);}
-.mmenu-sec{padding:11px 15px 3px;}
-.mmenu-sec-title{font-size:9px;font-weight:700;color:var(--mid);letter-spacing:2px;text-transform:uppercase;padding-bottom:5px;border-bottom:1px solid var(--light-tan);margin-bottom:5px;}
-.mmenu-item{display:flex;align-items:center;gap:9px;padding:10px 11px;border-radius:9px;cursor:pointer;font-size:13px;font-weight:600;color:var(--dark);margin-bottom:2px;transition:all .2s;}
-.mmenu-item:hover{background:var(--light-tan);color:var(--primary);}
-.mob-overlay{display:none;position:fixed;inset:0;background:rgba(30,10,0,.5);z-index:2999;}
+/* EMPTY STATE */
+.empty-state{text-align:center;padding:60px 20px;color:var(--mid);}
+.empty-icon{font-size:48px;margin-bottom:14px;}
+.empty-title{font-size:16px;font-weight:700;color:var(--dark);margin-bottom:6px;}
+.empty-sub{font-size:13px;line-height:1.7;}
 
-/* MOBILE NAV */
-.mobnav{display:none;position:fixed;bottom:0;left:0;right:0;background:var(--warm-white);border-top:1.5px solid var(--light-tan);z-index:1000;padding:6px 0 max(6px,env(safe-area-inset-bottom));box-shadow:0 -2px 10px var(--shadow);}
-.mobnav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;padding:3px 0;}
-.mobnav-icon{font-size:19px;}
-.mobnav-label{font-size:10px;font-weight:600;color:var(--mid);}
-.mobnav-item.active .mobnav-label{color:var(--primary);}
-
-/* MOBILE RIGHT */
-.mob-right{display:none;padding:0 11px 11px;}
-.mob-right .rs-sec{background:var(--warm-white);border-radius:11px;padding:13px;margin-bottom:10px;}
+/* EXPORT BTN */
+.export-btn{padding:8px 16px;background:var(--green);color:white;border:none;border-radius:8px;font-family:'Noto Serif TC',serif;font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:6px;transition:all .2s;}
+.export-btn:hover{opacity:.85;}
 
 /* RESPONSIVE */
-@media(max-width:1100px){.rsb{display:none;}.mob-right{display:block;}}
 @media(max-width:768px){
-  .lsb{display:none;}.nav-menu{display:none;}.rsb{display:none;}
-  .ham{display:block;}
-  .nav{padding:0 10px;height:56px;gap:9px;}
-  :root{--nav-h:56px;--mq-h:30px;}
-  .logo img{height:34px;}
-  .nbtn{padding:5px 9px;font-size:11px;}
-  .cart-btn{width:34px;height:34px;font-size:15px;}
-  .layout{flex-direction:column;}
-  .main{padding:9px;max-width:100%;width:100%;}
-  .carousel{height:240px;border-radius:11px;}
-  .c-slide img{object-fit:cover;}
-  .c-name{font-size:15px;}.c-price{font-size:13px;margin-bottom:5px;}
-  .c-btn{font-size:11px;padding:5px 11px;}
-  .c-arr{width:28px;height:28px;font-size:17px;}
-  .c-arr.l{left:7px;}.c-arr.r{right:7px;}
-  .mbanner{flex-wrap:nowrap;overflow-x:auto;padding:11px;gap:5px;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
-  .mbanner::-webkit-scrollbar{display:none;}
-  .mstep{min-width:66px;}.mstep-icon{font-size:19px;}.mstep-title{font-size:10px;}.mstep-desc{font-size:9px;}
-  .mstep-arrow{font-size:12px;flex-shrink:0;}
-  .cat-bar{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:3px;}
-  .cat-bar::-webkit-scrollbar{display:none;}
-  .cat-tab{font-size:11px;padding:5px 11px;white-space:nowrap;}
-  .pgrid{grid-template-columns:repeat(2,1fr);gap:7px;}
-  .pimg,.pimg-ph{height:120px;}
-  .pname{font-size:11px;}.pprice{font-size:14px;}.padd{font-size:10px;padding:5px;}
-  .ph-title{font-size:17px;}
-  .cdrawer{width:100%;right:-100%;}
-  .modal{padding:16px 13px;border-radius:14px;}
-  .mt{font-size:16px;}
-  .footer-in{grid-template-columns:1fr;gap:13px;padding:0 14px;text-align:center;}
-  .flinks{flex-direction:row;justify-content:center;flex-wrap:wrap;gap:10px;}
-  .mobnav{display:flex;}
-  .mob-right{display:block;}
-  body{padding-bottom:66px;}
+  .stat-grid{grid-template-columns:repeat(2,1fr);}
+  .asidebar{display:none;}
+  .detail-panel{width:100%;}
+  .member-grid{grid-template-columns:1fr;}
+  th:nth-child(n+4),td:nth-child(n+4){display:none;}
 }
 </style>
 </head>
 <body>
 
-<!-- MOB OVERLAY -->
-<div class="mob-overlay" id="mobOverlay" onclick="closeMobMenu()"></div>
-
-<!-- MOBILE MENU -->
-<div class="mmenu" id="mmenu">
-  <div class="mmenu-hd">
-    <div class="mmenu-title">源 春</div>
-    <button class="mmenu-close" onclick="closeMobMenu()">✕</button>
-  </div>
-  <div class="mmenu-sec">
-    <div class="mmenu-sec-title">頁面導覽</div>
-    <div class="mmenu-item" onclick="go('home')">🏠 首頁</div>
-    <div class="mmenu-item" onclick="go('products')">🛍️ 所有商品</div>
-    <div class="mmenu-item" onclick="go('tracking')">🔍 訂單查詢</div>
-    <div class="mmenu-item" onclick="go('about')">📖 品牌故事</div>
-    <div class="mmenu-item" onclick="go('faq')">❓ 常見問題</div>
-  </div>
-  <div class="mmenu-sec">
-    <div class="mmenu-sec-title">商品分類</div>
-    <div class="mmenu-item" onclick="go('products');renderProducts('all')">🏠 全部商品</div>
-    <div class="mmenu-item" onclick="go('products');renderProducts('hot')">🍲 加熱直接吃</div>
-    <div class="mmenu-item" onclick="go('products');renderProducts('raw')">🥩 在家自己煮</div>
-  </div>
-  <div class="mmenu-sec">
-    <div class="mmenu-sec-title">會員專區</div>
-    <div class="mmenu-item" onclick="go('member')">👤 我的帳戶</div>
-    <div class="mmenu-item" onclick="go('tracking')">📦 訂單查詢</div>
-    <div class="mmenu-item" onclick="closeMobMenu();openModal('loginModal')">🔑 登入 / 註冊</div>
-  </div>
-  <div class="mmenu-sec">
-    <div class="mmenu-sec-title">配送 &amp; 營業</div>
-    <div style="font-size:12px;color:var(--mid);line-height:2.2;padding:4px 11px;">
-      🐱 黑貓冷藏配送<br>📦 滿$2,600免運費<br>🌡️ 熟食冷藏7天<br>❄️ 生食冷藏14天<br>🕘 平日 11:00–18:00（週二公休）<br>🎉 假日/國定假日 11:00–19:30
-    </div>
-  </div>
-</div>
-
-<!-- NAV -->
-<nav class="nav">
-  <button class="ham" onclick="openMobMenu()">☰</button>
-  <div class="logo" onclick="showPage('home')">
-    <img src="logo1.png" alt="源春" onerror="this.outerHTML='源 春'">
-  </div>
-  <ul class="nav-menu">
-    <li><a href="#" onclick="showPage('home');return false">首頁</a></li>
-    <li><a href="#" onclick="showPage('products');return false">所有商品</a></li>
-    <li><a href="#" onclick="showPage('tracking');return false">訂單查詢</a></li>
-    <li><a href="#" onclick="showPage('about');return false">品牌故事</a></li>
-    <li><a href="#" onclick="showPage('faq');return false">常見問題</a></li>
-  </ul>
-  <div class="nav-actions">
-    <div id="navGuest" style="display:flex;gap:7px;">
-      <button class="nbtn" onclick="openModal('loginModal')">登入</button>
-      <button class="nbtn p" onclick="openModal('registerModal')">註冊</button>
-    </div>
-    <div id="navUser" style="display:none;gap:7px;align-items:center;">
-      <button class="nbtn" onclick="showPage('member')">👤 <span id="navName"></span></button>
-      <button class="nbtn" onclick="doLogout()">登出</button>
-    </div>
-    <button class="cart-btn" onclick="toggleCart()">
-      🛒<span class="cart-badge" id="cartBadge"></span>
-    </button>
-  </div>
-</nav>
-
-<!-- MARQUEE -->
-<div class="mq">
-  <div class="mq-text">
-    🎉 註冊會員即送100點數！&nbsp;&nbsp;&nbsp;🚫 週二、週六、週日不出貨，請提前下單！&nbsp;&nbsp;&nbsp;📦 滿$2,600免運費！&nbsp;&nbsp;&nbsp;🏢 歡迎公司團購，量大優惠！&nbsp;&nbsp;&nbsp;🕘 出貨時間：週一、三、四、五&nbsp;&nbsp;&nbsp;🎉 註冊會員即送100點數！&nbsp;&nbsp;&nbsp;🚫 週二、週六、週日不出貨，請提前下單！&nbsp;&nbsp;&nbsp;📦 滿$2,600免運費！&nbsp;&nbsp;&nbsp;🏢 歡迎公司團購，量大優惠！
-  </div>
-</div>
-
-<!-- LAYOUT -->
-<div class="layout">
-
-  <!-- LEFT SIDEBAR -->
-  <aside class="lsb">
-    <div class="sb-sec">
-      <div class="sb-ttl">商品分類</div>
-      <div class="sb-item active" onclick="filterCat('all',this)">🏠 全部商品</div>
-      <div class="sb-item" onclick="filterCat('hot',this)">🍲 加熱直接吃</div>
-      <div class="sb-item" onclick="filterCat('raw',this)">🥩 在家自己煮</div>
-    </div>
-    <div class="sb-sec">
-      <div class="sb-ttl">會員專區</div>
-      <div class="sb-item" onclick="showPage('member')">👤 我的帳戶</div>
-      <div class="sb-item" onclick="showPage('tracking')">🔍 訂單查詢</div>
-      <div class="sb-item" onclick="showPage('member')">⭐ 點數紀錄</div>
-    </div>
-    <div class="sb-sec">
-      <div class="sb-ttl">配送資訊</div>
-      <div style="font-size:11px;color:var(--mid);line-height:2.1;padding:3px 0;">
-        🐱 黑貓冷藏配送<br>📦 滿$2,600免運費<br>🌡️ 熟食冷藏7天<br>❄️ 生食冷藏14天<br>🕘 平日 11:00–18:00<br>🚫 週二公休<br>🎉 假日 11:00–19:30
-      </div>
-    </div>
-  </aside>
-
-  <!-- MAIN -->
-  <main class="main">
-
-    <!-- HOME -->
-    <div id="page-home">
-      <!-- Carousel -->
-      <div class="carousel" id="carousel">
-        <div class="c-track" id="cTrack">
-          <div class="c-slide"><img src="slide1.jpg" alt="鴨血"><div class="c-overlay"><div class="c-name">麻辣嫩鴨血</div><div class="c-price">$180</div><button class="c-btn" onclick="quickAdd(3)">加入購物車</button></div></div>
-          <div class="c-slide"><img src="slide2.jpg" alt="源春"><div class="c-overlay"><div class="c-name">源春 · 創立於1997</div><div class="c-price">深坑老街特產</div></div></div>
-          <div class="c-slide"><img src="slide3.jpg" alt="青草茶"><div class="c-overlay"><div class="c-name">源春自製青草茶</div><div class="c-price">清涼降火 · 無添加</div></div></div>
-          <div class="c-slide"><img src="slide4.jpg" alt="配送"><div class="c-overlay"><div class="c-name">黑貓冷藏配送</div><div class="c-price">滿$2,600免運費</div></div></div>
-          <div class="c-slide"><img src="slide5.jpg" alt="保鮮"><div class="c-overlay"><div class="c-name">冷藏保鮮到府</div><div class="c-price">安心新鮮配送</div></div></div>
-          <div class="c-slide"><img src="slide6.jpg" alt="臭豆腐"><div class="c-overlay"><div class="c-name">麻辣臭豆腐</div><div class="c-price">$140</div><button class="c-btn" onclick="quickAdd(1)">加入購物車</button></div></div>
-          <div class="c-slide"><img src="malatoufu.png" alt="麻辣臭豆腐"><div class="c-overlay"><div class="c-name">麻辣臭豆腐</div><div class="c-price">$140</div><button class="c-btn" onclick="quickAdd(1)">加入購物車</button></div></div>
-          <div class="c-slide"><img src="maladuxue.png" alt="麻辣嫩鴨血"><div class="c-overlay"><div class="c-name">麻辣嫩鴨血</div><div class="c-price">$180</div><button class="c-btn" onclick="quickAdd(3)">加入購物車</button></div></div>
-          <div class="c-slide"><img src="redtofu.jpg" alt="滷紅燒嫩豆腐"><div class="c-overlay"><div class="c-name">滷紅燒嫩豆腐</div><div class="c-price">$130</div><button class="c-btn" onclick="quickAdd(6)">加入購物車</button></div></div>
-          <div class="c-slide"><img src="logo1.png" alt="源春" style="object-fit:contain;background:#fdf8f2;"><div class="c-overlay"><div class="c-name">深坑源春</div><div class="c-price">麻辣臭豆腐 · 嫩鴨血</div></div></div>
-        </div>
-        <button class="c-arr l" onclick="cMove(-1)">‹</button>
-        <button class="c-arr r" onclick="cMove(1)">›</button>
-        <div class="c-dots" id="cDots"></div>
-      </div>
-
-      <!-- Member banner -->
-      <div class="mbanner">
-        <div class="mstep"><div class="mstep-icon">📝</div><div class="mstep-title">免費註冊</div><div class="mstep-desc">手機號碼快速加入</div></div>
-        <div class="mstep-arrow">→</div>
-        <div class="mstep"><div class="mstep-icon">🛒</div><div class="mstep-title">下單購物</div><div class="mstep-desc">每$100賺1點</div></div>
-        <div class="mstep-arrow">→</div>
-        <div class="mstep"><div class="mstep-icon">⭐</div><div class="mstep-title">累積點數</div><div class="mstep-desc">100點折$50</div></div>
-        <div class="mstep-arrow">→</div>
-        <div class="mstep"><div class="mstep-icon">🎁</div><div class="mstep-title">專屬優惠</div><div class="mstep-desc">生日禮・限定活動</div></div>
-      </div>
-
-      <div class="ph"><div class="ph-title">精選商品</div><div class="ph-sub">嚴選深坑老街道地好味道</div></div>
-      <div class="cat-bar" id="homeCats">
-        <button class="cat-tab active" onclick="homeCat('all',this)">🏠 全部</button>
-        <button class="cat-tab" onclick="homeCat('hot',this)">🍲 加熱直接吃</button>
-        <button class="cat-tab" onclick="homeCat('raw',this)">🥩 在家自己煮</button>
-      </div>
-      <div class="pgrid" id="homeGrid"></div>
-    </div>
-
-    <!-- PRODUCTS -->
-    <div id="page-products" style="display:none;">
-      <div class="ph"><div class="ph-title" id="prodTitle">所有商品</div><div class="ph-sub" id="prodCount"></div></div>
-      <div class="cat-bar" id="prodCats">
-        <button class="cat-tab active" onclick="prodCat('all',this)">🏠 全部</button>
-        <button class="cat-tab" onclick="prodCat('hot',this)">🍲 加熱直接吃</button>
-        <button class="cat-tab" onclick="prodCat('raw',this)">🥩 在家自己煮</button>
-      </div>
-      <div class="pgrid" id="prodGrid"></div>
-    </div>
-
-    <!-- MEMBER -->
-    <div id="page-member" style="display:none;">
-      <div class="ph"><div class="ph-title">我的帳戶</div></div>
-      <div id="memberContent"></div>
-    </div>
-
-    <!-- TRACKING -->
-    <div id="page-tracking" style="display:none;">
-      <div class="ph"><div class="ph-title">📦 訂單查詢</div><div class="ph-sub">輸入訂單編號查詢出貨進度</div></div>
-      <div style="background:var(--warm-white);border-radius:14px;padding:22px;border:1.5px solid rgba(106,174,214,.2);margin-bottom:18px;">
-        <div class="fg"><label class="fl">訂單編號</label><input class="fi" type="text" id="trackId" placeholder="例：YC1234567890"></div>
-        <button class="fb" onclick="doTrack()">查詢訂單</button>
-      </div>
-      <div id="trackResult"></div>
-    </div>
-
-    <!-- ABOUT -->
-    <div id="page-about" style="display:none;">
-      <div class="ph"><div class="ph-title">品牌故事</div></div>
-
-      <!-- Hero image banner -->
-      <div style="position:relative;border-radius:16px;overflow:hidden;margin-bottom:18px;height:200px;background:linear-gradient(135deg,#3a2a1e,#7a4a2e);">
-        <img src="slide2.jpg" alt="源春深坑" style="width:100%;height:100%;object-fit:cover;opacity:0.7;" onerror="this.style.display='none'">
-        <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;color:white;text-align:center;padding:20px;">
-          <div style="font-size:28px;font-weight:900;letter-spacing:4px;text-shadow:0 2px 8px rgba(0,0,0,.4);">源 春</div>
-          <div style="font-size:14px;opacity:0.9;margin-top:6px;letter-spacing:2px;">深坑老街特產 · 創立於1997</div>
-        </div>
-      </div>
-
-      <!-- Story text -->
-      <div style="background:var(--warm-white);border-radius:14px;padding:22px;border:1.5px solid rgba(106,174,214,.2);line-height:2;font-size:14px;color:var(--mid);margin-bottom:16px;">
-        <div style="font-size:16px;font-weight:900;color:var(--dark);margin-bottom:12px;letter-spacing:1px;">🏠 我們的故事</div>
-        <p style="margin-bottom:12px;">源春深坑老街特產，傳承深坑古法製作臭豆腐的技藝，嚴選新鮮食材，不添加任何防腐劑，堅持讓每一口都是真實的好味道。</p>
-        <p style="margin-bottom:12px;">我們的臭豆腐採用獨家配方，細心醃製自然發酵7天以上，豆香濃郁，口感細緻滑順，入口即化。搭配自製麻辣湯底，層次豐富，回味無窮。</p>
-        <p>深坑老街是台灣著名的臭豆腐聖地，源春在此扎根近三十年，堅持傳統工藝，一道一道用心製作，只為讓您吃到最道地的深坑味。</p>
-      </div>
-
-      <!-- Feature cards -->
-      <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:16px;">
-        <div style="background:var(--warm-white);border-radius:12px;padding:16px;border:1.5px solid rgba(232,117,138,.15);text-align:center;">
-          <div style="font-size:32px;margin-bottom:8px;">🌿</div>
-          <div style="font-size:13px;font-weight:700;color:var(--dark);margin-bottom:4px;">無防腐劑</div>
-          <div style="font-size:11px;color:var(--mid);line-height:1.6;">天然食材，不添加人工防腐劑，吃得安心</div>
-        </div>
-        <div style="background:var(--warm-white);border-radius:12px;padding:16px;border:1.5px solid rgba(245,200,66,.3);text-align:center;">
-          <div style="font-size:32px;margin-bottom:8px;">🤲</div>
-          <div style="font-size:13px;font-weight:700;color:var(--dark);margin-bottom:4px;">純手工製作</div>
-          <div style="font-size:11px;color:var(--mid);line-height:1.6;">每日現做，手工壓製，保留最佳口感</div>
-        </div>
-        <div style="background:var(--warm-white);border-radius:12px;padding:16px;border:1.5px solid rgba(106,174,214,.2);text-align:center;">
-          <div style="font-size:32px;margin-bottom:8px;">⏳</div>
-          <div style="font-size:13px;font-weight:700;color:var(--dark);margin-bottom:4px;">古法發酵</div>
-          <div style="font-size:11px;color:var(--mid);line-height:1.6;">發酵7天以上，自然熟成，豆香濃郁</div>
-        </div>
-        <div style="background:var(--warm-white);border-radius:12px;padding:16px;border:1.5px solid rgba(74,140,74,.15);text-align:center;">
-          <div style="font-size:32px;margin-bottom:8px;">🐱</div>
-          <div style="font-size:13px;font-weight:700;color:var(--dark);margin-bottom:4px;">冷藏配送</div>
-          <div style="font-size:11px;color:var(--mid);line-height:1.6;">黑貓冷藏宅配，新鮮直送到您手中</div>
-        </div>
-      </div>
-
-      <!-- Product gallery -->
-      <div style="background:var(--warm-white);border-radius:14px;padding:18px;border:1.5px solid rgba(106,174,214,.2);">
-        <div style="font-size:14px;font-weight:700;color:var(--dark);margin-bottom:12px;letter-spacing:1px;">📸 招牌商品</div>
-        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;">
-          <div style="border-radius:10px;overflow:hidden;aspect-ratio:1;background:var(--light-tan);">
-            <img src="malatoufu.png" style="width:100%;height:100%;object-fit:cover;" onerror="this.parentElement.innerHTML='<div style='display:flex;align-items:center;justify-content:center;height:100%;font-size:28px;'>🍲</div>'">
-          </div>
-          <div style="border-radius:10px;overflow:hidden;aspect-ratio:1;background:var(--light-tan);">
-            <img src="maladuxue.png" style="width:100%;height:100%;object-fit:cover;" onerror="this.parentElement.innerHTML='<div style='display:flex;align-items:center;justify-content:center;height:100%;font-size:28px;'>🫀</div>'">
-          </div>
-          <div style="border-radius:10px;overflow:hidden;aspect-ratio:1;background:var(--light-tan);">
-            <img src="redtofu.jpg" style="width:100%;height:100%;object-fit:cover;" onerror="this.parentElement.innerHTML='<div style='display:flex;align-items:center;justify-content:center;height:100%;font-size:28px;'>🟤</div>'">
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- FAQ -->
-    <div id="page-faq" style="display:none;">
-      <div class="ph"><div class="ph-title">常見問題</div></div>
-      <div style="display:flex;flex-direction:column;gap:10px;">
-        <div style="background:var(--warm-white);border-radius:11px;padding:14px 18px;border:1.5px solid rgba(106,174,214,.2);">
-          <div style="font-size:13px;font-weight:700;color:var(--dark);margin-bottom:6px;">Q：如何保存商品？</div>
-          <div style="font-size:12px;color:var(--mid);line-height:1.8;">熟食冷藏7天，生食冷藏14天，請立即冷藏。</div>
-        </div>
-        <div style="background:var(--warm-white);border-radius:11px;padding:14px 18px;border:1.5px solid rgba(106,174,214,.2);">
-          <div style="font-size:13px;font-weight:700;color:var(--dark);margin-bottom:6px;">Q：配送方式？</div>
-          <div style="font-size:12px;color:var(--mid);line-height:1.8;">黑貓冷藏宅急便。滿$2,600免運，未滿運費$180。</div>
-        </div>
-        <div style="background:var(--warm-white);border-radius:11px;padding:14px 18px;border:1.5px solid rgba(106,174,214,.2);">
-          <div style="font-size:13px;font-weight:700;color:var(--dark);margin-bottom:6px;">Q：付款方式？</div>
-          <div style="font-size:12px;color:var(--mid);line-height:1.8;">貨到付款（+$30手續費）或銀行匯款。</div>
-        </div>
-        <div style="background:var(--warm-white);border-radius:11px;padding:14px 18px;border:1.5px solid rgba(106,174,214,.2);">
-          <div style="font-size:13px;font-weight:700;color:var(--dark);margin-bottom:6px;">Q：點數如何使用？</div>
-          <div style="font-size:12px;color:var(--mid);line-height:1.8;">每消費$100獲得1點，100點折抵$50。結帳時選擇使用點數。</div>
-        </div>
-      </div>
-    </div>
-
-  </main>
-
-  <!-- RIGHT SIDEBAR -->
-  <aside class="rsb">
-    <div class="rs-sec"><div class="rs-title">🔥 熱銷排行</div><div id="hotRank"></div></div>
-    <div class="rs-sec">
-      <div class="rs-title">📢 最新公告</div>
-      <div class="ann-item"><div class="ann-tag">促銷</div><div class="ann-text">滿$2,600免運費！限時優惠中</div><div class="ann-date">2026/05/18</div></div>
-      <div class="ann-item"><div class="ann-tag">新品</div><div class="ann-text">自製青草茶上架，清涼消暑</div><div class="ann-date">2026/05/10</div></div>
-      <div class="ann-item"><div class="ann-tag">公告</div><div class="ann-text">端午節出貨時間調整，敬請見諒</div><div class="ann-date">2026/05/01</div></div>
-    </div>
-    <div class="rs-sec">
-      <div class="rs-title">⭐ 顧客評價</div>
-      <div class="rev-item"><div class="rev-stars">★★★★★</div><div class="rev-text">「麻辣臭豆腐超好吃！回購第三次了！」</div><div class="rev-author">— 小芳 ❤️</div></div>
-      <div class="rev-item"><div class="rev-stars">★★★★★</div><div class="rev-text">「冷藏新鮮配送，強力推薦！」</div><div class="rev-author">— 阿明 👍</div></div>
-      <div class="rev-item"><div class="rev-stars">★★★★☆</div><div class="rev-text">「鴨血滑嫩，家人都喜歡！」</div><div class="rev-author">— 台北 林小姐</div></div>
-    </div>
-    <div class="rs-sec">
-      <div class="rs-title">📱 聯絡我們</div>
-      <div style="text-align:center;">
-        <img src="lineqr.jpg" alt="LINE QR" style="width:108px;height:108px;border-radius:9px;object-fit:cover;display:block;margin:0 auto 7px;">
-        <div style="font-size:10px;color:var(--mid);margin-bottom:5px;">掃描加入LINE好友</div>
-        <div style="font-size:13px;font-weight:700;color:var(--dark);">📞 02-2664-7116</div>
-      </div>
-    </div>
-  </aside>
-
-</div>
-
-<!-- MOBILE RIGHT -->
-<div class="mob-right">
-  <div class="rs-sec"><div class="rs-title">🔥 熱銷排行</div><div id="hotRankMob"></div></div>
-  <div class="rs-sec">
-    <div class="rs-title">📢 最新公告</div>
-    <div class="ann-item"><div class="ann-tag">促銷</div><div class="ann-text">滿$2,600免運費！</div><div class="ann-date">2026/05/18</div></div>
-    <div class="ann-item"><div class="ann-tag">公告</div><div class="ann-text">端午節出貨時間調整</div><div class="ann-date">2026/05/01</div></div>
-  </div>
-  <div class="rs-sec">
-    <div class="rs-title">⭐ 顧客評價</div>
-    <div class="rev-item"><div class="rev-stars">★★★★★</div><div class="rev-text">「麻辣臭豆腐超好吃！回購第三次了！」</div><div class="rev-author">— 小芳 ❤️</div></div>
-    <div class="rev-item"><div class="rev-stars">★★★★★</div><div class="rev-text">「冷藏新鮮配送，強力推薦！」</div><div class="rev-author">— 阿明 👍</div></div>
-    <div class="rev-item"><div class="rev-stars">★★★★☆</div><div class="rev-text">「鴨血滑嫩，家人都喜歡！」</div><div class="rev-author">— 台北 林小姐</div></div>
-  </div>
-  <div class="rs-sec">
-    <div class="rs-title">📱 聯絡我們</div>
-    <div style="text-align:center;">
-      <img src="lineqr.jpg" alt="LINE" style="width:100px;height:100px;border-radius:9px;object-fit:cover;display:block;margin:0 auto 7px;">
-      <div style="font-size:14px;font-weight:700;color:var(--dark);">📞 02-2664-7116</div>
-    </div>
-  </div>
-</div>
-
-<!-- FOOTER -->
-<footer class="footer">
-  <div class="footer-in">
-    <div>
-      <div class="flogo">源 春</div>
-      <div style="font-size:11px;color:rgba(255,255,255,.55);margin-top:3px;">深坑老街特產 · 創立於1997</div>
-    </div>
-    <div class="finfo">
-      <div>📍 新北市深坑區深坑老街</div>
-      <div>📞 02-2664-7116</div>
-      <div>🕘 平日 11:00–18:00（週二公休）</div>
-      <div>🎉 假日/國定假日 11:00–19:30</div>
-    </div>
-    <div class="flinks">
-      <a href="#" onclick="showPage('about');return false">品牌故事</a>
-      <a href="#" onclick="showPage('faq');return false">常見問題</a>
-      <a href="#" onclick="showPage('member');return false">會員中心</a>
-      <a href="#" onclick="showPage('tracking');return false">訂單查詢</a>
-    </div>
-    <div class="fcopy">© 2026 深坑源春 版權所有</div>
-  </div>
-</footer>
-
-<!-- MOBILE BOTTOM NAV -->
-<div class="mobnav" id="mobnav">
-  <div class="mobnav-item active" onclick="showPage('home');setMobNav(this)"><div class="mobnav-icon">🏠</div><div class="mobnav-label">首頁</div></div>
-  <div class="mobnav-item" onclick="showPage('products');setMobNav(this)"><div class="mobnav-icon">🛍️</div><div class="mobnav-label">商品</div></div>
-  <div class="mobnav-item" onclick="showPage('member');setMobNav(this)"><div class="mobnav-icon">👤</div><div class="mobnav-label">會員</div></div>
-  <div class="mobnav-item" onclick="toggleCart()"><div class="mobnav-icon">🛒<span id="mobCartBadge" style="font-size:9px;background:var(--primary);color:white;border-radius:50%;padding:0 3px;display:none;vertical-align:top;"></span></div><div class="mobnav-label">購物車</div></div>
-  <div class="mobnav-item" onclick="showPage('faq');setMobNav(this)"><div class="mobnav-icon">❓</div><div class="mobnav-label">說明</div></div>
-</div>
-
-<!-- CART -->
-<div class="overlay" id="cartOverlay" onclick="toggleCart()"></div>
-<div class="cdrawer" id="cdrawer">
-  <div class="ch"><div class="ch-title">🛒 購物車</div><button class="cclose" onclick="toggleCart()">✕</button></div>
-  <div class="citems" id="citems"></div>
-  <div class="cfooter" id="cfooter" style="display:none;">
-    <div class="ctotal"><div class="ctotal-label">合計</div><div class="ctotal-price" id="ctotalPrice">$0</div></div>
-    <button class="ckbtn" onclick="doCheckout()">前往結帳</button>
-  </div>
-</div>
-
 <!-- LOGIN -->
-<div class="modal-overlay" id="loginModal">
-  <div class="modal">
-    <button class="mc" onclick="closeModal('loginModal')">✕</button>
-    <div class="mt">會員登入</div><div class="ms">歡迎回來，請登入您的帳戶</div>
-    <div class="fg"><label class="fl">手機號碼</label><input class="fi" type="text" inputmode="numeric" autocomplete="tel" id="lPhone" placeholder="09xxxxxxxx"></div>
-    <div class="fg"><label class="fl">密碼</label><input class="fi" type="password" id="lPwd" placeholder="••••••••"></div>
-    <button class="fb" onclick="doLogin()">登入</button>
-    <div class="fsw">還沒有帳號？<a onclick="swModal('loginModal','registerModal')">立即註冊</a></div>
+<div class="login-wrap" id="loginWrap">
+  <div class="login-box">
+    <div class="login-logo">
+      <div class="login-logo-icon">🔐</div>
+      <div class="login-title">源春後台管理</div>
+      <div class="login-sub">ADMIN DASHBOARD</div>
+    </div>
+    <div class="lg"><label class="ll">管理員帳號</label><input class="li" type="text" id="adminUser" placeholder="admin" autocomplete="username"></div>
+    <div class="lg"><label class="ll">管理員密碼</label><input class="li" type="password" id="adminPwd" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')doAdminLogin()"></div>
+    <button class="lb" onclick="doAdminLogin()">登入後台</button>
+    <div class="login-err" id="loginErr">帳號或密碼錯誤，請再試一次</div>
+    <div class="login-hint">預設帳號：admin<br>預設密碼：yuanchun2024</div>
   </div>
 </div>
 
-<!-- REGISTER -->
-<div class="modal-overlay" id="registerModal">
-  <div class="modal">
-    <button class="mc" onclick="closeModal('registerModal')">✕</button>
-    <div class="mt">新會員註冊</div><div class="ms">加入源春，享受會員專屬優惠</div>
-    <div class="fg"><label class="fl">姓名 *</label><input class="fi" type="text" id="rName" placeholder="您的姓名"></div>
-    <div class="fg"><label class="fl">手機號碼 *</label><input class="fi" type="text" inputmode="numeric" autocomplete="tel" id="rPhone" placeholder="09xxxxxxxx"></div>
-    <div class="fg"><label class="fl">電子信箱（選填）</label><input class="fi" type="email" id="rEmail" placeholder="your@email.com"></div>
-    <div class="fg"><label class="fl">密碼 * （至少8位）</label><input class="fi" type="password" id="rPwd" placeholder="••••••••"></div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px;">
-      <div class="fg"><label class="fl">性別</label><select class="fi" id="rGender"><option value="">請選擇</option><option>女</option><option>男</option><option>其他</option></select></div>
-      <div class="fg"><label class="fl">生日</label><input class="fi" type="date" id="rBirth"></div>
+<!-- ADMIN PANEL -->
+<div class="admin" id="adminPanel">
+
+  <!-- TOP NAV -->
+  <div class="topnav">
+    <div class="topnav-logo">源春</div>
+    <div class="topnav-badge">後台管理系統</div>
+    <div class="topnav-right">
+      <div class="topnav-time" id="nowTime"></div>
+      <button class="logout-btn" onclick="doLogout()">登出</button>
     </div>
-    <div class="fg"><label class="fl">收件地址</label><input class="fi" type="text" id="rAddr" placeholder="縣市、鄉鎮、路名、號碼"></div>
-    <button class="fb" onclick="doRegister()">註冊</button>
-    <div class="fsw">已有帳號？<a onclick="swModal('registerModal','loginModal')">立即登入</a></div>
   </div>
-</div>
 
-<!-- CHECKOUT -->
-<div class="modal-overlay" id="checkoutModal">
-  <div class="modal">
-    <button class="mc" onclick="closeModal('checkoutModal')">✕</button>
-    <div class="mt">確認訂單</div><div class="ms">請填寫收件資訊</div>
-    <div class="fg"><label class="fl">收件人姓名 *</label><input class="fi" type="text" id="sName" placeholder="收件人"></div>
-    <div class="fg"><label class="fl">手機號碼 *</label><input class="fi" type="text" inputmode="numeric" autocomplete="tel" id="sPhone" placeholder="09xxxxxxxx"></div>
-    <div class="fg"><label class="fl">收件地址 *</label><input class="fi" type="text" id="sAddr" placeholder="縣市、鄉鎮、路名、號碼"></div>
+  <div class="admin-body">
 
-    <!-- Payment -->
-    <div class="fg">
-      <label class="fl">付款方式 *</label>
-      <select class="fi" id="payMethod" onchange="onPayChange()">
-        <option value="">請選擇付款方式</option>
-        <option value="cod">貨到付款（+$30 手續費）</option>
-        <option value="transfer">銀行匯款</option>
-      </select>
-    </div>
-    <div id="codBox" style="display:none;background:#fff8e1;border:1.5px solid var(--yellow);border-radius:11px;padding:11px;margin-bottom:11px;font-size:13px;color:var(--dark);line-height:1.8;">
-      🚚 貨到付款需加收 <strong>$30 手續費</strong>，請備妥現金。
-    </div>
-    <div id="bankBox" style="display:none;background:var(--blue-light);border:1.5px solid var(--blue);border-radius:11px;padding:11px;margin-bottom:11px;">
-      <div style="font-size:12px;font-weight:700;color:var(--dark);margin-bottom:7px;">🏦 匯款資訊</div>
-      <div style="font-size:12px;color:var(--dark);line-height:2;">銀行：玉山銀行 (808)<br>帳號：0123-456-789012<br>戶名：源春食品有限公司</div>
-      <div class="fg" style="margin-top:9px;margin-bottom:0;"><label class="fl">匯款帳號後4碼 *</label><input class="fi" type="text" id="tranCode" placeholder="後4碼" maxlength="4"></div>
-    </div>
+    <!-- SIDEBAR -->
+    <aside class="asidebar">
+      <div class="aside-section">主要功能</div>
+      <div class="aside-item active" onclick="showTab('dashboard',this)">📊 總覽儀表板</div>
+      <div class="aside-item" onclick="showTab('orders',this)">📦 訂單管理 <span class="aside-badge" id="pendingBadge">0</span></div>
+      <div class="aside-item" onclick="showTab('members',this)">👥 會員管理</div>
+      <div class="aside-section">工具</div>
+      <div class="aside-item" onclick="showTab('settings',this)">⚙️ 系統設定</div>
+      <div class="aside-item" onclick="window.open('yuanchun_store.html','_blank')">🛍️ 前往商店 ↗</div>
+    </aside>
 
-    <!-- Points -->
-    <div id="ptsBox" style="display:none;background:var(--yellow-light);border:1.5px solid var(--yellow);border-radius:11px;padding:13px;margin-bottom:11px;">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:7px;">
-        <div style="font-size:12px;font-weight:700;color:var(--dark);">⭐ 使用點數折抵</div>
-        <div style="font-size:11px;color:var(--mid);">可用：<span id="availPts">0</span> 點</div>
+    <!-- CONTENT -->
+    <div class="acontent">
+
+      <!-- DASHBOARD TAB -->
+      <div id="tab-dashboard">
+        <div class="apage-title">📊 總覽儀表板</div>
+        <div class="apage-sub" id="dashDate"></div>
+
+        <div class="stat-grid">
+          <div class="stat-card">
+            <div class="stat-icon">📦</div>
+            <div class="stat-val" id="statOrders">0</div>
+            <div class="stat-lbl">總訂單數</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">⏳</div>
+            <div class="stat-val" id="statPending">0</div>
+            <div class="stat-lbl">待處理訂單</div>
+            <div class="stat-change up" id="statPendingNote"></div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">💰</div>
+            <div class="stat-val" id="statRevenue">$0</div>
+            <div class="stat-lbl">總營業額</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">👥</div>
+            <div class="stat-val" id="statMembers">0</div>
+            <div class="stat-lbl">會員人數</div>
+          </div>
+        </div>
+
+        <!-- Recent orders -->
+        <div class="table-wrap">
+          <div class="table-header">
+            <div class="table-title">📋 最新訂單</div>
+            <button class="act-btn primary" onclick="showTab('orders',document.querySelector('.aside-item:nth-child(5)'))">查看全部</button>
+          </div>
+          <div id="recentOrdersTable"></div>
+        </div>
       </div>
-      <div style="display:flex;gap:7px;align-items:center;">
-        <input class="fi" type="number" id="usePts" placeholder="輸入點數（100的倍數）" min="0" step="100" oninput="recalc()" style="flex:1;">
-        <div style="font-size:13px;color:var(--primary);font-weight:700;white-space:nowrap;">折 <span id="ptsDisc">$0</span></div>
-      </div>
-      <div style="font-size:10px;color:var(--mid);margin-top:4px;">100點 = 折抵$50</div>
-    </div>
 
-    <div class="fg"><label class="fl">備註</label><input class="fi" type="text" id="sNote" placeholder="例：請勿放門口"></div>
+      <!-- ORDERS TAB -->
+      <div id="tab-orders" style="display:none;">
+        <div class="apage-title">📦 訂單管理</div>
+        <div class="apage-sub">查看、編輯、更新所有客戶訂單狀態</div>
 
-    <!-- Summary -->
-    <div style="background:var(--cream);border-radius:11px;padding:13px;margin:11px 0;border:1px solid var(--light-tan);">
-      <div style="font-size:11px;font-weight:700;color:var(--mid);margin-bottom:7px;letter-spacing:1px;">訂單明細</div>
-      <div id="ckItems"></div>
-      <div style="border-top:1px dashed var(--light-tan);margin-top:7px;padding-top:7px;">
-        <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--mid);margin-bottom:3px;"><span>小計</span><span id="ckSub"></span></div>
-        <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--mid);margin-bottom:3px;"><span>運費</span><span id="ckShip"></span></div>
-        <div id="ckCodRow" style="display:none;justify-content:space-between;font-size:12px;color:var(--mid);margin-bottom:3px;"><span>手續費</span><span>+$30</span></div>
-        <div id="ckDiscRow" style="display:none;justify-content:space-between;font-size:12px;color:var(--primary);margin-bottom:3px;"><span>點數折抵</span><span id="ckDisc"></span></div>
-        <div style="display:flex;justify-content:space-between;font-size:15px;font-weight:900;color:var(--primary);margin-top:5px;"><span>總計</span><span id="ckTotal"></span></div>
-        <div id="freeMsg" style="font-size:10px;color:#4a8c4a;margin-top:3px;display:none;">✓ 已享免運費優惠</div>
-        <div id="gapMsg" style="font-size:10px;color:var(--mid);margin-top:3px;display:none;"></div>
+        <div class="table-wrap">
+          <div class="table-header" style="flex-wrap:wrap;gap:8px;">
+            <div class="table-title">所有訂單</div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+              <input class="search-input" type="text" id="orderSearch" placeholder="搜尋訂單編號、姓名..." oninput="renderOrdersTable()">
+              <button class="filter-btn active" onclick="setFilter('all',this)">全部</button>
+              <button class="filter-btn" onclick="setFilter('處理中',this)">待處理</button>
+              <button class="filter-btn" onclick="setFilter('備貨中',this)">備貨中</button>
+              <button class="filter-btn" onclick="setFilter('出貨中',this)">出貨中</button>
+              <button class="filter-btn" onclick="setFilter('已送達',this)">已送達</button>
+              <button class="export-btn" onclick="exportCSV()">📥 匯出 CSV</button>
+            </div>
+          </div>
+          <div id="ordersTable"></div>
+        </div>
       </div>
-    </div>
-    <button class="fb" onclick="doConfirm()">確認下單</button>
+
+      <!-- MEMBERS TAB -->
+      <div id="tab-members" style="display:none;">
+        <div class="apage-title">👥 會員管理</div>
+        <div class="apage-sub">查看所有已註冊的會員資訊</div>
+        <div class="table-wrap" style="margin-bottom:20px;">
+          <div class="table-header">
+            <div class="table-title">會員列表</div>
+            <input class="search-input" type="text" id="memberSearch" placeholder="搜尋姓名、手機..." oninput="renderMembers()">
+          </div>
+          <div id="membersTable"></div>
+        </div>
+      </div>
+
+      <!-- SETTINGS TAB -->
+      <div id="tab-settings" style="display:none;">
+        <div class="apage-title">⚙️ 系統設定</div>
+        <div class="apage-sub">管理員帳號與密碼設定</div>
+        <div class="table-wrap" style="max-width:480px;">
+          <div class="table-header"><div class="table-title">變更管理員密碼</div></div>
+          <div style="padding:22px;">
+            <div class="lg"><label class="ll">目前密碼</label><input class="li" type="password" id="oldPwd" placeholder="••••••••"></div>
+            <div class="lg"><label class="ll">新密碼</label><input class="li" type="password" id="newPwd" placeholder="新密碼（至少8位）"></div>
+            <div class="lg"><label class="ll">確認新密碼</label><input class="li" type="password" id="cfmPwd" placeholder="再輸入一次"></div>
+            <button class="save-btn" onclick="changePwd()">儲存新密碼</button>
+          </div>
+        </div>
+
+        <div class="table-wrap" style="max-width:480px;margin-top:16px;">
+          <div class="table-header"><div class="table-title">資料管理</div></div>
+          <div style="padding:22px;display:flex;flex-direction:column;gap:10px;">
+            <div style="font-size:13px;color:var(--mid);line-height:1.8;margin-bottom:8px;">
+              ⚠️ 注意：目前資料儲存於瀏覽器 localStorage，需在同一瀏覽器開啟後台才能看到顧客訂單。<br>
+              如需跨裝置查看訂單，建議升級至 Firebase 雲端資料庫。
+            </div>
+            <button class="act-btn" style="text-align:left;" onclick="exportCSV()">📥 匯出所有訂單 (CSV)</button>
+            <button class="act-btn" style="text-align:left;" onclick="exportMembers()">📥 匯出會員資料 (CSV)</button>
+            <button class="act-btn danger" style="text-align:left;" onclick="clearTestData()">🗑️ 清除測試資料</button>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /acontent -->
+  </div><!-- /admin-body -->
+</div><!-- /admin -->
+
+<!-- ORDER DETAIL PANEL -->
+<div class="panel-overlay" id="panelOverlay" onclick="closeDetail()"></div>
+<div class="detail-panel" id="detailPanel">
+  <div class="dp-header">
+    <div class="dp-title" id="dpOrderId">訂單詳情</div>
+    <button class="dp-close" onclick="closeDetail()">✕</button>
   </div>
-</div>
-
-<!-- ORDER SUCCESS -->
-<div class="modal-overlay" id="successModal">
-  <div class="modal" style="text-align:center;">
-    <div style="font-size:60px;margin-bottom:11px;">🎉</div>
-    <div class="mt" style="justify-content:center;margin-bottom:7px;">訂單成立！</div>
-    <div style="font-size:12px;color:var(--mid);margin-bottom:14px;">感謝您的訂購，我們將盡快為您處理出貨。</div>
-    <div style="background:var(--cream);border-radius:11px;padding:14px;margin-bottom:14px;text-align:left;">
-      <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px dashed var(--light-tan);font-size:12px;"><span style="color:var(--mid);">訂單編號</span><span id="sucId" style="font-weight:700;color:var(--primary);"></span></div>
-      <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px dashed var(--light-tan);font-size:12px;"><span style="color:var(--mid);">訂單金額</span><span id="sucTotal" style="font-weight:700;color:var(--dark);"></span></div>
-      <div style="display:flex;justify-content:space-between;padding:5px 0;font-size:12px;"><span style="color:var(--mid);">獲得點數</span><span id="sucPts" style="font-weight:700;color:var(--blue);"></span></div>
-    </div>
-    <button class="fb" onclick="closeModal('successModal');showPage('tracking')">查看訂單進度</button>
-    <button style="width:100%;padding:9px;background:none;border:none;color:var(--mid);font-size:12px;cursor:pointer;margin-top:7px;" onclick="closeModal('successModal')">繼續購物</button>
-  </div>
-</div>
-
-<!-- PRODUCT DETAIL -->
-<div class="modal-overlay" id="prodModal">
-  <div class="modal">
-    <button class="mc" onclick="closeModal('prodModal')">✕</button>
-    <img id="pmImg" style="width:100%;border-radius:11px;margin-bottom:14px;object-fit:cover;max-height:210px;" src="" alt="">
-    <div id="pmName" style="font-size:19px;font-weight:900;color:var(--dark);letter-spacing:1px;margin-bottom:7px;"></div>
-    <div id="pmPrice" style="font-size:24px;font-weight:900;color:var(--primary);margin-bottom:14px;"></div>
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
-      <div style="font-size:13px;font-weight:700;color:var(--mid);">數量</div>
-      <div style="display:flex;align-items:center;gap:11px;">
-        <button style="background:var(--light-tan);border:none;border-radius:50%;width:34px;height:34px;font-size:19px;cursor:pointer;color:var(--dark);font-weight:700;display:flex;align-items:center;justify-content:center;" onclick="chQty(-1)">−</button>
-        <div id="pmQty" style="font-size:19px;font-weight:900;min-width:30px;text-align:center;">1</div>
-        <button style="background:var(--primary);border:none;border-radius:50%;width:34px;height:34px;font-size:19px;cursor:pointer;color:white;font-weight:700;display:flex;align-items:center;justify-content:center;" onclick="chQty(1)">＋</button>
-      </div>
-    </div>
-    <button class="fb" onclick="addFromModal()">加入購物車</button>
-  </div>
+  <div class="dp-body" id="dpBody"></div>
 </div>
 
 <!-- TOAST -->
-<div class="toast" id="toast"></div>
+<div class="atoast" id="atoast"></div>
 
 <script>
-// ── FIREBASE CONFIG ──────────────────────────────────────────────────────────
+// ── FIREBASE ─────────────────────────────────────────────────────────────────
 const firebaseConfig = {
   apiKey: "AIzaSyCNyh2JCdHx0ocou57VJ-rYCV-reojzFMA",
   authDomain: "yuanchun-store.firebaseapp.com",
@@ -756,480 +352,410 @@ const firebaseConfig = {
   messagingSenderId: "903737640766",
   appId: "1:903737640766:web:0d600a08d480a394178e6f"
 };
-
-// Init Firebase
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
-// Firebase helpers
-function fbSaveOrder(order) {
-  return db.ref('orders/' + order.id).set(order);
+// ── ADMIN CREDENTIALS ────────────────────────────────────────────────────────
+const ADMIN_KEY = 'yc_admin_pwd';
+let adminPwd = localStorage.getItem(ADMIN_KEY) || 'yuanchun2024';
+let currentFilter = 'all';
+let allOrders = [];
+let allMembers = [];
+
+// ── LOGIN ────────────────────────────────────────────────────────────────────
+function doAdminLogin() {
+  const u = document.getElementById('adminUser').value.trim();
+  const p = document.getElementById('adminPwd').value;
+  const err = document.getElementById('loginErr');
+  if (u === 'admin' && p === adminPwd) {
+    document.getElementById('loginWrap').style.display = 'none';
+    document.getElementById('adminPanel').classList.add('active');
+    initAdmin();
+    err.style.display = 'none';
+  } else {
+    err.style.display = 'block';
+    document.getElementById('adminPwd').value = '';
+    document.getElementById('adminPwd').focus();
+  }
 }
-function fbSaveMembers(membersArr) {
-  // Save as object keyed by phone
-  const obj = {};
-  membersArr.forEach(m => { obj[m.phone.replace(/[.#$\[\]]/g,'')] = m; });
-  return db.ref('members').set(obj);
+function doLogout() {
+  document.getElementById('loginWrap').style.display = 'flex';
+  document.getElementById('adminPanel').classList.remove('active');
+  document.getElementById('adminUser').value = '';
+  document.getElementById('adminPwd').value = '';
 }
-function fbLoadOrders(cb) {
+
+// ── DATA ─────────────────────────────────────────────────────────────────────
+function getOrders() { return allOrders; }
+function getMembers() { return allMembers; }
+function saveOrders(orders) { allOrders = orders; }
+
+// Listen to Firebase in real time
+function startFirebaseListeners() {
   db.ref('orders').on('value', snap => {
     const data = snap.val();
-    orders = data ? Object.values(data).sort((a,b) => (b.id||'').localeCompare(a.id||'')) : [];
-    cb && cb(orders);
+    allOrders = data ? Object.values(data).sort((a,b)=>(b.id||'').localeCompare(a.id||'')) : [];
+    // Update badge
+    const pending = allOrders.filter(o => o.status === '處理中').length;
+    const badge = document.getElementById('pendingBadge');
+    if(badge) badge.textContent = pending;
+    // Refresh active tab
+    const activeTab = document.querySelector('[id^="tab-"]:not([style*="none"])');
+    if(activeTab) {
+      if(activeTab.id==='tab-dashboard') renderDashboard();
+      if(activeTab.id==='tab-orders') renderOrdersTable();
+    }
   });
-}
-function fbLoadMembers(cb) {
   db.ref('members').on('value', snap => {
     const data = snap.val();
-    members = data ? Object.values(data) : [];
-    cb && cb(members);
+    allMembers = data ? Object.values(data) : [];
+    const activeTab = document.querySelector('[id^="tab-"]:not([style*="none"])');
+    if(activeTab) {
+      if(activeTab.id==='tab-dashboard') renderDashboard();
+      if(activeTab.id==='tab-members') renderMembers();
+    }
   });
 }
-function fbUpdateMember(phone, updates) {
-  const key = phone.replace(/[.#$\[\]]/g,'');
-  return db.ref('members/' + key).update(updates);
+
+// ── INIT ─────────────────────────────────────────────────────────────────────
+function initAdmin() {
+  updateClock();
+  setInterval(updateClock, 1000);
+  startFirebaseListeners(); // Real-time sync from Firebase!
+  renderDashboard();
+}
+function updateClock() {
+  const now = new Date();
+  document.getElementById('nowTime').textContent =
+    now.toLocaleDateString('zh-TW') + ' ' + now.toLocaleTimeString('zh-TW');
 }
 
-// DATA
-const products=[
-  {id:1,name:'麻辣臭豆腐',price:140,cat:'hot',img:'malatoufu.png',em:'🍲'},
-  {id:2,name:'清蒸臭豆腐',price:140,cat:'hot',img:'steamtofu.jpg',em:'🥢'},
-  {id:3,name:'麻辣嫩鴨血',price:180,cat:'hot',img:'maladuxue.png',em:'🫀'},
-  {id:4,name:'肥腸嫩鴨血',price:230,cat:'hot',img:'feichangduxue.png',em:'🍜'},
-  {id:5,name:'滷桂竹筍',price:220,cat:'hot',img:'zhusun.jpg',em:'🎋'},
-  {id:6,name:'滷紅燒嫩豆腐',price:130,cat:'hot',img:'redtofu.jpg',em:'🟤'},
-  {id:7,name:'手工臭豆腐',price:80,cat:'raw',img:'handmade.jpg',em:'🍶',desc:'6片裝'},
-  {id:8,name:'濃縮麻辣湯底',price:50,cat:'raw',img:'soupbase.jpg',em:'🌶️',desc:'料理包'},
-];
-
-// STATE
-let cart=[], user=null, mprod=null, mqty=1;
-let members=[];
-let orders=[];
-
-// RENDER GRID
-function rGrid(id,items){
-  const el=document.getElementById(id);
-  if(!items.length){el.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:36px;color:var(--mid);">此分類暫無商品</div>';return;}
-  el.innerHTML=items.map(p=>`
-    <div class="pcard" onclick="openProd(${p.id})">
-      ${p.img?`<img class="pimg" src="${p.img}" alt="${p.name}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`:``}
-      <div class="pimg-ph" style="${p.img?'display:none':''}">${p.em}</div>
-      <div class="pbody">
-        <div class="pname">${p.name}${p.desc?`<br><span style="font-size:10px;color:var(--mid);font-weight:400;">${p.desc}</span>`:''}</div>
-        <div class="pprice">$${p.price}</div>
-        <button class="padd" onclick="event.stopPropagation();quickAdd(${p.id})">加入購物車</button>
-      </div>
-    </div>`).join('');
+// ── TABS ─────────────────────────────────────────────────────────────────────
+function showTab(name, btn) {
+  document.querySelectorAll('[id^="tab-"]').forEach(t => t.style.display = 'none');
+  document.getElementById('tab-' + name).style.display = 'block';
+  document.querySelectorAll('.aside-item').forEach(i => i.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  if (name === 'dashboard') renderDashboard();
+  if (name === 'orders') renderOrdersTable();
+  if (name === 'members') renderMembers();
 }
 
-// PAGES
-function showPage(p){
-  ['home','products','member','tracking','about','faq'].forEach(x=>{
-    const el=document.getElementById('page-'+x);
-    if(el)el.style.display=x===p?'block':'none';
-  });
-  if(p==='home')rGrid('homeGrid',products);
-  if(p==='products')renderProducts('all');
-  if(p==='member')renderMember();
+// ── DASHBOARD ─────────────────────────────────────────────────────────────────
+function renderDashboard() {
+  const orders = getOrders();
+  const members = getMembers();
+  const pending = orders.filter(o => o.status === '處理中');
+  const revenue = orders.reduce((s, o) => s + (o.total || 0), 0);
+
+  document.getElementById('dashDate').textContent = '今日：' + new Date().toLocaleDateString('zh-TW', {weekday:'long',year:'numeric',month:'long',day:'numeric'});
+  document.getElementById('statOrders').textContent = orders.length;
+  document.getElementById('statPending').textContent = pending.length;
+  document.getElementById('statPendingNote').textContent = pending.length > 0 ? `⚠️ ${pending.length} 筆需要處理` : '✅ 全部已處理';
+  document.getElementById('statRevenue').textContent = '$' + revenue.toLocaleString();
+  document.getElementById('statMembers').textContent = members.length;
+  document.getElementById('pendingBadge').textContent = pending.length;
+
+  // Recent 5 orders
+  const el = document.getElementById('recentOrdersTable');
+  if (!orders.length) {
+    el.innerHTML = `<div class="empty-state"><div class="empty-icon">📭</div><div class="empty-title">尚無訂單</div><div class="empty-sub">當顧客下單後，訂單會顯示在這裡</div></div>`;
+    return;
+  }
+  el.innerHTML = buildOrderTable(orders.slice(0, 5), true);
 }
-function go(p){showPage(p);closeMobMenu();}
-function filterCat(cat,btn){
-  document.querySelectorAll('.sb-item').forEach(i=>i.classList.remove('active'));
-  if(btn)btn.classList.add('active');
-  showPage('products');renderProducts(cat);
-}
-function homeCat(cat,btn){
-  document.querySelectorAll('#homeCats .cat-tab').forEach(t=>t.classList.remove('active'));
+
+// ── ORDERS TABLE ─────────────────────────────────────────────────────────────
+function setFilter(f, btn) {
+  currentFilter = f;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
-  rGrid('homeGrid',cat==='all'?products:products.filter(p=>p.cat===cat));
-}
-function prodCat(cat,btn){
-  document.querySelectorAll('#prodCats .cat-tab').forEach(t=>t.classList.remove('active'));
-  btn.classList.add('active');renderProducts(cat);
-}
-function renderProducts(cat){
-  const items=cat==='all'?products:products.filter(p=>p.cat===cat);
-  rGrid('prodGrid',items);
-  const lbl={all:'所有商品',hot:'加熱直接吃',raw:'在家自己煮'};
-  document.getElementById('prodTitle').textContent=lbl[cat]||'所有商品';
-  document.getElementById('prodCount').textContent=`共 ${items.length} 項商品`;
+  renderOrdersTable();
 }
 
-// PRODUCT MODAL
-function openProd(id){
-  const p=products.find(x=>x.id===id);if(!p)return;
-  mprod=p;mqty=1;
-  document.getElementById('pmName').textContent=p.name;
-  document.getElementById('pmPrice').textContent='$'+p.price;
-  document.getElementById('pmQty').textContent=1;
-  const img=document.getElementById('pmImg');
-  if(p.img){img.src=p.img;img.style.display='block';}else{img.style.display='none';}
-  openModal('prodModal');
-}
-function chQty(d){mqty=Math.max(1,mqty+d);document.getElementById('pmQty').textContent=mqty;}
-function addFromModal(){if(!mprod)return;addCart(mprod,mqty);closeModal('prodModal');toast(`✓ 已加入購物車！`);}
-function quickAdd(id){const p=products.find(x=>x.id===id);if(p){addCart(p,1);toast(`✓ ${p.name} 已加入！`);}}
-
-// CART
-function addCart(p,qty){const ex=cart.find(i=>i.id===p.id);if(ex)ex.qty+=qty;else cart.push({...p,qty});updCart();}
-function updCart(){
-  const tot=cart.reduce((s,i)=>s+i.qty,0);
-  const b=document.getElementById('cartBadge');
-  b.textContent=tot;b.style.display=tot>0?'flex':'none';
-  const mb=document.getElementById('mobCartBadge');
-  if(mb){mb.textContent=tot;mb.style.display=tot>0?'inline':'none';}
-  rCart();
-}
-function rCart(){
-  const el=document.getElementById('citems'),ft=document.getElementById('cfooter');
-  if(!cart.length){
-    el.innerHTML='<div class="cempty"><div style="font-size:44px;margin-bottom:11px;">🛒</div><div>購物車是空的</div></div>';
-    ft.style.display='none';return;
-  }
-  ft.style.display='block';
-  el.innerHTML=cart.map((it,i)=>`
-    <div class="citem">
-      ${it.img?`<img class="citem-img" src="${it.img}" alt="${it.name}" onerror="this.style.display='none'">`:`<div class="citem-img" style="display:flex;align-items:center;justify-content:center;font-size:22px;">${it.em}</div>`}
-      <div class="citem-info"><div class="citem-name">${it.name}</div><div class="citem-price">$${it.price} × ${it.qty} = $${it.price*it.qty}</div></div>
-      <div class="citem-qty">
-        <button class="qbtn" onclick="updQty(${i},-1)">−</button>
-        <div class="qnum">${it.qty}</div>
-        <button class="qbtn" onclick="updQty(${i},1)">＋</button>
-      </div>
-      <button class="cremove" onclick="rmItem(${i})">✕</button>
-    </div>`).join('');
-  document.getElementById('ctotalPrice').textContent='$'+cart.reduce((s,i)=>s+i.price*i.qty,0);
-}
-function updQty(i,d){cart[i].qty=Math.max(1,cart[i].qty+d);updCart();}
-function rmItem(i){cart.splice(i,1);updCart();}
-function toggleCart(){
-  const dr=document.getElementById('cdrawer'),ov=document.getElementById('cartOverlay');
-  const op=dr.classList.toggle('open');ov.classList.toggle('active',op);
-}
-
-// CHECKOUT
-function getSub(){return cart.reduce((s,i)=>s+i.price*i.qty,0);}
-function getShip(sub){return sub>=2600?0:180;}
-
-function doCheckout(){
-  if(!user){toggleCart();toast('請先登入會員再結帳');setTimeout(()=>openModal('loginModal'),800);return;}
-  if(!cart.length)return;
-  document.getElementById('sName').value=user.name||'';
-  document.getElementById('sPhone').value=user.phone||'';
-  document.getElementById('sAddr').value=user.addr||'';
-  document.getElementById('payMethod').value='';
-  document.getElementById('codBox').style.display='none';
-  document.getElementById('bankBox').style.display='none';
-  document.getElementById('sNote').value='';
-  document.getElementById('usePts').value='';
-
-  const mi=members.findIndex(m=>m.phone===user.phone);
-  const pts=mi>=0?members[mi].points:(user.points||0);
-  document.getElementById('ptsBox').style.display=pts>=100?'block':'none';
-  document.getElementById('availPts').textContent=pts;
-
-  document.getElementById('ckItems').innerHTML=cart.map(i=>`
-    <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--dark);margin-bottom:3px;">
-      <span>${i.name} × ${i.qty}</span><span>$${i.price*i.qty}</span>
-    </div>`).join('');
-  recalc();
-  toggleCart();openModal('checkoutModal');
-}
-
-function onPayChange(){
-  const m=document.getElementById('payMethod').value;
-  document.getElementById('codBox').style.display=m==='cod'?'block':'none';
-  document.getElementById('bankBox').style.display=m==='transfer'?'block':'none';
-  recalc();
-}
-
-function recalc(){
-  const sub=getSub(),ship=getShip(sub);
-  const m=document.getElementById('payMethod')?.value||'';
-  const cod=m==='cod'?30:0;
-  const rawPts=parseInt(document.getElementById('usePts')?.value)||0;
-  const usedPts=Math.floor(rawPts/100)*100;
-  const disc=Math.floor(usedPts/100)*50;
-  const total=Math.max(0,sub+ship+cod-disc);
-
-  document.getElementById('ckSub').textContent='$'+sub;
-  document.getElementById('ckShip').textContent=ship===0?'免費':'$'+ship;
-  document.getElementById('ckTotal').textContent='$'+total;
-  document.getElementById('ptsDisc').textContent='$'+disc;
-
-  const cr=document.getElementById('ckCodRow');if(cr)cr.style.display=cod>0?'flex':'none';
-  const dr=document.getElementById('ckDiscRow');
-  if(dr){dr.style.display=disc>0?'flex':'none';document.getElementById('ckDisc').textContent='-$'+disc;}
-  document.getElementById('freeMsg').style.display=ship===0?'block':'none';
-  const gm=document.getElementById('gapMsg');
-  if(ship>0){gm.style.display='block';gm.textContent=`再買 $${2600-sub} 即可免運費！`;}else{gm.style.display='none';}
-}
-
-function doConfirm(){
-  const sName=document.getElementById('sName').value.trim();
-  const sPhone=document.getElementById('sPhone').value.trim();
-  const sAddr=document.getElementById('sAddr').value.trim();
-  const pay=document.getElementById('payMethod').value;
-  const tc=document.getElementById('tranCode')?.value.trim()||'';
-  const note=document.getElementById('sNote').value.trim();
-  if(!sName||!sPhone||!sAddr){toast('請填寫收件資訊');return;}
-  if(!pay){toast('請選擇付款方式');return;}
-  if(pay==='transfer'&&tc.length!==4){toast('請填寫匯款帳號後4碼');return;}
-
-  const sub=getSub(),ship=getShip(sub),cod=pay==='cod'?30:0;
-  const rawPts=parseInt(document.getElementById('usePts')?.value)||0;
-  const usedPts=Math.floor(rawPts/100)*100;
-  const disc=Math.floor(usedPts/100)*50;
-  const total=Math.max(0,sub+ship+cod-disc);
-  const earned=Math.floor(sub/100);
-  const payLabel=pay==='cod'?'貨到付款（含$30手續費）':`銀行匯款（末4碼：${tc}）`;
-
-  const order={
-    id:'YC'+Date.now(),date:new Date().toLocaleDateString('zh-TW'),
-    items:cart.map(i=>`${i.name}×${i.qty}`).join('、'),
-    subtotal:sub,shipping:ship,codFee:cod,discount:disc,total,
-    sName,sPhone,sAddr,note,pay,payLabel,status:'處理中'
-  };
-  // Save order to Firebase
-  fbSaveOrder(order).catch(e => console.error('Order save error:', e));
-
-  // Update member points in Firebase
-  const mi=members.findIndex(m=>m.phone===user.phone);
-  if(mi>=0){
-    const newPts = members[mi].points - usedPts + earned;
-    members[mi].points = newPts;
-    user.points = newPts;
-    fbUpdateMember(user.phone, {points: newPts}).catch(e => console.error('Points update error:', e));
-  }
-
-  cart=[];updCart();closeModal('checkoutModal');
-  document.getElementById('sucId').textContent=order.id;
-  document.getElementById('sucTotal').textContent='$'+order.total;
-  document.getElementById('sucPts').textContent='+'+earned+' 點';
-  openModal('successModal');
-}
-
-// TRACKING
-function doTrack(){
-  const id=document.getElementById('trackId').value.trim();
-  const el=document.getElementById('trackResult');
-  if(!id){toast('請輸入訂單編號');return;}
-  const o=orders.find(x=>x.id===id);
-  if(!o){
-    el.innerHTML=`<div style="text-align:center;padding:36px;color:var(--mid);"><div style="font-size:38px;margin-bottom:10px;">🔍</div><div style="font-size:14px;font-weight:700;">找不到此訂單</div><div style="font-size:12px;margin-top:7px;">請確認訂單編號是否正確</div></div>`;
+function renderOrdersTable() {
+  const q = (document.getElementById('orderSearch')?.value || '').toLowerCase();
+  let orders = getOrders();
+  if (currentFilter !== 'all') orders = orders.filter(o => o.status === currentFilter);
+  if (q) orders = orders.filter(o =>
+    o.id.toLowerCase().includes(q) ||
+    (o.sName || '').toLowerCase().includes(q) ||
+    (o.sPhone || '').includes(q)
+  );
+  const el = document.getElementById('ordersTable');
+  if (!el) return;
+  if (!orders.length) {
+    el.innerHTML = `<div class="empty-state"><div class="empty-icon">🔍</div><div class="empty-title">沒有符合的訂單</div></div>`;
     return;
   }
-  const steps=['訂單確認','備貨中','出貨中','已送達'];
-  const stepIcons=['✅','📦','🚚','🎉'];
-  const stepIdx = steps.indexOf(o.status) >= 0 ? steps.indexOf(o.status) : 0;
-  el.innerHTML=`
-    <div style="background:var(--warm-white);border-radius:14px;padding:20px;border:1.5px solid rgba(106,174,214,.2);">
-      <!-- Header -->
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
-        <div style="font-size:14px;font-weight:900;color:var(--dark);">${o.id}</div>
-        <div style="background:rgba(74,140,74,.1);color:#4a8c4a;border:1px solid rgba(74,140,74,.3);border-radius:18px;padding:3px 12px;font-size:12px;font-weight:700;">${o.status}</div>
-      </div>
+  el.innerHTML = buildOrderTable(orders, false);
+}
 
-      <!-- Progress bar FIRST -->
-      <div style="background:var(--cream);border-radius:12px;padding:16px 12px;margin-bottom:16px;border:1px solid var(--light-tan);">
-        <div style="font-size:12px;font-weight:700;color:var(--dark);margin-bottom:14px;letter-spacing:1px;">📦 出貨進度</div>
-        <!-- Step circles connected by lines -->
-        <div style="display:flex;align-items:center;justify-content:space-between;position:relative;">
-          ${steps.map((s,i)=>`
-            <div style="display:flex;flex-direction:column;align-items:center;flex:1;position:relative;z-index:1;">
-              <div style="width:36px;height:36px;border-radius:50%;
-                background:${i<=stepIdx?'var(--primary)':'var(--light-tan)'};
-                color:${i<=stepIdx?'white':'var(--mid)'};
-                font-size:15px;display:flex;align-items:center;justify-content:center;
-                border:3px solid ${i<=stepIdx?'var(--primary-dark)':'#ddd'};
-                box-shadow:${i===stepIdx?'0 0 0 4px rgba(232,117,138,.2)':'none'};
-                transition:all .3s;">
-                ${i<=stepIdx?stepIcons[i]:`<span style='font-size:11px;font-weight:700;'>${i+1}</span>`}
-              </div>
-              <div style="font-size:10px;color:${i<=stepIdx?'var(--primary)':'var(--mid)'};font-weight:${i===stepIdx?'700':'400'};margin-top:6px;text-align:center;white-space:nowrap;">${s}</div>
+function buildOrderTable(orders, compact) {
+  const statusClass = {'處理中':'s0','備貨中':'s1','出貨中':'s2','已送達':'s3'};
+  const statusIcon = {'處理中':'⏳','備貨中':'📦','出貨中':'🚚','已送達':'✅'};
+  return `<table>
+    <thead>
+      <tr>
+        <th>訂單編號</th>
+        <th>顧客姓名</th>
+        <th>商品</th>
+        <th>金額</th>
+        <th>付款方式</th>
+        <th>狀態</th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      ${orders.map(o => `
+        <tr>
+          <td style="font-weight:700;color:var(--primary);font-size:11px;">${o.id}<br><span style="font-size:10px;color:var(--mid);font-weight:400;">${o.date}</span></td>
+          <td>
+            <div style="font-weight:600;">${o.sName || '-'}</div>
+            <div style="font-size:11px;color:var(--mid);">${o.sPhone || ''}</div>
+          </td>
+          <td style="max-width:160px;">
+            <div style="font-size:11px;color:var(--mid);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${o.items}</div>
+          </td>
+          <td style="font-weight:700;color:var(--dark);">$${o.total}</td>
+          <td style="font-size:11px;color:var(--mid);">${o.payLabel || o.pay || '-'}</td>
+          <td><span class="sbadge ${statusClass[o.status] || 's0'}">${statusIcon[o.status] || '⏳'} ${o.status}</span></td>
+          <td>
+            <div style="display:flex;gap:6px;">
+              <button class="act-btn" onclick="openDetail('${o.id}')">詳情</button>
+              ${!compact ? `<select style="padding:4px 8px;border:1.5px solid var(--border);border-radius:7px;font-family:'Noto Serif TC',serif;font-size:11px;color:var(--dark);cursor:pointer;" onchange="quickStatus('${o.id}',this.value);this.value=''">
+                <option value="">更改狀態</option>
+                <option value="處理中">⏳ 處理中</option>
+                <option value="備貨中">📦 備貨中</option>
+                <option value="出貨中">🚚 出貨中</option>
+                <option value="已送達">✅ 已送達</option>
+              </select>` : ''}
             </div>
-            ${i<3?`<div style="flex:1;height:3px;background:${i<stepIdx?'var(--primary)':'var(--light-tan)'};margin-bottom:16px;border-radius:2px;"></div>`:''}`
-          ).join('')}
-        </div>
+          </td>
+        </tr>`).join('')}
+    </tbody>
+  </table>`;
+}
+
+// ── ORDER DETAIL ──────────────────────────────────────────────────────────────
+function openDetail(id) {
+  const orders = getOrders();
+  const o = orders.find(x => x.id === id);
+  if (!o) return;
+  document.getElementById('dpOrderId').textContent = o.id;
+  const steps = ['處理中','備貨中','出貨中','已送達'];
+  const icons = ['⏳','📦','🚚','✅'];
+  const si = Math.max(0, steps.indexOf(o.status));
+
+  document.getElementById('dpBody').innerHTML = `
+    <!-- Progress -->
+    <div class="dp-section">
+      <div class="dp-section-title">出貨進度</div>
+      <div class="progress-steps">
+        ${steps.map((s, i) => `
+          <div class="pstep">
+            <div class="pstep-circle ${i < si ? 'done' : i === si ? 'current' : ''}">${i <= si ? icons[i] : i+1}</div>
+            <div class="pstep-label ${i < si ? 'done' : i === si ? 'current' : ''}">${s}</div>
+          </div>
+          ${i < 3 ? `<div class="pstep-line ${i < si ? 'done' : ''}"></div>` : ''}
+        `).join('')}
       </div>
+    </div>
 
-      <!-- Order details -->
-      <div style="font-size:12px;color:var(--mid);line-height:2.2;background:var(--cream);border-radius:10px;padding:12px 14px;border:1px solid var(--light-tan);margin-bottom:12px;">
-        📅 訂購日期：${o.date}<br>
-        🛒 商品：${o.items}<br>
-        💳 付款：${o.payLabel||o.pay}<br>
-        📍 地址：${o.sAddr||'-'}<br>
-        📱 電話：${o.sPhone||'-'}
+    <!-- Update status -->
+    <div class="dp-section">
+      <div class="dp-section-title">更新訂單狀態</div>
+      <select class="status-select" id="statusSelect">
+        <option value="處理中" ${o.status==='處理中'?'selected':''}>⏳ 處理中</option>
+        <option value="備貨中" ${o.status==='備貨中'?'selected':''}>📦 備貨中</option>
+        <option value="出貨中" ${o.status==='出貨中'?'selected':''}>🚚 出貨中</option>
+        <option value="已送達" ${o.status==='已送達'?'selected':''}>✅ 已送達</option>
+      </select>
+      <button class="save-btn" onclick="updateStatus('${o.id}')">💾 儲存狀態</button>
+    </div>
+
+    <!-- Customer info -->
+    <div class="dp-section">
+      <div class="dp-section-title">收件資訊</div>
+      <div class="dp-row"><span class="dp-label">姓名</span><span class="dp-val">${o.sName || '-'}</span></div>
+      <div class="dp-row"><span class="dp-label">手機</span><span class="dp-val">${o.sPhone || '-'}</span></div>
+      <div class="dp-row"><span class="dp-label">地址</span><span class="dp-val">${o.sAddr || '-'}</span></div>
+      <div class="dp-row"><span class="dp-label">備註</span><span class="dp-val">${o.note || '（無）'}</span></div>
+    </div>
+
+    <!-- Order items -->
+    <div class="dp-section">
+      <div class="dp-section-title">訂購商品</div>
+      ${(o.items || '').split('、').map(it => `
+        <div class="dp-row"><span class="dp-label">${it.split('×')[0] || it}</span><span class="dp-val">×${it.split('×')[1] || '1'}</span></div>
+      `).join('')}
+    </div>
+
+    <!-- Payment -->
+    <div class="dp-section">
+      <div class="dp-section-title">付款資訊</div>
+      <div class="dp-row"><span class="dp-label">付款方式</span><span class="dp-val">${o.payLabel || o.pay || '-'}</span></div>
+      <div class="dp-row"><span class="dp-label">商品小計</span><span class="dp-val">$${o.subtotal || '-'}</span></div>
+      <div class="dp-row"><span class="dp-label">運費</span><span class="dp-val">${o.shipping === 0 ? '免費' : '$' + (o.shipping || 180)}</span></div>
+      ${o.codFee ? `<div class="dp-row"><span class="dp-label">手續費</span><span class="dp-val">+$${o.codFee}</span></div>` : ''}
+      ${o.discount ? `<div class="dp-row"><span class="dp-label">點數折抵</span><span class="dp-val" style="color:var(--primary);">-$${o.discount}</span></div>` : ''}
+      <div class="dp-row" style="border-top:2px solid var(--border);margin-top:6px;padding-top:10px;">
+        <span class="dp-label" style="font-weight:700;font-size:14px;color:var(--dark);">訂單總計</span>
+        <span class="dp-val" style="font-size:18px;font-weight:900;color:var(--primary);">$${o.total}</span>
       </div>
+    </div>
 
-      <!-- Total -->
-      <div style="display:flex;justify-content:space-between;align-items:center;background:linear-gradient(135deg,rgba(232,117,138,.08),rgba(106,174,214,.08));border-radius:10px;padding:12px 16px;border:1px solid var(--light-tan);">
-        <div style="font-size:13px;font-weight:700;color:var(--dark);">訂單金額</div>
-        <div style="font-size:20px;font-weight:900;color:var(--primary);">$${o.total}</div>
-      </div>
-    </div>`;
-}
+    <!-- Delete -->
+    <div class="dp-section">
+      <button class="act-btn danger" style="width:100%;" onclick="deleteOrder('${o.id}')">🗑️ 刪除此訂單</button>
+    </div>
+  `;
 
-// AUTH
-function doLogin(){
-  const phone=document.getElementById('lPhone').value.trim().replace(/[\s\-()]/g,'');
-  const pwd=document.getElementById('lPwd').value;
-  if(!phone||!pwd){toast('請填寫所有欄位');return;}
-  const m=members.find(m=>m.phone===phone&&m.password===pwd);
-  if(!m){toast('手機號碼或密碼錯誤');return;}
-  user={...m};closeModal('loginModal');updAuth();toast(`歡迎回來，${user.name}！`);
-}
-function doRegister(){
-  const name=document.getElementById('rName').value.trim();
-  const phone=document.getElementById('rPhone').value.trim().replace(/[\s\-()]/g,'');
-  const email=document.getElementById('rEmail').value.trim();
-  const pwd=document.getElementById('rPwd').value;
-  const gender=document.getElementById('rGender').value;
-  const birth=document.getElementById('rBirth').value;
-  const addr=document.getElementById('rAddr').value.trim();
-  if(!name||!phone||!pwd){toast('請填寫必填欄位（*）');return;}
-  if(!/^(09\d{8}|\+886\d{9})$/.test(phone)){toast('請輸入正確的手機號碼格式（如 0912345678）');return;}
-  if(pwd.length<8){toast('密碼至少需要8個字元');return;}
-  if(members.find(m=>m.phone===phone)){toast('此手機號碼已被註冊');return;}
-  const m={name,phone,email,password:pwd,gender,birth,addr,points:100,joined:new Date().toLocaleDateString('zh-TW')};
-  members.push(m);
-  // Save to Firebase
-  fbUpdateMember(m.phone, m).catch(e => console.error('Register save error:', e));
-  user={...m};closeModal('registerModal');updAuth();toast(`🎉 註冊成功！送您 100 點歡迎禮`);
-}
-function doLogout(){user=null;updAuth();showPage('home');toast('已成功登出');}
-function updAuth(){
-  const g=document.getElementById('navGuest'),u=document.getElementById('navUser');
-  if(user){g.style.display='none';u.style.display='flex';document.getElementById('navName').textContent=user.name;}
-  else{g.style.display='flex';u.style.display='none';}
+  document.getElementById('detailPanel').classList.add('open');
+  document.getElementById('panelOverlay').classList.add('active');
 }
 
-// MEMBER
-function renderMember(){
-  const el=document.getElementById('memberContent');
-  if(!user){
-    el.innerHTML=`<div style="text-align:center;padding:55px 18px;">
-      <div style="font-size:44px;margin-bottom:14px;">👤</div>
-      <div style="font-size:15px;font-weight:700;color:var(--dark);margin-bottom:7px;">請先登入</div>
-      <div style="font-size:12px;color:var(--mid);margin-bottom:18px;">登入後可查看會員資訊、點數與訂單</div>
-      <button class="fb" style="max-width:190px;margin:0 auto;" onclick="openModal('loginModal')">立即登入</button></div>`;
+function closeDetail() {
+  document.getElementById('detailPanel').classList.remove('open');
+  document.getElementById('panelOverlay').classList.remove('active');
+}
+
+function updateStatus(id) {
+  const newStatus = document.getElementById('statusSelect').value;
+  const orders = getOrders();
+  const i = orders.findIndex(o => o.id === id);
+  if (i < 0) return;
+  orders[i].status = newStatus;
+  db.ref('orders/' + id).update({status: newStatus})
+    .then(() => atoast(`✅ 訂單 ${id} 已更新為「${newStatus}」`))
+    .catch(() => atoast('❌ 更新失敗，請再試一次'));
+  closeDetail();
+}
+
+function quickStatus(id, status) {
+  if (!status) return;
+  const orders = getOrders();
+  const i = orders.findIndex(o => o.id === id);
+  if (i < 0) return;
+  db.ref('orders/' + id).update({status: status})
+    .then(() => atoast(`✅ 已更新為「${status}」`))
+    .catch(() => atoast('❌ 更新失敗'));
+}
+
+function deleteOrder(id) {
+  if (!confirm(`確定要刪除訂單 ${id} 嗎？此操作無法復原。`)) return;
+  db.ref('orders/' + id).remove()
+    .then(() => atoast('🗑️ 訂單已刪除'))
+    .catch(() => atoast('❌ 刪除失敗'));
+  closeDetail();
+}
+
+// ── MEMBERS ───────────────────────────────────────────────────────────────────
+function renderMembers() {
+  const q = (document.getElementById('memberSearch')?.value || '').toLowerCase();
+  let members = getMembers();
+  if (q) members = members.filter(m =>
+    m.name.toLowerCase().includes(q) ||
+    m.phone.includes(q) ||
+    (m.email || '').toLowerCase().includes(q)
+  );
+  const el = document.getElementById('membersTable');
+  if (!el) return;
+  if (!members.length) {
+    el.innerHTML = `<div class="empty-state"><div class="empty-icon">👤</div><div class="empty-title">尚無會員</div><div class="empty-sub">顧客註冊後會顯示在這裡</div></div>`;
     return;
   }
-  const mi=members.findIndex(m=>m.phone===user.phone);
-  const pts=mi>=0?members[mi].points:(user.points||0);
-  el.innerHTML=`
-    <div class="mpanel">
-      <div class="mgreet">👋 您好，${user.name}</div>
-      <div style="font-size:12px;color:var(--mid);margin-bottom:13px;line-height:2;">
-        📱 ${user.phone}
-        ${user.email?`<br>📧 ${user.email}`:''}
-        ${user.gender?`<br>👤 ${user.gender}`:''}
-        ${user.birth?`<br>🎂 ${user.birth}`:''}
-        ${user.addr?`<br>📍 ${user.addr}`:''}
-      </div>
-      <div class="mstats">
-        <div class="sbox"><div class="sval">${pts}</div><div class="slbl">累積點數</div></div>
-        <div class="sbox"><div class="sval">${orders.length}</div><div class="slbl">訂單數量</div></div>
-        <div class="sbox"><div class="sval">${Math.floor(pts/100)*50}</div><div class="slbl">可折抵</div></div>
-      </div>
-    </div>
-    <div class="ptsbar" onclick="toast('每消費$100獲得1點，累積100點可折抵$50')">
-      <div><div class="pts-lbl">⭐ 我的點數</div><div style="font-size:10px;opacity:.8;margin-top:2px;">每消費$100獲得1點</div></div>
-      <div class="pts-val">${pts} 點</div>
-    </div>
-    <!-- 點數紀錄 -->
-    <div style="background:var(--warm-white);border:1.5px solid rgba(106,174,214,.12);border-radius:13px;padding:14px;margin-bottom:14px;">
-      <div style="font-size:13px;font-weight:700;color:var(--dark);margin-bottom:11px;">⭐ 點數紀錄</div>
-      <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px dashed var(--light-tan);font-size:12px;"><span style="color:var(--mid);">註冊禮</span><span style="color:var(--primary);font-weight:700;">+100 點</span></div>
-      ${orders.map(o=>`
-        <div style="display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px dashed var(--light-tan);">
-          <div><div style="font-size:12px;font-weight:600;color:var(--dark);">${o.date} 訂單</div><div style="font-size:10px;color:var(--mid);">消費 $${o.subtotal||o.total}</div></div>
-          <div style="color:var(--primary);font-weight:700;font-size:12px;">+${Math.floor((o.subtotal||o.total)/100)} 點</div>
-        </div>`).join('')}
-      <div style="display:flex;justify-content:space-between;padding-top:9px;font-size:13px;font-weight:700;">
-        <span style="color:var(--dark);">目前總點數</span><span style="color:var(--primary);">${pts} 點</span>
-      </div>
-    </div>
-    <!-- 訂單紀錄 -->
-    <div style="font-size:13px;font-weight:700;color:var(--dark);letter-spacing:1px;margin-bottom:11px;">📦 訂單紀錄</div>
-    ${orders.length?orders.map(o=>`
-      <div class="oitem">
-        <div>
-          <div class="oid">${o.id}</div>
-          <div class="odate">${o.date}</div>
-          <div class="oitems">${o.items}</div>
-          <div style="font-size:10px;color:var(--mid);margin-top:2px;">💳 ${o.payLabel||o.pay||'-'}</div>
-          <div style="font-size:10px;color:var(--mid);">📍 ${o.sAddr||'-'}</div>
-        </div>
-        <div style="text-align:right;">
-          <div class="ototal">$${o.total}</div>
-          <div style="font-size:10px;color:var(--mid);margin-top:2px;">運費: ${o.shipping===0?'免費':'$'+(o.shipping||180)}</div>
-          <div class="ostatus">${o.status}</div>
-          <button onclick="document.getElementById('trackId').value='${o.id}';showPage('tracking');doTrack();" style="margin-top:5px;background:none;border:1px solid var(--blue);border-radius:7px;padding:2px 7px;font-size:10px;color:var(--blue);cursor:pointer;">查詢進度</button>
-        </div>
-      </div>`).join(''):'<div style="text-align:center;padding:26px;color:var(--mid);font-size:12px;">尚無訂單紀錄</div>'}
-  `;
+  el.innerHTML = `<table>
+    <thead><tr>
+      <th>會員姓名</th><th>手機號碼</th><th>電子信箱</th>
+      <th>點數</th><th>性別</th><th>加入日期</th><th>收件地址</th>
+    </tr></thead>
+    <tbody>
+      ${members.map(m => `
+        <tr>
+          <td style="font-weight:700;">${m.name}</td>
+          <td style="font-family:monospace;">${m.phone}</td>
+          <td style="font-size:12px;color:var(--mid);">${m.email || '-'}</td>
+          <td><span style="color:var(--primary);font-weight:700;">⭐ ${m.points || 0}</span></td>
+          <td>${m.gender || '-'}</td>
+          <td style="font-size:11px;color:var(--mid);">${m.joined || '-'}</td>
+          <td style="font-size:11px;color:var(--mid);max-width:160px;">${m.addr || '-'}</td>
+        </tr>`).join('')}
+    </tbody>
+  </table>`;
 }
 
-// HOT RANKING
-function renderHot(){
-  const html=products.slice(0,5).map((p,i)=>`
-    <div class="rank-item" onclick="openProd(${p.id})">
-      <div class="rnum ${i<3?'top':''}">${i+1}</div>
-      <div class="rname">${p.name}</div>
-      <div class="rprice">$${p.price}</div>
-    </div>`).join('');
-  ['hotRank','hotRankMob'].forEach(id=>{const el=document.getElementById(id);if(el)el.innerHTML=html;});
+// ── EXPORT ────────────────────────────────────────────────────────────────────
+function exportCSV() {
+  const orders = getOrders();
+  if (!orders.length) { atoast('目前沒有訂單資料'); return; }
+  const headers = ['訂單編號','日期','姓名','手機','地址','商品','小計','運費','手續費','折抵','總計','付款方式','狀態','備註'];
+  const rows = orders.map(o => [
+    o.id, o.date, o.sName||'', o.sPhone||'', o.sAddr||'',
+    o.items, o.subtotal||'', o.shipping||'', o.codFee||0, o.discount||0,
+    o.total, o.payLabel||o.pay||'', o.status, o.note||''
+  ].map(v => `"${String(v).replace(/"/g,'""')}"`).join(','));
+  const csv = '\uFEFF' + [headers.join(','), ...rows].join('\n');
+  const blob = new Blob([csv], {type:'text/csv;charset=utf-8'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = `源春訂單_${new Date().toLocaleDateString('zh-TW').replace(/\//g,'-')}.csv`;
+  a.click(); URL.revokeObjectURL(url);
+  atoast('📥 訂單已匯出');
 }
 
-// MODALS
-function openModal(id){document.getElementById(id).classList.add('active');}
-function closeModal(id){document.getElementById(id).classList.remove('active');}
-function swModal(a,b){closeModal(a);setTimeout(()=>openModal(b),180);}
-document.querySelectorAll('.modal-overlay').forEach(el=>{
-  el.addEventListener('click',e=>{if(e.target===el)el.classList.remove('active');});
+function exportMembers() {
+  const members = allMembers;
+  if (!members.length) { atoast('目前沒有會員資料'); return; }
+  const headers = ['姓名','手機','電子信箱','性別','生日','地址','點數','加入日期'];
+  const rows = members.map(m => [
+    m.name, m.phone, m.email||'', m.gender||'', m.birth||'',
+    m.addr||'', m.points||0, m.joined||''
+  ].map(v => `"${String(v).replace(/"/g,'""')}"`).join(','));
+  const csv = '\uFEFF' + [headers.join(','), ...rows].join('\n');
+  const blob = new Blob([csv], {type:'text/csv;charset=utf-8'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = `源春會員_${new Date().toLocaleDateString('zh-TW').replace(/\//g,'-')}.csv`;
+  a.click(); URL.revokeObjectURL(url);
+  atoast('📥 會員資料已匯出');
+}
+
+function clearTestData() {
+  if (!confirm('確定要清除所有測試資料嗎？（訂單與會員資料都會刪除，無法復原）')) return;
+  db.ref('orders').remove();
+  db.ref('members').remove();
+  atoast('🗑️ 測試資料已清除');
+}
+
+// ── SETTINGS ──────────────────────────────────────────────────────────────────
+function changePwd() {
+  const old = document.getElementById('oldPwd').value;
+  const nw = document.getElementById('newPwd').value;
+  const cfm = document.getElementById('cfmPwd').value;
+  if (old !== adminPwd) { atoast('❌ 目前密碼錯誤'); return; }
+  if (nw.length < 8) { atoast('❌ 新密碼至少需要8位'); return; }
+  if (nw !== cfm) { atoast('❌ 兩次密碼不一致'); return; }
+  adminPwd = nw;
+  localStorage.setItem(ADMIN_KEY, nw);
+  document.getElementById('oldPwd').value = '';
+  document.getElementById('newPwd').value = '';
+  document.getElementById('cfmPwd').value = '';
+  atoast('✅ 密碼已成功變更');
+}
+
+// ── TOAST ─────────────────────────────────────────────────────────────────────
+function atoast(msg) {
+  const t = document.getElementById('atoast');
+  t.textContent = msg; t.style.display = 'block';
+  clearTimeout(t._t);
+  t._t = setTimeout(() => t.style.display = 'none', 3000);
+}
+
+// ── ENTER KEY ─────────────────────────────────────────────────────────────────
+document.getElementById('adminUser').addEventListener('keydown', e => {
+  if (e.key === 'Enter') document.getElementById('adminPwd').focus();
 });
-
-// TOAST
-function toast(msg){
-  const t=document.getElementById('toast');
-  t.textContent=msg;t.style.display='block';
-  clearTimeout(t._t);t._t=setTimeout(()=>{t.style.display='none';},2400);
-}
-
-// MOBILE
-function openMobMenu(){document.getElementById('mmenu').classList.add('open');document.getElementById('mobOverlay').style.display='block';}
-function closeMobMenu(){document.getElementById('mmenu').classList.remove('open');document.getElementById('mobOverlay').style.display='none';}
-function setMobNav(el){document.querySelectorAll('.mobnav-item').forEach(i=>i.classList.remove('active'));el.classList.add('active');}
-
-// CAROUSEL
-let ci=0;const ct=10;let ctimer;
-function cMove(d){ci=(ci+d+ct)%ct;updC();resetCTimer();}
-function cGo(i){ci=i;updC();resetCTimer();}
-function updC(){
-  document.getElementById('cTrack').style.transform=`translateX(-${ci*100}%)`;
-  document.querySelectorAll('.c-dot').forEach((d,i)=>d.classList.toggle('active',i===ci));
-}
-function resetCTimer(){clearInterval(ctimer);ctimer=setInterval(()=>cMove(1),4000);}
-function initC(){
-  const dots=document.getElementById('cDots');
-  for(let i=0;i<ct;i++){
-    const d=document.createElement('button');
-    d.className='c-dot'+(i===0?' active':'');
-    d.onclick=()=>cGo(i);dots.appendChild(d);
-  }
-  resetCTimer();
-}
-
-// INIT
-rGrid('homeGrid',products);
-rCart();
-renderHot();
-initC();
-// Load live data from Firebase
-fbLoadOrders(() => { if(user) renderMember(); });
-fbLoadMembers(() => { if(user) renderMember(); });
 </script>
 </body>
 </html>
