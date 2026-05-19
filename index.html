@@ -624,7 +624,23 @@ body{font-family:'Noto Serif TC',serif;background:var(--cream);color:var(--dark)
     <div class="fg"><label class="fl">手機號碼</label><input class="fi" type="text" inputmode="numeric" autocomplete="tel" id="lPhone" placeholder="09xxxxxxxx"></div>
     <div class="fg"><label class="fl">密碼</label><input class="fi" type="password" id="lPwd" placeholder="••••••••"></div>
     <button class="fb" onclick="doLogin()">登入</button>
-    <div class="fsw">還沒有帳號？<a onclick="swModal('loginModal','registerModal')">立即註冊</a></div>
+    <div class="fsw">還沒有帳號？<a onclick="swModal('loginModal','registerModal')">立即註冊</a> &nbsp;｜&nbsp; <a onclick="swModal('loginModal','forgotModal')">忘記密碼？</a></div>
+  </div>
+</div>
+
+<!-- FORGOT PASSWORD -->
+<div class="modal-overlay" id="forgotModal">
+  <div class="modal">
+    <button class="mc" onclick="closeModal('forgotModal')">✕</button>
+    <div class="mt">忘記密碼</div>
+    <div class="ms">輸入您的手機號碼，設定新密碼</div>
+    <div class="fg"><label class="fl">手機號碼 *</label><input class="fi" type="text" inputmode="numeric" id="fpPhone" placeholder="09xxxxxxxx"></div>
+    <div id="fpStep2" style="display:none;">
+      <div class="fg"><label class="fl">新密碼 * （至少8位）</label><input class="fi" type="password" id="fpNewPwd" placeholder="••••••••"></div>
+      <div class="fg"><label class="fl">確認新密碼 *</label><input class="fi" type="password" id="fpCfmPwd" placeholder="••••••••"></div>
+    </div>
+    <button class="fb" id="fpBtn" onclick="doForgotStep()">查詢帳號</button>
+    <div class="fsw">想起來了？<a onclick="swModal('forgotModal','loginModal')">返回登入</a></div>
   </div>
 </div>
 
@@ -1076,9 +1092,22 @@ function doLogin(){
   const phone=document.getElementById('lPhone').value.trim().replace(/[\s\-()]/g,'');
   const pwd=document.getElementById('lPwd').value;
   if(!phone||!pwd){toast('請填寫所有欄位');return;}
-  const m=members.find(m=>m.phone===phone&&m.password===pwd);
-  if(!m){toast('手機號碼或密碼錯誤');return;}
-  user={...m};closeModal('loginModal');updAuth();toast(`歡迎回來，${user.name}！`);
+  // Query Firebase directly - not local array (avoids async timing issues)
+  const key=phone.replace(/[.#$[\]]/g,'');
+  const btnEl=document.querySelector('#loginModal .fb');
+  if(btnEl){btnEl.textContent='登入中...';btnEl.disabled=true;}
+  db.ref('members/'+key).once('value').then(snap=>{
+    if(btnEl){btnEl.textContent='登入';btnEl.disabled=false;}
+    const m=snap.val();
+    if(!m||m.password!==pwd){toast('手機號碼或密碼錯誤');return;}
+    user={...m};
+    closeModal('loginModal');
+    updAuth();
+    toast(`歡迎回來，${user.name}！`);
+  }).catch(()=>{
+    if(btnEl){btnEl.textContent='登入';btnEl.disabled=false;}
+    toast('連線錯誤，請再試一次');
+  });
 }
 function doRegister(){
   const name=document.getElementById('rName').value.trim();
@@ -1091,14 +1120,82 @@ function doRegister(){
   if(!name||!phone||!pwd){toast('請填寫必填欄位（*）');return;}
   if(!/^(09\d{8}|\+886\d{9})$/.test(phone)){toast('請輸入正確的手機號碼格式（如 0912345678）');return;}
   if(pwd.length<8){toast('密碼至少需要8個字元');return;}
-  if(members.find(m=>m.phone===phone)){toast('此手機號碼已被註冊');return;}
-  const m={name,phone,email,password:pwd,gender,birth,addr,points:100,joined:new Date().toLocaleDateString('zh-TW')};
-  members.push(m);
-  // Save to Firebase
-  fbUpdateMember(m.phone, m).catch(e => console.error('Register save error:', e));
-  user={...m};closeModal('registerModal');updAuth();toast(`🎉 註冊成功！送您 100 點歡迎禮`);
+  const key=phone.replace(/[.#$[\]]/g,'');
+  const btnEl=document.querySelector('#registerModal .fb');
+  if(btnEl){btnEl.textContent='註冊中...';btnEl.disabled=true;}
+  // Check Firebase directly for existing phone (avoids async timing issues)
+  db.ref('members/'+key).once('value').then(snap=>{
+    if(snap.exists()){
+      if(btnEl){btnEl.textContent='註冊';btnEl.disabled=false;}
+      toast('此手機號碼已被註冊');return;
+    }
+    const m={name,phone,email,password:pwd,gender,birth,addr,points:100,joined:new Date().toLocaleDateString('zh-TW')};
+    return db.ref('members/'+key).set(m).then(()=>{
+      if(btnEl){btnEl.textContent='註冊';btnEl.disabled=false;}
+      members.push(m);
+      user={...m};
+      closeModal('registerModal');
+      updAuth();
+      toast('🎉 註冊成功！送您 100 點歡迎禮');
+    });
+  }).catch(()=>{
+    if(btnEl){btnEl.textContent='註冊';btnEl.disabled=false;}
+    toast('連線錯誤，請再試一次');
+  });
 }
 function doLogout(){user=null;updAuth();showPage('home');toast('已成功登出');}
+
+// ── FORGOT PASSWORD ──────────────────────────────────────────────────────────
+let fpVerified = false;
+let fpMemberKey = '';
+function doForgotStep(){
+  if(!fpVerified){
+    // Step 1: verify phone exists
+    const phone=document.getElementById('fpPhone').value.trim().replace(/[\s\-()]/g,'');
+    if(!phone){toast('請輸入手機號碼');return;}
+    const key=phone.replace(/[.#$[\]]/g,'');
+    const btn=document.getElementById('fpBtn');
+    btn.textContent='查詢中...';btn.disabled=true;
+    db.ref('members/'+key).once('value').then(snap=>{
+      btn.textContent='確認並重設密碼';btn.disabled=false;
+      if(!snap.exists()){toast('找不到此手機號碼，請確認是否已註冊');return;}
+      // Phone found - show password fields
+      fpVerified=true;
+      fpMemberKey=key;
+      document.getElementById('fpStep2').style.display='block';
+      document.getElementById('fpPhone').disabled=true;
+      const m=snap.val();
+      toast(`✅ 找到帳號：${m.name}，請設定新密碼`);
+    }).catch(()=>{
+      btn.textContent='查詢帳號';btn.disabled=false;
+      toast('連線錯誤，請再試一次');
+    });
+  } else {
+    // Step 2: set new password
+    const newPwd=document.getElementById('fpNewPwd').value;
+    const cfmPwd=document.getElementById('fpCfmPwd').value;
+    if(!newPwd||!cfmPwd){toast('請填寫新密碼');return;}
+    if(newPwd.length<8){toast('密碼至少需要8個字元');return;}
+    if(newPwd!==cfmPwd){toast('兩次密碼不一致');return;}
+    const btn=document.getElementById('fpBtn');
+    btn.textContent='儲存中...';btn.disabled=true;
+    db.ref('members/'+fpMemberKey).update({password:newPwd}).then(()=>{
+      btn.textContent='查詢帳號';btn.disabled=false;
+      fpVerified=false;fpMemberKey='';
+      document.getElementById('fpPhone').value='';
+      document.getElementById('fpPhone').disabled=false;
+      document.getElementById('fpNewPwd').value='';
+      document.getElementById('fpCfmPwd').value='';
+      document.getElementById('fpStep2').style.display='none';
+      closeModal('forgotModal');
+      openModal('loginModal');
+      toast('✅ 密碼已重設，請重新登入！');
+    }).catch(()=>{
+      btn.textContent='確認並重設密碼';btn.disabled=false;
+      toast('儲存失敗，請再試一次');
+    });
+  }
+}
 function updAuth(){
   const g=document.getElementById('navGuest'),u=document.getElementById('navUser');
   if(user){g.style.display='none';u.style.display='flex';document.getElementById('navName').textContent=user.name;}
